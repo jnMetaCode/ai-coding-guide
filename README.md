@@ -1,6 +1,6 @@
 # AI 编程工具实战指南
 
-> **8 款主流 AI 编程工具的中文最佳实践** — 不讲概念，只讲怎么用好。从提示词技巧到工作流设计，从单工具精通到多工具协作，帮你把 AI 编程效率拉满。
+> **9 款主流 AI 编程工具的中文最佳实践** — 不讲概念，只讲怎么用好。从提示词技巧到工作流设计，从单工具精通到多工具协作，帮你把 AI 编程效率拉满。
 
 [![GitHub stars](https://img.shields.io/github/stars/jnMetaCode/ai-coding-guide?style=social)](https://github.com/jnMetaCode/ai-coding-guide)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
@@ -43,6 +43,7 @@ AI 编程工具的模型能力已经很强了，但大多数人只用到了 10% 
 | [Kiro](kiro/) | IDE | ✅ |
 | [Aider](aider/) | CLI | ✅ |
 | [Trae](trae/) | IDE | ✅ |
+| [OpenClaw](openclaw/) | AI Agent 框架 | ✅ |
 
 ---
 
@@ -123,7 +124,7 @@ AI 编程工具的模型能力已经很强了，但大多数人只用到了 10% 
 
 | 项目 | 定位 | 说明 | 教程 |
 |------|------|------|------|
-| **本项目** | 📖 教学 | 8 款工具怎么用好，从入门到进阶 | — |
+| **本项目** | 📖 教学 | 9 款工具怎么用好，从入门到进阶 | — |
 | [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) | 🧠 方法论 | 20 个 skills，让 AI 学会怎么思考和做事（TDD、调试、代码审查等） | [安装与使用](ecosystem.md#1-superpowers-zh--给-ai-注入工作方法论) |
 | [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) | 👤 专家角色 | 187 个专业角色，让 AI 变成安全工程师、DBA、产品经理等 | [安装与使用](ecosystem.md#2-agency-agents-zh--187-个-ai-专家角色) |
 | [agency-orchestrator](https://github.com/jnMetaCode/agency-orchestrator) | 🔗 编排 | 用 YAML 让多个角色协作完成复杂任务 | [安装与使用](ecosystem.md#3-agency-orchestrator--多角色-yaml-编排) |
