@@ -21,12 +21,13 @@
 
 ## 🚀 快速开始
 
-**第一次用？** 三步上手：
+**第一次用？** 按这四步走：
 1. 📖 读 [提示词工程](common/prompting.md) — 学会和 AI 说话
 2. 🔧 选你的工具 → 读对应的["快速上手"](#-9-款工具教程)章节
 3. ✂️ 读 [需求拆解](common/task-decomposition.md) — 学会给 AI 分任务
+4. 🎯 看 [实战场景脚本](workflows/scenarios.md) — 3 个端到端对话示范，复制改就能用
 
-**已经在用了？** 直接看：[进阶技巧](#-9-款工具教程) · [多工具协作](#-多工具协作) · [生态项目](#-相关项目)
+**已经在用了？** 直接看：[进阶技巧](#-9-款工具教程) · [实战工作流](#-实战工作流) · [生态项目](#-相关项目)
 
 ---
 
@@ -64,12 +65,13 @@
 
 ---
 
-## 🔗 多工具协作
+## 🔗 实战工作流
 
-真正高效的做法不是只用一个工具，而是让不同工具发挥各自的长处。
+真实项目怎么跑完整流程，以及不同工具怎么各展所长。
 
 | 工作流 | 说明 |
 |--------|------|
+| [实战场景脚本](workflows/scenarios.md) | 重构 / 协作开发 / 补测试——3 个端到端对话脚本，复制改就能用 |
 | [Claude Code + Cursor 协作](workflows/claude-code-cursor.md) | Claude Code 做架构设计和复杂重构，Cursor 做日常编码 |
 | [Claude Code + Copilot 协作](workflows/claude-code-copilot.md) | Claude Code 做 Agent 任务，Copilot 做行内补全 |
 | [多工具选型指南](workflows/tool-selection.md) | 什么场景用什么工具，一张表说清楚 |

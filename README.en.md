@@ -21,12 +21,13 @@
 
 ## Getting Started
 
-**New here?** Three steps:
+**New here?** Four steps:
 1. Read [Prompt Engineering](common/prompting.en.md) — learn how to talk to AI coding tools
 2. Pick your tool → read its [Quick Start](#9-tool-guides) section
 3. Read [Task Decomposition](common/task-decomposition.en.md) — learn how to break work into AI-sized chunks
+4. See [Real-World Scenarios](workflows/scenarios.en.md) — 3 end-to-end scripts you can copy
 
-**Already using AI tools?** Jump to: [Advanced Tips](#-9-tool-guides) · [Multi-Tool Workflows](#-multi-tool-workflows) · [Ecosystem](#-ecosystem)
+**Already using AI tools?** Jump to: [Advanced Tips](#-9-tool-guides) · [Real-World Workflows](#-real-world-workflows) · [Ecosystem](#-ecosystem)
 
 ---
 
@@ -64,12 +65,13 @@ These apply regardless of which tool you use:
 
 ---
 
-## Multi-Tool Workflows
+## Real-World Workflows
 
-The real productivity gains come from combining tools, not using one in isolation.
+How real projects run end-to-end, and how different tools play to their strengths.
 
 | Workflow | Description |
 |----------|-------------|
+| [Real-World Scenarios](workflows/scenarios.en.md) | Refactor, collaborative dev, test backfill — 3 end-to-end scripts, copy and adapt |
 | [Claude Code + Cursor](workflows/claude-code-cursor.en.md) | Claude Code for architecture & complex refactoring, Cursor for daily coding |
 | [Claude Code + Copilot](workflows/claude-code-copilot.en.md) | Claude Code for agentic tasks, Copilot for inline completions |
 | [Tool Selection Guide](workflows/tool-selection.en.md) | Which tool for which scenario — one table to rule them all |
