@@ -119,9 +119,15 @@ Most AI coding resources fall into two camps: shallow "getting started" posts, o
 
 ---
 
+## 📚 Further Learning
+
+This project covers "how to use the 9 tools well." Want to go deeper? See **[Further Learning Resources](resources.en.md)** — a curated list of **20+ high-quality GitHub repos / blogs / podcasts** organized by topic (Prompt Engineering / MCP Ecosystem / Claude Code Deep Dive / Agent Engineering / Chinese Resources / Official Blogs).
+
+---
+
 ## Contributing
 
-Contributions welcome! See [CONTRIBUTING.md](./CONTRIBUTING.md).
+Contributions welcome! See [CONTRIBUTING.en.md](./CONTRIBUTING.en.md).
 
 In short: add tips, fix outdated content, share workflow experiences — Issues and PRs both work.
 
