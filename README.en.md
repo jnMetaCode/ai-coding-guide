@@ -123,6 +123,10 @@ Most AI coding resources fall into two camps: shallow "getting started" posts, o
 
 This project covers "how to use the 9 tools well." Want to go deeper? See **[Further Learning Resources](resources.en.md)** — a curated list of **20+ high-quality GitHub repos / blogs / podcasts** organized by topic (Prompt Engineering / MCP Ecosystem / Claude Code Deep Dive / Agent Engineering / Chinese Resources / Official Blogs).
 
+## 🆕 Changelog
+
+See **[CHANGELOG](CHANGELOG.en.md)** for important updates. Latest major update: **2026-04** added cheatsheet, 31 deep pitfalls, end-to-end scenario scripts, persona-based learning paths, and 20+ external learning resources.
+
 ---
 
 ## Contributing
