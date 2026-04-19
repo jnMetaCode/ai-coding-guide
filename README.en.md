@@ -95,13 +95,13 @@ Learn the tools → Inject methodologies → Load expert roles → Orchestrate r
 (guide)           (superpowers)         (agents)            (orchestrator)      (shellward)
 ```
 
-| Project | Purpose | Description |
-|---------|---------|-------------|
-| **This repo** | Learning | Practical guides for 9 AI coding tools |
-| [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) | Methodology | 20 skills for AI coding tools — TDD, debugging, code review, and more |
-| [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) | Expert Roles | 211 professional roles — turn AI into a security engineer, DBA, PM, etc. |
-| [agency-orchestrator](https://github.com/jnMetaCode/agency-orchestrator) | Orchestration | YAML-based multi-role collaboration for complex tasks |
-| [shellward](https://github.com/jnMetaCode/shellward) | Safety | Prevent AI agents from running dangerous commands or leaking sensitive data |
+| Project | Purpose | One-liner | Setup |
+|---------|---------|-----------|-------|
+| **This repo** (ai-coding-guide) | 📖 Practical Guide | 66 Claude Code tips + best practices for 9 tools + config templates | — |
+| [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) ![](https://img.shields.io/github/stars/jnMetaCode/superpowers-zh?style=flat&label=⭐) | 🧠 Methodology | 20 skills teaching AI how to work (TDD / debugging / code review) | [Install & Use](ecosystem.en.md#1-superpowers-zh--inject-work-methodology-into-ai) |
+| [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) ![](https://img.shields.io/github/stars/jnMetaCode/agency-agents-zh?style=flat&label=⭐) | 🎭 Expert Roles | 211 **plug-and-play** AI specialists, incl. 46 China-native (Xiaohongshu / Douyin / Feishu / DingTalk) | [Install & Use](ecosystem.en.md#2-agency-agents-zh--211-ai-expert-roles) |
+| [agency-orchestrator](https://github.com/jnMetaCode/agency-orchestrator) | 🚀 Orchestration Engine | One prompt → 211 specialists collaborate, **plan in minutes** (9 LLMs / 6 free) | [Install & Use](ecosystem.en.md#3-agency-orchestrator--multi-role-yaml-orchestration) |
+| [shellward](https://github.com/jnMetaCode/shellward) | 🛡️ Security Middleware | 8-layer defense + DLP dataflow + injection detection, **zero-dep** (MCP Server included) | [Install & Use](ecosystem.en.md#4-shellward--security-guardrails-for-ai-agents) |
 
 > [Full ecosystem setup guide →](ecosystem.en.md)
 
