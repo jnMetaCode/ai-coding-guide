@@ -1,0 +1,9 @@
+# mdbook build output
+book/
+
+# 系统文件
+.DS_Store
+*.swp
+
+# 临时
+*.tmp

@@ -1,0 +1,39 @@
+[book]
+title = "AI 编程实战三卷书"
+authors = ["jnMetaCode"]
+description = "把 ai-coding-guide 仓库里的 10 工具教程 + 7 套方法论 + 实战工作流，重组为 3 卷 + 1 别册的渐进式读本"
+language = "zh-CN"
+multilingual = false
+src = "src"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/jnMetaCode/ai-coding-guide"
+git-repository-icon = "fa-github"
+edit-url-template = "https://github.com/jnMetaCode/ai-coding-guide/edit/main/book/{path}"
+site-url = "/"
+
+[output.html.search]
+enable = true
+limit-results = 30
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 1
+boost-paragraph = 1
+expand = true
+heading-split-level = 3
+
+[output.html.fold]
+enable = true
+level = 1
+
+[output.html.print]
+enable = true
+page-break = true
+
+[preprocessor.links]
+# 默认开，处理 {{#include}}
+
+[preprocessor.index]
+# 把 README.md 当作各章首页
