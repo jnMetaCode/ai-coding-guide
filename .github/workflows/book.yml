@@ -35,6 +35,8 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true   # 自动开启 Pages（首次运行无需手动到 Settings 里开）
 
       - name: Build book
         working-directory: ./book
