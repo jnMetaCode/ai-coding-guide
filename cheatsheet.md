@@ -1,4 +1,4 @@
-# 9 款工具速查表（Cheatsheet）
+# 10 款工具速查表（Cheatsheet）
 
 > 一页看完所有工具的关键参数、命令、快捷键。模型和定价变化快，具体以各官网为准。
 >
@@ -11,9 +11,10 @@
 | 你的诉求 | 首选 | 备选 |
 |---------|------|------|
 | 在 IDE 里按 Tab 补全 | **Cursor** | Copilot / Windsurf / Trae |
-| 终端里跑 Agent 做复杂任务 | **Claude Code** | Aider / Gemini CLI |
+| 终端里跑 Agent 做复杂任务 | **Claude Code** | **Codex CLI** / Aider / Gemini CLI |
+| 已订阅 ChatGPT，想顺手用 | **Codex CLI** | Cursor 接 GPT |
 | 超大代码库一次性分析 | **Gemini CLI**（2M 上下文） | Aider + Map 模式 |
-| 预算紧 / 零成本 | **Trae**（免费）或 **Gemini CLI**（免费额度） | Aider + 本地模型 |
+| 预算紧 / 零成本 | **Trae**（免费）或 **Gemini CLI**（免费额度） | Aider + 本地模型；或 `codex --oss --local-provider ollama` |
 | 国内直连，不用 VPN | **Trae** | OpenClaw + 本地模型 |
 | 团队协作，规格驱动 | **Kiro**（Spec） | Claude Code + plan mode |
 | Git 原生，多模型切换 | **Aider** | — |
@@ -24,21 +25,22 @@
 
 ## 二、能力矩阵
 
-| 维度 | Claude Code | Cursor | Copilot | Windsurf | Gemini CLI | Kiro | Aider | Trae | OpenClaw |
-|------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **类型** | CLI | IDE | IDE 插件 | IDE | CLI | IDE | CLI | IDE | Agent 框架 |
-| **出品方** | Anthropic | Cursor | GitHub | Codeium | Google | AWS | 开源 | 字节 | 开源 |
-| **Tab 补全** | — | ★★★ | ★★★ | ★★★ | — | ★★ | — | ★★ | — |
-| **Agent 执行** | ★★★ | ★★★ | ★★★ | ★★★ | ★★ | ★★ | ★★ | ★★ | ★★★ |
-| **终端内运行** | ★★★ | ★ | — | ★ | ★★★ | — | ★★★ | — | ★★★ |
-| **上下文窗口** | 200K | 跟模型 | 跟模型 | 跟模型 | **2M** | 跟模型 | 跟模型 | 跟模型 | 跟模型 |
-| **MCP 支持** | ✅ | ✅ | ✅ | ✅ | 扩展机制 | — | — | — | 原生 |
-| **Hook 自动化** | ✅ | — | — | — | — | ✅ | ✅（lint/test） | — | ✅（Cron） |
-| **Subagent** | ✅ | — | — | — | — | — | — | — | ✅（Agent 空间） |
-| **多模型切换** | ★（仅 Claude） | ★★★ | ★★ | ★★★ | ★（仅 Gemini） | ★★ | ★★★（几乎所有 LLM） | ★★ | ★★★ |
-| **开源** | — | — | — | — | — | — | ✅ MIT | — | ✅ MIT |
-| **国内直连** | — | — | — | — | — | — | — | ✅ | ✅（需配本地模型） |
-| **定价模式** | 按 API / Pro 订阅 | 基础免费 / $20 Pro | 免费 / $10 Pro | 基础免费 / 订阅 | 慷慨免费额度 | 预览免费 | 按你选的 LLM | 免费（有额度） | 开源免费 |
+| 维度 | Claude Code | Codex CLI | Cursor | Copilot | Windsurf | Gemini CLI | Kiro | Aider | Trae | OpenClaw |
+|------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **类型** | CLI | CLI | IDE | IDE 插件 | IDE | CLI | IDE | CLI | IDE | Agent 框架 |
+| **出品方** | Anthropic | OpenAI | Cursor | GitHub | Codeium | Google | AWS | 开源 | 字节 | 开源 |
+| **Tab 补全** | — | — | ★★★ | ★★★ | ★★★ | — | ★★ | — | ★★ | — |
+| **Agent 执行** | ★★★ | ★★★ | ★★★ | ★★★ | ★★★ | ★★ | ★★ | ★★ | ★★ | ★★★ |
+| **终端内运行** | ★★★ | ★★★ | ★ | — | ★ | ★★★ | — | ★★★ | — | ★★★ |
+| **上下文窗口** | 200K | 跟模型 | 跟模型 | 跟模型 | 跟模型 | **2M** | 跟模型 | 跟模型 | 跟模型 | 跟模型 |
+| **MCP 支持** | ✅ | ✅ | ✅ | ✅ | ✅ | 扩展机制 | — | — | — | 原生 |
+| **Hook 自动化** | ✅ | ✅（beta，复用 Claude schema） | — | — | — | — | ✅ | ✅（lint/test） | — | ✅（Cron） |
+| **Subagent** | ✅ | ✅（TOML） | — | — | — | — | — | — | — | ✅（Agent 空间） |
+| **沙箱机制** | App 层 + Hook | OS 内核（Seatbelt/Landlock） | — | — | — | — | — | — | — | — |
+| **多模型切换** | ★（仅 Claude） | ★（仅 OpenAI） | ★★★ | ★★ | ★★★ | ★（仅 Gemini） | ★★ | ★★★（几乎所有 LLM） | ★★ | ★★★ |
+| **开源** | — | ✅ Apache-2.0 | — | — | — | — | — | ✅ MIT | — | ✅ MIT |
+| **国内直连** | — | — | — | — | — | — | — | — | ✅ | ✅（需配本地模型） |
+| **定价模式** | API / Pro 订阅 | ChatGPT 订阅 / API | 免费 / $20 Pro | 免费 / $10 Pro | 免费 / 订阅 | 慷慨免费额度 | 预览免费 | 按你选的 LLM | 免费（有额度） | 开源免费 |
 
 ---
 
@@ -49,6 +51,7 @@
 | 工具 | 主配置文件 | 位置 | 备注 |
 |------|-----------|------|------|
 | Claude Code | `CLAUDE.md` + `.claude/` | 项目根 | 控制在 200 行以内，大项目拆到 `.claude/rules/` |
+| Codex CLI | `AGENTS.md` + `.codex/config.toml` | 项目根 | `~/.codex/AGENTS.md` 全局；子目录 AGENTS.md 覆盖父级 |
 | Cursor | `.cursor/rules/*.md` | 项目根 | 支持 `globs` 按文件类型加载 |
 | Copilot | `.github/copilot-instructions.md` | 项目根 | 同目录 `agents/` `chatModes/` |
 | Windsurf | `.windsurfrules` | 项目根 | 单文件，不支持拆分 |
@@ -76,6 +79,32 @@ claude -p "任务" --output-format json   # headless 模式
 /compact                        # 压缩上下文
 /plan                           # 进入 plan 模式
 Esc                             # 打断当前生成
+```
+
+### Codex CLI
+
+```bash
+# 安装与启动
+npm install -g @openai/codex
+codex                              # 进入 TUI（首次会引导登录 ChatGPT）
+codex --sandbox workspace-write    # 默认搭配（v0.125.0 起 `--full-auto` 已废弃，用此替代）
+codex --sandbox read-only          # 只读探索
+codex --add-dir ../sibling-repo    # 不放开沙箱、只多加可写目录
+codex --yolo                       # 跳过沙箱+审批（仅在外部已隔离的环境用）
+codex exec --json "..." | jq -c .  # JSONL 输出给后续脚本
+codex --oss --local-provider ollama -m qwen2.5-coder   # 本地零成本
+codex mcp-server                   # 把 Codex 暴露给其他 Agent 当工具
+codex resume                       # 恢复上次对话
+
+# 交互中
+/init                              # scaffold AGENTS.md
+/plan       Shift+Tab              # Plan 模式
+/model                             # 切换模型
+/review                            # 审查 diff/分支/commit
+/compact                           # 压缩上下文
+/agent                             # 切换 subagent thread
+/diff                              # 看 git diff（含未跟踪）
+/debug-config                      # 排查 config.toml 不生效
 ```
 
 ### Cursor
@@ -180,7 +209,8 @@ openclaw channels add telegram       # 添加消息频道
 
 ```
 ┌─ 主要在终端工作？
-│   ├─ 要最强 Agent 能力 → Claude Code
+│   ├─ 要最强 Agent 能力 / 大型重构 → Claude Code
+│   ├─ 已订阅 ChatGPT / 想要内核级沙箱 → Codex CLI
 │   ├─ 要超大上下文 / 免费 → Gemini CLI
 │   └─ 要多模型灵活切换 / Git 原生 → Aider
 │
@@ -202,9 +232,12 @@ openclaw channels add telegram       # 添加消息频道
 | 组合 | 场景 |
 |------|------|
 | **Claude Code + Cursor** | 最流行全栈组合：CLI 做重活、IDE 做日常 |
+| **Codex CLI + Cursor** | ChatGPT 订阅者顺手用：CLI 做 Agent、IDE 做补全 |
+| **Codex CLI + Claude Code** | 双 CLI 互补：Codex 跑 CI/脚本、Claude Code 做大重构 |
 | **Claude Code + Copilot** | 纯 VS Code 用户的轻量选择 |
 | **Gemini CLI + Cursor** | 预算敏感：2M 免费分析 + 20$ IDE |
 | **Aider + 本地 LLM** | 零 API 成本：`ollama/qwen2.5-coder` + Aider |
+| **Codex CLI --oss + Ollama** | 零 API 成本但要 Codex 的 Agent 体验：内核级沙箱 + 本地模型 |
 | **Claude Code + OpenClaw** | 编程 + 自动化：CC 写代码，OpenClaw 跑定时任务 |
 
 详见 [多工具选型指南](workflows/tool-selection.md) 和 [实战场景脚本](workflows/scenarios.md)。

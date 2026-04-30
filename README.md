@@ -2,7 +2,7 @@
 
 **简体中文** | [English](./README.en.md)
 
-> **9 款主流 AI 编程工具的中文最佳实践** — 不讲概念，只讲怎么用好。从提示词技巧到工作流设计，从单工具精通到多工具协作，帮你把 AI 编程效率拉满。
+> **10 款主流 AI 编程工具的中文最佳实践** — 不讲概念，只讲怎么用好。从提示词技巧到工作流设计，从单工具精通到多工具协作，帮你把 AI 编程效率拉满。
 
 [![GitHub stars](https://img.shields.io/github/stars/jnMetaCode/ai-coding-guide?style=social)](https://github.com/jnMetaCode/ai-coding-guide)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
@@ -10,7 +10,7 @@
 
 <table>
 <tr>
-<td align="center"><strong>9 款工具</strong><br/>全覆盖教程</td>
+<td align="center"><strong>10 款工具</strong><br/>全覆盖教程</td>
 <td align="center"><strong>66 个技巧</strong><br/>Claude Code 深度</td>
 <td align="center"><strong>7 套方法论</strong><br/>提示词/调试/测试</td>
 <td align="center"><strong>可复制模板</strong><br/>即装即用配置</td>
@@ -21,7 +21,7 @@
 
 ## 🚀 快速开始
 
-**先看一眼 [📋 速查表](cheatsheet.md)** — 9 款工具一页横向对比：类型、上下文、配置文件、常用命令。知道自己选哪个、怎么配、怎么用。
+**先看一眼 [📋 速查表](cheatsheet.md)** — 10 款工具一页横向对比：类型、上下文、配置文件、常用命令。知道自己选哪个、怎么配、怎么用。
 
 **按画像走推荐路径：**
 
@@ -31,6 +31,7 @@
 | 前端 / 日常编码为主 | [Cursor](cursor/) → [提示词工程](common/prompting.md) → [实战场景](workflows/scenarios.md) |
 | 后端 / 重构 / 大项目 | [Claude Code](claude-code/) → [需求拆解](common/task-decomposition.md) → [实战场景](workflows/scenarios.md) |
 | 从 Copilot 迁来 | [Copilot](copilot/) → [Claude Code](claude-code/)（对比差异）→ [多工具选型](workflows/tool-selection.md) |
+| 已订阅 ChatGPT Plus/Pro | [Codex CLI](codex/) → [Claude Code](claude-code/) 对比 → [多工具选型](workflows/tool-selection.md) |
 | 控成本 / 独立开发者 | [速查表](cheatsheet.md) → [Gemini CLI](gemini-cli/) 或 [Aider](aider/) + 本地模型 |
 | 团队协作 / 高质量交付 | [Kiro](kiro/) → [代码审查](common/code-review.md) → [测试策略](common/testing.md) |
 
@@ -38,11 +39,12 @@
 
 ---
 
-## 🔧 9 款工具教程
+## 🔧 10 款工具教程
 
 | 工具 | 类型 | 亮点 |
 |------|------|------|
 | [**Claude Code**](claude-code/) | CLI Agent | 66 个技巧，Agent + Skill + Hook 完整工作流 |
+| [**Codex CLI**](codex/) | CLI Agent | OpenAI 官方开源（Rust），Sandbox + AGENTS.md，ChatGPT 订阅可用 |
 | [**Cursor**](cursor/) | IDE | .cursorrules 配置，Composer Agent 模式 |
 | [**GitHub Copilot**](copilot/) | IDE 插件 | 行内补全 + Agent 模式 + 自定义指令 |
 | [**OpenClaw**](openclaw/) | AI Agent 框架 | 338k Stars，多平台连接 + Skills + Cron 自动化 |

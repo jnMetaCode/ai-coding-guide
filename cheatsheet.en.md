@@ -1,8 +1,8 @@
 [简体中文](./cheatsheet.md) | **English**
 
-# 9-Tool Cheatsheet
+# 10-Tool Cheatsheet
 
-> Key parameters, commands, and hotkeys for all 9 tools on one page. Models and pricing move fast — check each tool's website for the current truth.
+> Key parameters, commands, and hotkeys for all 10 tools on one page. Models and pricing move fast — check each tool's website for the current truth.
 >
 > Snapshot date: **2026-04**
 
@@ -13,9 +13,10 @@
 | What you want | First pick | Alternatives |
 |---------------|------------|--------------|
 | Tab completion inside an IDE | **Cursor** | Copilot / Windsurf / Trae |
-| Agent in the terminal for complex tasks | **Claude Code** | Aider / Gemini CLI |
+| Agent in the terminal for complex tasks | **Claude Code** | **Codex CLI** / Aider / Gemini CLI |
+| Already subscribed to ChatGPT | **Codex CLI** | Cursor with GPT |
 | Analyze a huge codebase in one pass | **Gemini CLI** (2M context) | Aider + map mode |
-| Tight budget / zero cost | **Trae** (free) or **Gemini CLI** (free tier) | Aider + local models |
+| Tight budget / zero cost | **Trae** (free) or **Gemini CLI** (free tier) | Aider + local models; or `codex --oss --local-provider ollama` |
 | Direct network in China (no VPN) | **Trae** | OpenClaw + local model |
 | Team collaboration, spec-driven | **Kiro** (Spec) | Claude Code plan mode |
 | Git-native, multi-model | **Aider** | — |
@@ -26,21 +27,22 @@
 
 ## 2. Capability Matrix
 
-| Dimension | Claude Code | Cursor | Copilot | Windsurf | Gemini CLI | Kiro | Aider | Trae | OpenClaw |
-|-----------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Type** | CLI | IDE | IDE plugin | IDE | CLI | IDE | CLI | IDE | Agent framework |
-| **Vendor** | Anthropic | Cursor | GitHub | Codeium | Google | AWS | OSS | ByteDance | OSS |
-| **Tab completion** | — | ★★★ | ★★★ | ★★★ | — | ★★ | — | ★★ | — |
-| **Agent execution** | ★★★ | ★★★ | ★★★ | ★★★ | ★★ | ★★ | ★★ | ★★ | ★★★ |
-| **Runs in terminal** | ★★★ | ★ | — | ★ | ★★★ | — | ★★★ | — | ★★★ |
-| **Context window** | 200K | per model | per model | per model | **2M** | per model | per model | per model | per model |
-| **MCP support** | ✅ | ✅ | ✅ | ✅ | Extension-based | — | — | — | Native |
-| **Hook automation** | ✅ | — | — | — | — | ✅ | ✅ (lint/test) | — | ✅ (Cron) |
-| **Subagent** | ✅ | — | — | — | — | — | — | — | ✅ (workspaces) |
-| **Multi-model** | ★ (Claude only) | ★★★ | ★★ | ★★★ | ★ (Gemini only) | ★★ | ★★★ (almost any LLM) | ★★ | ★★★ |
-| **Open source** | — | — | — | — | — | — | ✅ MIT | — | ✅ MIT |
-| **Direct access in China** | — | — | — | — | — | — | — | ✅ | ✅ (with local model) |
-| **Pricing model** | Per-API / Pro plan | Free / $20 Pro | Free / $10 Pro | Free / paid plan | Generous free tier | Free preview | Whatever LLM you pick | Free (with quota) | OSS free |
+| Dimension | Claude Code | Codex CLI | Cursor | Copilot | Windsurf | Gemini CLI | Kiro | Aider | Trae | OpenClaw |
+|-----------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Type** | CLI | CLI | IDE | IDE plugin | IDE | CLI | IDE | CLI | IDE | Agent framework |
+| **Vendor** | Anthropic | OpenAI | Cursor | GitHub | Codeium | Google | AWS | OSS | ByteDance | OSS |
+| **Tab completion** | — | — | ★★★ | ★★★ | ★★★ | — | ★★ | — | ★★ | — |
+| **Agent execution** | ★★★ | ★★★ | ★★★ | ★★★ | ★★★ | ★★ | ★★ | ★★ | ★★ | ★★★ |
+| **Runs in terminal** | ★★★ | ★★★ | ★ | — | ★ | ★★★ | — | ★★★ | — | ★★★ |
+| **Context window** | 200K | per model | per model | per model | per model | **2M** | per model | per model | per model | per model |
+| **MCP support** | ✅ | ✅ | ✅ | ✅ | ✅ | Extension-based | — | — | — | Native |
+| **Hook automation** | ✅ | ✅ (beta, reuses Claude schema) | — | — | — | — | ✅ | ✅ (lint/test) | — | ✅ (Cron) |
+| **Subagent** | ✅ | ✅ (TOML) | — | — | — | — | — | — | — | ✅ (workspaces) |
+| **Sandbox** | App-layer + hooks | OS-kernel (Seatbelt/Landlock) | — | — | — | — | — | — | — | — |
+| **Multi-model** | ★ (Claude only) | ★ (OpenAI only) | ★★★ | ★★ | ★★★ | ★ (Gemini only) | ★★ | ★★★ (almost any LLM) | ★★ | ★★★ |
+| **Open source** | — | ✅ Apache-2.0 | — | — | — | — | — | ✅ MIT | — | ✅ MIT |
+| **Direct access in China** | — | — | — | — | — | — | — | — | ✅ | ✅ (with local model) |
+| **Pricing model** | API / Pro plan | ChatGPT plan / API | Free / $20 Pro | Free / $10 Pro | Free / paid plan | Generous free tier | Free preview | Whatever LLM you pick | Free (with quota) | OSS free |
 
 ---
 
@@ -51,6 +53,7 @@ Knowing where each tool keeps its config is half the onboarding battle.
 | Tool | Main config | Location | Notes |
 |------|------------|----------|-------|
 | Claude Code | `CLAUDE.md` + `.claude/` | Project root | Keep under 200 lines; split to `.claude/rules/` for big projects |
+| Codex CLI | `AGENTS.md` + `.codex/config.toml` | Project root | `~/.codex/AGENTS.md` for global; nested AGENTS.md overrides parents |
 | Cursor | `.cursor/rules/*.md` | Project root | Supports `globs` for file-type loading |
 | Copilot | `.github/copilot-instructions.md` | Project root | Plus `agents/` and `chatModes/` in same dir |
 | Windsurf | `.windsurfrules` | Project root | Single file, no splitting |
@@ -78,6 +81,32 @@ claude -p "task" --output-format json   # Headless
 /compact                        # Compress context
 /plan                           # Enter plan mode
 Esc                             # Interrupt current generation
+```
+
+### Codex CLI
+
+```bash
+# Install & run
+npm install -g @openai/codex
+codex                              # Enter TUI (first-run guides ChatGPT login)
+codex --sandbox workspace-write    # Default combo (`--full-auto` removed in v0.125.0; use this)
+codex --sandbox read-only          # Read-only exploration
+codex --add-dir ../sibling-repo    # Add writable dirs without opening the whole sandbox
+codex --yolo                       # Skip sandbox AND approvals (only when externally sandboxed)
+codex exec --json "..." | jq -c .  # JSONL output for downstream scripts
+codex --oss --local-provider ollama -m qwen2.5-coder   # Free, fully local
+codex mcp-server                   # Expose Codex as MCP server for other agents
+codex resume                       # Resume last session
+
+# Inside the TUI
+/init                              # Scaffold AGENTS.md
+/plan       Shift+Tab              # Plan mode
+/model                             # Switch model
+/review                            # Review diff / branch / commit
+/compact                           # Compress conversation
+/agent                             # Switch between subagent threads
+/diff                              # Git diff (including untracked)
+/debug-config                      # Diagnose config.toml not taking effect
 ```
 
 ### Cursor
@@ -182,8 +211,9 @@ openclaw channels add telegram       # Add messaging channel
 
 ```
 ┌─ Mostly working in a terminal?
-│   ├─ Need strongest Agent    → Claude Code
-│   ├─ Need huge context / free → Gemini CLI
+│   ├─ Strongest Agent / big refactors → Claude Code
+│   ├─ Already on ChatGPT / kernel-level sandbox → Codex CLI
+│   ├─ Huge context / free → Gemini CLI
 │   └─ Multi-model / Git-native → Aider
 │
 ├─ Mostly in an IDE?
@@ -204,9 +234,12 @@ openclaw channels add telegram       # Add messaging channel
 | Combo | When |
 |-------|------|
 | **Claude Code + Cursor** | Most popular full-stack combo: CLI for heavy lifting, IDE for daily work |
+| **Codex CLI + Cursor** | For ChatGPT subscribers: CLI as Agent, IDE for completions |
+| **Codex CLI + Claude Code** | Two CLIs, complementary: Codex for CI/scripts, Claude Code for big refactors |
 | **Claude Code + Copilot** | Lightweight for pure VS Code users |
 | **Gemini CLI + Cursor** | Budget-conscious: 2M free analysis + $20 IDE |
 | **Aider + local LLM** | Zero API cost: `ollama/qwen2.5-coder` + Aider |
+| **Codex CLI --oss + Ollama** | Zero API cost but you want Codex's agent experience: kernel-level sandbox + local model |
 | **Claude Code + OpenClaw** | Coding + automation: CC codes, OpenClaw runs scheduled tasks |
 
 See [Tool Selection Guide](workflows/tool-selection.en.md) and [Real-World Scenarios](workflows/scenarios.en.md) for details.

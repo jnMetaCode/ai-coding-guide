@@ -1,6 +1,6 @@
 # AI Coding Tools — The Practical Guide
 
-> **Hands-on best practices for 9 AI coding tools** — No hype, just what works. Prompt techniques, workflow design, multi-tool orchestration, and copy-paste configs to maximize your AI-assisted development.
+> **Hands-on best practices for 10 AI coding tools** — No hype, just what works. Prompt techniques, workflow design, multi-tool orchestration, and copy-paste configs to maximize your AI-assisted development.
 
 [简体中文](./README.md) | **English**
 
@@ -10,7 +10,7 @@
 
 <table>
 <tr>
-<td align="center"><strong>9 Tools</strong><br/>Full coverage</td>
+<td align="center"><strong>10 Tools</strong><br/>Full coverage</td>
 <td align="center"><strong>66 Tips</strong><br/>Claude Code deep-dive</td>
 <td align="center"><strong>7 Methodologies</strong><br/>Prompting / Debug / Test</td>
 <td align="center"><strong>Copy-paste Configs</strong><br/>Ready to use</td>
@@ -21,7 +21,7 @@
 
 ## Getting Started
 
-**Start with the [📋 Cheatsheet](cheatsheet.en.md)** — all 9 tools on one page: type, context window, config files, core commands. Know what to pick, how to set it up, how to use it.
+**Start with the [📋 Cheatsheet](cheatsheet.en.md)** — all 10 tools on one page: type, context window, config files, core commands. Know what to pick, how to set it up, how to use it.
 
 **Pick a path based on your profile:**
 
@@ -31,6 +31,7 @@
 | Frontend / daily coding | [Cursor](cursor/) → [Prompt Engineering](common/prompting.en.md) → [Scenarios](workflows/scenarios.en.md) |
 | Backend / refactoring / big projects | [Claude Code](claude-code/) → [Task Decomposition](common/task-decomposition.en.md) → [Scenarios](workflows/scenarios.en.md) |
 | Migrating from Copilot | [Copilot](copilot/) → [Claude Code](claude-code/) (compare) → [Tool Selection](workflows/tool-selection.en.md) |
+| Already on ChatGPT Plus/Pro | [Codex CLI](codex/) → [Claude Code](claude-code/) (compare) → [Tool Selection](workflows/tool-selection.en.md) |
 | Cost-conscious / solo dev | [Cheatsheet](cheatsheet.en.md) → [Gemini CLI](gemini-cli/) or [Aider](aider/) + local models |
 | Team / high-quality delivery | [Kiro](kiro/) → [Code Review](common/code-review.en.md) → [Testing](common/testing.en.md) |
 
@@ -38,11 +39,12 @@
 
 ---
 
-## 9 Tool Guides
+## 10 Tool Guides
 
 | Tool | Type | Highlights |
 |------|------|-----------|
 | [**Claude Code**](claude-code/README.en.md) | CLI Agent | 66 tips, Agent + Skill + Hook workflows |
+| [**Codex CLI**](codex/README.en.md) | CLI Agent | OpenAI's open-source (Rust), Sandbox + AGENTS.md, ChatGPT-plan friendly |
 | [**Cursor**](cursor/README.en.md) | IDE | .cursorrules config, Composer Agent mode |
 | [**GitHub Copilot**](copilot/README.en.md) | IDE Plugin | Inline completion + Agent mode + custom instructions |
 | [**OpenClaw**](openclaw/README.en.md) | AI Agent Framework | 338k Stars, multi-platform + Skills + Cron automation |

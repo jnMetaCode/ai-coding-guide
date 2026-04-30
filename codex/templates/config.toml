@@ -1,0 +1,74 @@
+# Codex CLI 用户级配置
+# 路径：~/.codex/config.toml
+# 项目级覆盖：在项目根目录建 .codex/config.toml
+# 强制约束（团队/企业管控）：requirements.toml（用户不可覆盖）
+
+# ─── 默认行为 ──────────────────────────────────────────────────
+model = "gpt-5.5"              # 推荐：复杂编码用 gpt-5.5；轻任务可切 gpt-5.4 / gpt-5.3-codex
+approval_policy = "on-request" # untrusted / on-request / never
+sandbox_mode = "workspace-write" # read-only / workspace-write / danger-full-access
+
+# Web 搜索（顶层 key，不在 [features] 下）
+web_search = "cached"          # disabled / cached / live；CLI 用 --search 临时切 live
+
+# ─── 实验性功能开关 ──────────────────────────────────────────────
+# 注：feature flag key 名以源码 codex-rs/features/src/lib.rs 为准；
+# 用 `codex features` 命令可以列出当前版本支持的所有 flag。
+[features]
+memories = true                # 长期记忆系统（配 /memories slash 命令）
+unified_exec = true            # PTY-backed exec 工具（更接近真实 shell）
+undo = true                    # 支持 undo 上一步
+
+# ─── Profile：一组命名预设 ────────────────────────────────────
+# 用法：codex --profile review
+
+[profiles.review]
+# 代码审查专用：只读、不批准、强模型
+model = "gpt-5.5"
+approval_policy = "untrusted"
+sandbox_mode = "read-only"
+
+[profiles.ci]
+# CI / 自动化：永不询问、可写 workspace
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+
+[profiles.explore]
+# 大代码库探索：只读、强推理
+model = "gpt-5.5"
+sandbox_mode = "read-only"
+
+[profiles.cheap]
+# 省钱模式：轻模型 + 默认权限
+model = "gpt-5.3-codex"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+# ─── MCP Servers ──────────────────────────────────────────────
+# 也可以用 `codex mcp add <name> --command "..."` 命令式添加
+
+[mcp_servers.github]
+command = "npx @modelcontextprotocol/server-github"
+enabled = true
+
+# [mcp_servers.postgres]
+# command = "npx @modelcontextprotocol/server-postgres"
+# args = ["postgresql://localhost:5432/mydb"]
+# enabled = true
+
+# ─── Subagent 全局参数 ────────────────────────────────────────
+[agents]
+max_threads = 3                # 并发上限
+max_depth = 2                  # 嵌套深度上限
+job_max_runtime_seconds = 1800 # 单任务超时（30 分钟）
+
+# ─── 项目文档加载 ──────────────────────────────────────────────
+project_doc_max_bytes = 32768  # 默认 32 KiB；大型 monorepo 可调高
+# project_doc_fallback_filenames = ["AGENTS.md", "CLAUDE.md", "GEMINI.md"]
+# ↑ 如果项目里只有别家的指令文件，可以让 Codex 兼读
+
+# ─── 高级：自定义 permissions profile ─────────────────────────
+# [permissions.tight]
+# filesystem.allow_write = ["src/**", "tests/**"]
+# filesystem.deny_read   = [".env", "secrets/**"]
+# network.allow          = ["api.github.com"]
