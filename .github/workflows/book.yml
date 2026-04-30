@@ -35,8 +35,9 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true   # 自动开启 Pages（首次运行无需手动到 Settings 里开）
+        # 注：本仓库 Pages 已通过 `gh api -X POST repos/.../pages -f build_type=workflow` 手动启用。
+        # Fork 后首次运行会失败，需在 Settings → Pages 把 Source 设为 "GitHub Actions"，
+        # 或对自己的 fork 重跑那条 gh api 命令。
 
       - name: Build book
         working-directory: ./book
