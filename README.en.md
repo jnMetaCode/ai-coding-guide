@@ -131,6 +131,31 @@ See **[CHANGELOG](CHANGELOG.en.md)** for important updates. Latest major update:
 
 ---
 
+## Commercial Inquiries · Corporate Training
+
+The repository core (tutorials / templates / scripts) is permanently **Apache-2.0**, free for individuals.
+
+The following use cases warrant a conversation first:
+
+| Use case | Audience |
+|----------|----------|
+| **Corporate training** (10+ people / series) | Team leads / HR / engineering managers |
+| **Paid courses / bootcamps** integrating this content | Education companies / training providers |
+| **AI-coding consulting** (tool selection / workflow design / CI integration) | Engineering leadership |
+| **Print or commercial e-book publishing** (based on [`book/`](./book/)) | Publishers / editors |
+| **Speaking engagements** (offline events / annual meetings / conferences) | Conference organizers |
+| **White-label / internal wiki integration** | Large teams |
+
+**How to reach out:**
+- WeChat Official Account **「AI不止语」** (search `AI_BuZhiYu`) — backstage message with "合作"
+- GitHub Issue (prefix title with `[BUSINESS]`): [open inquiry](https://github.com/jnMetaCode/ai-coding-guide/issues/new?title=%5BBUSINESS%5D+)
+
+> Licensing: the repository core stays Apache-2.0 forever. Content under `book/` uses [CC BY-NC-SA 4.0](./book/LICENSE) (free for individuals; commercial use requires a license).
+>
+> If you're an individual learning, researching, writing a blog post, or building a demo — go right ahead, no need to ask, just credit the source.
+
+---
+
 ## Contributing
 
 Contributions welcome! See [CONTRIBUTING.en.md](./CONTRIBUTING.en.md).

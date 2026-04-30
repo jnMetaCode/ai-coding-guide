@@ -48,4 +48,12 @@ mdbook build               # 生成静态 HTML 到 book/book/
 
 ## License
 
-内容遵循 Apache-2.0（与仓库一致）。允许转载、修改、商用，请保留来源。
+本书使用 **CC BY-NC-SA 4.0**（署名-非商业-相同方式共享）。
+
+- ✅ **个人免费**：阅读 / 学习 / 转载 / 节选 / 二次创作（注明来源即可）
+- ❌ **商业使用需授权**：付费课程、企业内训（>10 人）、纸书出版、付费墙转售等
+- 🔗 详见：[`LICENSE`](https://github.com/jnMetaCode/ai-coding-guide/blob/main/book/LICENSE)（英文全文） · [`LICENSE.zh-CN.md`](https://github.com/jnMetaCode/ai-coding-guide/blob/main/book/LICENSE.zh-CN.md)（中文友好版）
+
+> ⚠️ 仓库**双 license**：`book/` 目录下的书用 CC BY-NC-SA 4.0，仓库其他部分（教程文 / 模板 / 脚本）用 Apache-2.0。
+
+商业授权咨询：见仓库主 README 「**商业合作 · 内训咨询**」段落。

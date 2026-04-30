@@ -117,6 +117,12 @@ pandoc -o ../../ai-coding-guide.pdf $(find . -name "*.html" | sort) \
 
 每一项都可以独立 PR 进来。
 
+## License
+
+**CC BY-NC-SA 4.0** — 个人免费 / 禁商业 / 派生开源。详见 [`LICENSE`](./LICENSE) 或 [中文友好版](./LICENSE.zh-CN.md)。
+
+> 与主仓库 Apache-2.0 是双 license 关系：`book/` 目录下用 CC，其他都是 Apache。
+
 ## 上游
 
 GitHub: [jnMetaCode/ai-coding-guide](https://github.com/jnMetaCode/ai-coding-guide)

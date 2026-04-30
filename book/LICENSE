@@ -1,0 +1,63 @@
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+(CC BY-NC-SA 4.0)
+
+Copyright (c) 2026 jnMetaCode and contributors
+
+This work — the "AI 编程实战三卷书" (and the unified web edition rendered from
+the `book/` directory) — is licensed under the Creative Commons Attribution-
+NonCommercial-ShareAlike 4.0 International License.
+
+You are free to:
+
+  • Share   — copy and redistribute the material in any medium or format
+  • Adapt   — remix, transform, and build upon the material
+
+Under the following terms:
+
+  • Attribution    — You must give appropriate credit, provide a link to the
+                     license, and indicate if changes were made. You may do so
+                     in any reasonable manner, but not in any way that suggests
+                     the licensor endorses you or your use.
+
+  • NonCommercial  — You may not use the material for commercial purposes.
+                     This includes (but is not limited to):
+                       - Selling printed or digital copies for profit
+                       - Bundling into paid courses, paid workshops, or
+                         paid corporate training
+                       - Using the material as the primary deliverable in
+                         client engagements
+                       - Republishing on a paywalled platform
+                     Linking to this work from a commercial site is fine.
+                     Reading at work or for work-related learning is fine.
+
+  • ShareAlike     — If you remix, transform, or build upon the material,
+                     you must distribute your contributions under the same
+                     license as the original (CC BY-NC-SA 4.0).
+
+  • No additional restrictions — You may not apply legal terms or
+                     technological measures that legally restrict others
+                     from doing anything the license permits.
+
+For commercial use cases not covered by the license — corporate training,
+paid course distribution, white-label internal handbooks, etc. — please
+contact the maintainer to discuss commercial licensing.
+
+Full legal code:
+  https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+
+Human-readable summary:
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+---
+
+NOTE on dual licensing of this repository:
+
+  • The book content under `book/` is licensed CC BY-NC-SA 4.0 (this file).
+  • All other content in the parent repository (`ai-coding-guide`) — tutorials,
+    code templates, configuration examples — is licensed under Apache-2.0
+    (see `../LICENSE`).
+  • When in doubt: if it lives under `book/`, this license applies. Everything
+    else is Apache-2.0.
+
+For commercial licensing inquiries, see the maintainer's contact channels in
+the repository README under "商业合作 · Commercial Inquiries".
