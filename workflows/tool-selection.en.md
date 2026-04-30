@@ -21,23 +21,29 @@
 | **Frontend UI tweaks** | Cursor | Live preview + visual editing |
 | **CLI / scripting** | Claude Code / Gemini CLI | CLI-native, fits terminal workflows |
 | **Exploring large codebases** | Gemini CLI | Largest context window (2M tokens) |
+| **CI / automated code review** | Codex CLI | Official GitHub Action with built-in restricted sandbox proxy |
+| **Already on ChatGPT Plus/Pro** | Codex CLI | Subscription quota included; OS-kernel sandbox out of the box |
+| **Fully offline / zero API cost** | Codex CLI or Aider | `codex --oss --local-provider ollama` runs local models |
+| **Enterprise command safety policy** | Codex CLI | Starlark `prefix_rule()` DSL — finer-grained than approval modes |
 
 ---
 
 ## Tool Capability Comparison
 
-| Capability | Claude Code | Cursor | Copilot | Gemini CLI |
-|------------|:---:|:---:|:---:|:---:|
-| Code completion | -- | 3/3 | 3/3 | -- |
-| Conversational coding | 3/3 | 2/3 | 2/3 | 3/3 |
-| Autonomous Agent execution | 3/3 | 2/3 | 2/3 | 2/3 |
-| Terminal command execution | 3/3 | -- | -- | 3/3 |
-| Multi-file coordination | 3/3 | 2/3 | 2/3 | 2/3 |
-| Project rules config | 3/3 | 3/3 | 2/3 | 2/3 |
-| Extensibility (MCP) | 3/3 | 2/3 | 2/3 | 2/3 |
-| Context window | 2/3 | 2/3 | 2/3 | 3/3 |
-| IDE integration | -- | 3/3 | 3/3 | -- |
-| Free tier | 1/3 | 1/3 | 2/3 | 3/3 |
+| Capability | Claude Code | Codex CLI | Cursor | Copilot | Gemini CLI |
+|------------|:---:|:---:|:---:|:---:|:---:|
+| Code completion | -- | -- | 3/3 | 3/3 | -- |
+| Conversational coding | 3/3 | 3/3 | 2/3 | 2/3 | 3/3 |
+| Autonomous Agent execution | 3/3 | 3/3 | 2/3 | 2/3 | 2/3 |
+| Terminal command execution | 3/3 | 3/3 | -- | -- | 3/3 |
+| Multi-file coordination | 3/3 | 2/3 | 2/3 | 2/3 | 2/3 |
+| Project rules config | 3/3 | 3/3 | 3/3 | 2/3 | 2/3 |
+| Extensibility (MCP) | 3/3 | 3/3 | 2/3 | 2/3 | 2/3 |
+| Sandbox depth | App-layer + hooks | **OS kernel** | -- | -- | -- |
+| Local model support | -- | 3/3 (--oss) | -- | -- | -- |
+| Context window | 2/3 | 2/3 | 2/3 | 2/3 | 3/3 |
+| IDE integration | -- | -- | 3/3 | 3/3 | -- |
+| Free tier | 1/3 | 2/3 (ChatGPT plan included) | 1/3 | 2/3 | 3/3 |
 
 ---
 
@@ -70,6 +76,26 @@ Cursor     -> Daily coding, interactive editing
 
 Best for: Solo developers who want to keep costs down
 
+### Combo 4: Codex CLI + Cursor (ChatGPT Subscribers)
+
+```
+Codex CLI -> Agent tasks, CI auto-review, kernel-level sandbox execution
+Cursor    -> Daily coding, Tab completion
+```
+
+Best for: ChatGPT Plus/Pro subscribers who want their plan to drive Agent value;
+especially for security-sensitive work needing kernel-level sandbox (Seatbelt / Landlock).
+
+### Combo 5: Codex CLI + Claude Code (Dual CLI)
+
+```
+Codex CLI    -> Fast iteration, CI/scripting, token-efficient micro-edits
+Claude Code  -> Cross-12-file refactors, dependency-graph-heavy precision work
+```
+
+Best for: High-intensity full-time devs running "keystrokes vs commits" in parallel.
+Community consensus: *Codex for keystrokes, Claude Code for commits.*
+
 ---
 
 ## When to Switch Tools
@@ -83,3 +109,6 @@ Signals that it's time to switch from one tool to another:
 | Need to see live results | Switch to Cursor / Copilot (in-IDE preview) |
 | Need to run commands to verify | Switch to Claude Code / Gemini CLI (in-terminal) |
 | Need to understand a large codebase | Switch to Gemini CLI (largest context) |
+| Need to run a non-interactive Agent in CI | Switch to Codex CLI (`codex exec --json` + official Action) |
+| Handling sensitive data / offline environment | Switch to Codex CLI (`--oss --local-provider ollama`) |
+| Need kernel-level sandbox guarantees | Switch to Codex CLI (Seatbelt / Landlock) |
