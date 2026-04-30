@@ -50,33 +50,13 @@ mdbook build
 
 ## 怎么发布
 
-### 选项 1：GitHub Pages（最简单）
+### 选项 1：GitHub Pages ⭐ 已配置
 
-加一个 `.github/workflows/book.yml`，push 到 main 时自动 build + 推到 `gh-pages` 分支。
+CI 已经接好——`.github/workflows/book.yml` 在每次 push 到 main 时自动 build 并 deploy。
 
-```yaml
-name: Build book
-on:
-  push:
-    branches: [main]
-    paths: ['book/**', 'common/**', 'workflows/**', 'pitfalls/**',
-            '*.md', 'cheatsheet.md', 'CHANGELOG.md',
-            'claude-code/**', 'codex/**', 'cursor/**', 'copilot/**',
-            'windsurf/**', 'trae/**', 'aider/**', 'gemini-cli/**',
-            'kiro/**', 'openclaw/**']
+**只需在仓库 Settings 里开 Pages 一次**。完整步骤 + 自定义域名教程见 [`DEPLOY.md`](./DEPLOY.md)。
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - run: cargo install mdbook
-      - run: cd book && mdbook build
-      - uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./book/book
-```
+默认 URL：**`https://jnmetacode.github.io/ai-coding-guide/`**
 
 ### 选项 2：Netlify / Vercel（PR preview 友好）
 

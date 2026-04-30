@@ -1,0 +1,57 @@
+name: Build and deploy book
+
+on:
+  push:
+    branches: [main]
+    # 触发条件刻意保持宽松：mdbook build 只需 ~10 秒，
+    # 比维护一份精确路径白名单更省心。
+  workflow_dispatch:    # 允许在 Actions 页面手动重跑
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同时只允许一个 deploy 在跑
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install mdBook
+        env:
+          MDBOOK_VERSION: 0.4.49
+        run: |
+          curl -sSL "https://github.com/rust-lang/mdBook/releases/download/v${MDBOOK_VERSION}/mdbook-v${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar -xz -C /tmp
+          sudo mv /tmp/mdbook /usr/local/bin/mdbook
+          mdbook --version
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build book
+        working-directory: ./book
+        run: mdbook build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./book/book
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
