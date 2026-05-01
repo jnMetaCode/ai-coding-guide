@@ -6,7 +6,10 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/jnMetaCode/ai-coding-guide?style=social)](https://github.com/jnMetaCode/ai-coding-guide)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
+[![Book](https://img.shields.io/badge/📖_在线阅读-三卷书-orange)](https://jnmetacode.github.io/ai-coding-guide/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
+
+> 📖 **[在线阅读：AI 编程实战三卷书 →](https://jnmetacode.github.io/ai-coding-guide/)** ｜ 把仓库内容按读者画像重组：卷一·入门 / 卷二·工作流 / 卷三·架构 / 别册·速查手册
 
 <table>
 <tr>
