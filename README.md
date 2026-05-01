@@ -93,16 +93,17 @@
 
 ## 🌐 相关项目
 
-这几个项目相辅相成，覆盖 AI 编程的完整链路：
+> 以下项目均由「AI不止语」品牌持续维护，构成 AI 编程从学习到生产的完整链路：
 
 ```
-学会用工具 → 注入方法论 → 加载专家角色 → 多角色编排 → 安全防护
-(guide)     (superpowers)  (agents)       (orchestrator) (shellward)
+读书 → 学工具 → 注入方法论 → 加载专家 → 多角色编排 → 安全防护
+(book)  (guide)  (superpowers) (agents)   (orchestrator)  (shellward)
 ```
 
 | 项目 | 定位 | 一句话 | 教程 |
 |------|------|-------|------|
-| **本项目**（ai-coding-guide） | 📖 实战教程 | 66 个 Claude Code 技巧 + 9 款工具最佳实践 + 配置模板 | — |
+| [**ai-coding-trilogy**](https://github.com/jnMetaCode/ai-coding-trilogy) ![](https://img.shields.io/github/stars/jnMetaCode/ai-coding-trilogy?style=flat&label=⭐) | 📚 三卷书 | 把本仓内容按读者画像重组：入门/工作流/架构（PDF + 在线版） | [产品页](https://github.com/jnMetaCode/ai-coding-trilogy) |
+| **本项目**（ai-coding-guide） | 📖 实战教程 | 66 个 Claude Code 技巧 + 10 款工具最佳实践 + 配置模板 | — |
 | [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) ![](https://img.shields.io/github/stars/jnMetaCode/superpowers-zh?style=flat&label=⭐) | 🧠 工作方法论 | 20 个 skills 教 AI 怎么干活（TDD / 调试 / 代码审查等） | [安装与使用](ecosystem.md#1-superpowers-zh--给-ai-注入工作方法论) |
 | [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) ![](https://img.shields.io/github/stars/jnMetaCode/agency-agents-zh?style=flat&label=⭐) | 🎭 专家角色库 | 211 个**即插即用** AI 专家，含 46 中国原创（小红书 / 抖音 / 飞书 / 钉钉） | [安装与使用](ecosystem.md#2-agency-agents-zh--211-个-ai-专家角色) |
 | [agency-orchestrator](https://github.com/jnMetaCode/agency-orchestrator) | 🚀 编排引擎 | 一句话 → 211 专家协作，**几分钟出方案**（9 家 LLM / 6 免费） | [安装与使用](ecosystem.md#3-agency-orchestrator--多角色-yaml-编排) |

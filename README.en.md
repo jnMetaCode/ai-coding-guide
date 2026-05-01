@@ -93,16 +93,17 @@ How real projects run end-to-end, and how different tools play to their strength
 
 ## Ecosystem
 
-These projects work together to cover the full AI-assisted development pipeline:
+> All projects below are maintained under the「AI不止语」(AI Beyond Words) brand, covering AI-assisted development from learning to production:
 
 ```
-Learn the tools → Inject methodologies → Load expert roles → Orchestrate roles → Safety guardrails
-(guide)           (superpowers)         (agents)            (orchestrator)      (shellward)
+Read → Learn tools → Inject methodologies → Load experts → Orchestrate → Guardrails
+(book)  (guide)       (superpowers)         (agents)        (orchestrator)  (shellward)
 ```
 
 | Project | Purpose | One-liner | Setup |
 |---------|---------|-----------|-------|
-| **This repo** (ai-coding-guide) | 📖 Practical Guide | 66 Claude Code tips + best practices for 9 tools + config templates | — |
+| [**ai-coding-trilogy**](https://github.com/jnMetaCode/ai-coding-trilogy) ![](https://img.shields.io/github/stars/jnMetaCode/ai-coding-trilogy?style=flat&label=⭐) | 📚 Trilogy Book | This repo, reorganized by reader persona: Getting Started / Workflows / Architecture (PDF + web edition) | [Product page](https://github.com/jnMetaCode/ai-coding-trilogy) |
+| **This repo** (ai-coding-guide) | 📖 Practical Guide | 66 Claude Code tips + best practices for 10 tools + config templates | — |
 | [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) ![](https://img.shields.io/github/stars/jnMetaCode/superpowers-zh?style=flat&label=⭐) | 🧠 Methodology | 20 skills teaching AI how to work (TDD / debugging / code review) | [Install & Use](ecosystem.en.md#1-superpowers-zh--inject-work-methodology-into-ai) |
 | [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) ![](https://img.shields.io/github/stars/jnMetaCode/agency-agents-zh?style=flat&label=⭐) | 🎭 Expert Roles | 211 **plug-and-play** AI specialists, incl. 46 China-native (Xiaohongshu / Douyin / Feishu / DingTalk) | [Install & Use](ecosystem.en.md#2-agency-agents-zh--211-ai-expert-roles) |
 | [agency-orchestrator](https://github.com/jnMetaCode/agency-orchestrator) | 🚀 Orchestration Engine | One prompt → 211 specialists collaborate, **plan in minutes** (9 LLMs / 6 free) | [Install & Use](ecosystem.en.md#3-agency-orchestrator--multi-role-yaml-orchestration) |
