@@ -6,10 +6,10 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/jnMetaCode/ai-coding-guide?style=social)](https://github.com/jnMetaCode/ai-coding-guide)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
-[![Book](https://img.shields.io/badge/📖_Read_Online-Trilogy-orange)](https://jnmetacode.github.io/ai-coding-guide/)
+[![Book](https://img.shields.io/badge/📖_Read_Online-Trilogy-orange)](https://aibuzhiyu.com/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 
-> 📖 **[Read Online: AI Coding Trilogy →](https://jnmetacode.github.io/ai-coding-guide/)** ｜ The repo content reorganized by reader persona — Volume I (Getting Started) / II (Workflows) / III (Architecture) / Appendix (Cheatsheet).
+> 📖 **[Read Online: AI Coding Trilogy →](https://aibuzhiyu.com/)** ｜ The repo content reorganized by reader persona — Volume I (Getting Started) / II (Workflows) / III (Architecture) / Appendix (Cheatsheet).
 
 <table>
 <tr>

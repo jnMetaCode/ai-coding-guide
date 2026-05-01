@@ -56,7 +56,7 @@ CI 已经接好——`.github/workflows/book.yml` 在每次 push 到 main 时自
 
 **只需在仓库 Settings 里开 Pages 一次**。完整步骤 + 自定义域名教程见 [`DEPLOY.md`](./DEPLOY.md)。
 
-默认 URL：**`https://jnmetacode.github.io/ai-coding-guide/`**
+默认 URL：**`https://aibuzhiyu.com/`**
 
 ### 选项 2：Netlify / Vercel（PR preview 友好）
 
