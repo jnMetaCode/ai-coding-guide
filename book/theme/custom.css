@@ -1,0 +1,285 @@
+/* ===== AI 不止语 · mdbook brand override ===== */
+/* 让 /book/ 视觉跟 landing 同源：朱砂 + 暖纸 + 衬线 */
+
+:root {
+  --aibz-cream: oklch(0.972 0.012 82);
+  --aibz-cream-soft: oklch(0.955 0.018 80);
+  --aibz-cream-card: oklch(0.985 0.008 85);
+  --aibz-cream-deep: oklch(0.93 0.025 75);
+  --aibz-ink: oklch(0.22 0.02 60);
+  --aibz-ink-2: oklch(0.36 0.022 60);
+  --aibz-ink-3: oklch(0.52 0.02 65);
+  --aibz-line: oklch(0.86 0.02 75);
+  --aibz-accent: oklch(0.62 0.18 38);
+  --aibz-accent-soft: oklch(0.93 0.05 50);
+
+  --aibz-serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', serif;
+  --aibz-sans: 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  --aibz-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+/* ── Light 主题改造（mdbook 默认主题）─────────────── */
+.light, html:not(.coal):not(.navy):not(.ayu):not(.rust) {
+  --bg: var(--aibz-cream);
+  --fg: var(--aibz-ink);
+  --sidebar-bg: var(--aibz-cream-soft);
+  --sidebar-fg: var(--aibz-ink);
+  --sidebar-non-existant: var(--aibz-ink-3);
+  --sidebar-active: var(--aibz-accent);
+  --sidebar-spacer: var(--aibz-line);
+  --scrollbar: var(--aibz-line);
+  --icons: var(--aibz-ink-2);
+  --icons-hover: var(--aibz-accent);
+  --links: var(--aibz-accent);
+  --inline-code-color: var(--aibz-accent);
+  --theme-popup-bg: var(--aibz-cream-card);
+  --theme-popup-border: var(--aibz-line);
+  --theme-hover: var(--aibz-cream-deep);
+  --quote-bg: var(--aibz-cream-soft);
+  --quote-border: var(--aibz-accent);
+  --table-border-color: var(--aibz-line);
+  --table-header-bg: var(--aibz-cream-deep);
+  --table-alternate-bg: var(--aibz-cream-card);
+  --searchbar-border-color: var(--aibz-line);
+  --searchbar-bg: var(--aibz-cream-card);
+  --searchbar-fg: var(--aibz-ink);
+  --searchbar-shadow-color: rgba(0,0,0,0.06);
+  --searchresults-header-fg: var(--aibz-ink-2);
+  --searchresults-border-color: var(--aibz-line);
+  --searchresults-li-bg: var(--aibz-cream-card);
+  --search-mark-bg: oklch(0.85 0.16 80);
+}
+
+/* 暖纸感的页面背景 */
+html, body, .page, .content {
+  background: var(--aibz-cream) !important;
+  color: var(--aibz-ink);
+  font-family: var(--aibz-sans);
+}
+
+/* ── 顶部 menu bar ── */
+.menu-bar {
+  background: var(--aibz-cream-soft) !important;
+  border-bottom: 1px solid var(--aibz-line);
+}
+.menu-bar .menu-title {
+  font-family: var(--aibz-serif);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--aibz-ink);
+}
+
+/* ── 标题：衬线宋体 ── */
+.content h1,
+.content h2,
+.content h3,
+.content h4 {
+  font-family: var(--aibz-serif);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--aibz-ink);
+}
+.content h1 {
+  font-size: 2.4rem;
+  border-bottom: 2px solid var(--aibz-accent);
+  padding-bottom: 0.3em;
+  margin-top: 0.5em;
+}
+.content h2 {
+  font-size: 1.7rem;
+  margin-top: 2.2em;
+  position: relative;
+  padding-left: 16px;
+}
+.content h2::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.25em; bottom: 0.25em;
+  width: 4px;
+  background: var(--aibz-accent);
+  border-radius: 2px;
+}
+.content h3 { font-size: 1.3rem; margin-top: 1.8em; }
+
+/* ── 正文 ── */
+.content p, .content li {
+  line-height: 1.78;
+  font-size: 16px;
+}
+.content strong { color: var(--aibz-ink); font-weight: 700; }
+
+/* ── 链接 ── */
+.content a:link, .content a:visited {
+  color: var(--aibz-accent);
+  text-decoration: none;
+  border-bottom: 1px solid oklch(0.62 0.18 38 / 0.25);
+  transition: all 0.2s;
+}
+.content a:hover {
+  border-bottom-color: var(--aibz-accent);
+  background: oklch(0.62 0.18 38 / 0.06);
+}
+
+/* ── 行内代码 ── */
+.content code {
+  font-family: var(--aibz-mono);
+  font-size: 0.92em;
+  background: var(--aibz-cream-deep);
+  color: var(--aibz-accent);
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--aibz-line);
+}
+
+/* ── 代码块 ── */
+.content pre {
+  background: oklch(0.16 0.01 60) !important;
+  border: 1px solid var(--aibz-line);
+  border-radius: 8px;
+  padding: 18px 20px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.content pre > code {
+  background: none !important;
+  border: none !important;
+  color: oklch(0.92 0.01 80);
+  padding: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* ── 引用块（blockquote） ── */
+.content blockquote {
+  background: var(--aibz-cream-soft);
+  border-left: 4px solid var(--aibz-accent);
+  border-radius: 0 6px 6px 0;
+  padding: 14px 20px;
+  margin: 1.5em 0;
+  color: var(--aibz-ink-2);
+}
+
+/* ── 表格 ── */
+.content table {
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  border: 1px solid var(--aibz-line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.content th {
+  background: var(--aibz-cream-deep);
+  font-family: var(--aibz-sans);
+  font-weight: 600;
+  color: var(--aibz-ink);
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--aibz-accent);
+}
+.content td {
+  padding: 10px 14px;
+  border-top: 1px solid var(--aibz-line);
+}
+.content tr:nth-child(even) td { background: var(--aibz-cream-card); }
+
+/* ── 侧边栏 ── */
+.sidebar {
+  background: var(--aibz-cream-soft) !important;
+  border-right: 1px solid var(--aibz-line);
+  font-family: var(--aibz-sans);
+}
+.sidebar .sidebar-scrollbox { padding: 16px 12px; }
+.chapter li > a {
+  color: var(--aibz-ink-2);
+  font-size: 14px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+.chapter li > a:hover {
+  background: var(--aibz-cream-deep);
+  color: var(--aibz-accent);
+}
+.chapter li > a.active {
+  color: var(--aibz-accent);
+  background: oklch(0.62 0.18 38 / 0.08);
+  font-weight: 600;
+}
+.chapter li.part-title {
+  font-family: var(--aibz-serif);
+  color: var(--aibz-ink);
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
+  padding-top: 18px;
+  margin-bottom: 6px;
+}
+.chapter li > .section { color: var(--aibz-ink-3); }
+
+/* ── 搜索框 ── */
+#searchbar {
+  background: var(--aibz-cream-card);
+  border: 1px solid var(--aibz-line);
+  color: var(--aibz-ink);
+  font-family: var(--aibz-sans);
+}
+#searchbar:focus {
+  border-color: var(--aibz-accent);
+  box-shadow: 0 0 0 3px oklch(0.62 0.18 38 / 0.12);
+}
+
+/* ── 暗色模式（Coal/Navy 维持原生不动，跟 landing 暗色一致）── */
+.coal, .navy {
+  /* 让暗色保留 mdbook 默认风味，不强行 override */
+}
+
+/* ── 响应式微调 ── */
+@media (max-width: 700px) {
+  .content h1 { font-size: 1.8rem; }
+  .content h2 { font-size: 1.4rem; }
+  .content { padding: 16px 4vw; }
+}
+
+/* ── 顶部品牌"回 landing"按钮 ── */
+.menu-title::after {
+  content: '· aibuzhiyu.com';
+  font-size: 12px;
+  color: var(--aibz-ink-3);
+  font-family: var(--aibz-mono);
+  font-weight: 400;
+  margin-left: 10px;
+  letter-spacing: 0.04em;
+}
+
+/* ── 打印 / PDF 模式：纯白背景节约油墨 ── */
+@media print {
+  html, body, .page, .content {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .content h1 {
+    border-bottom-color: #000 !important;
+  }
+  .content h2::before {
+    background: #000 !important;
+  }
+  .content blockquote {
+    background: #f5f5f5 !important;
+    border-left-color: #000 !important;
+  }
+  .content pre {
+    background: #f5f5f5 !important;
+    border-color: #ccc !important;
+  }
+  .content pre > code {
+    color: #000 !important;
+  }
+  .content code {
+    background: #f5f5f5 !important;
+    color: #000 !important;
+    border-color: #ccc !important;
+  }
+  .content a:link, .content a:visited {
+    color: #000 !important;
+    border-bottom: none !important;
+  }
+  .menu-title::after { content: '' !important; }
+}

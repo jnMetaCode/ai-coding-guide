@@ -13,6 +13,7 @@ git-repository-url = "https://github.com/jnMetaCode/ai-coding-guide"
 git-repository-icon = "fa-github"
 edit-url-template = "https://github.com/jnMetaCode/ai-coding-guide/edit/main/book/{path}"
 site-url = "/book/"
+additional-css = ["theme/custom.css"]
 
 [output.html.search]
 enable = true
