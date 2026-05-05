@@ -68,7 +68,7 @@ function Nav({ onCmdK }){
           <a className="nav-link-d" href="#products">内容产品</a>
           <a className="nav-link-d" href="#repos">开源矩阵</a>
           <a className="nav-link-d" href="#standards">内容标准</a>
-          <a className="nav-link-d" href="#partner">合作</a>
+          <a className="nav-link-d" href="#channels">渠道</a>
           <a className="nav-link-d" href="#about">关于</a>
           <button className="nav-kbd" onClick={onCmdK} aria-label="搜索">
             搜索 <kbd>⌘ K</kbd>
@@ -216,8 +216,8 @@ function Hero(){
               </p>
             </FadeUp>
             <FadeUp delay={3} className="hero-cta">
-              <a href="#products" className="btn btn-primary">
-                开始阅读三件套 <span className="arr">→</span>
+              <a href="/book/" className="btn btn-primary">
+                开始读三卷书 <span className="arr">→</span>
               </a>
               <a href="https://github.com/jnMetaCode" target="_blank" rel="noreferrer" className="btn btn-ghost">
                 浏览 GitHub <span className="arr">↗</span>
@@ -481,7 +481,7 @@ function Standards(){
             <p>
               所有开源仓库都附带可复制的配置模板与 README，
               <strong>而非"看着很对，跑不起来"的空架子</strong>。
-              如果你发现哪一篇写崩了，欢迎在评论里骂我。
+              如果你发现哪一篇写崩了，欢迎在 issue 里指出 — 一定改。
             </p>
           </div>
           <div className="checklist">
@@ -519,20 +519,18 @@ function Partners(){
         <FadeUp className="partners">
           <div className="partner">
             <span className="tag">公众号 · 软文 / 评测</span>
-            <h4>「AI 不止语」头条/次条</h4>
-            <p>面向 AI 编程从业者、独立开发者、技术管理者。读者构成偏理性，反感纯广告，要求结合真实使用场景。</p>
+            <h4>「AI 不止语」头条 / 次条 / 专访</h4>
+            <p>面向 AI 编程从业者、独立开发者、技术管理者。读者偏理性、反感纯广告、要求结合真实使用场景。</p>
             <div className="price">
-              <span>头条 · <b>面议</b></span>
-              <span>次条 · <b>面议</b></span>
-              <span>专访 · <b>面议</b></span>
+              <span>形式与价格 · <b>一事一议</b></span>
             </div>
           </div>
           <div className="partner">
-            <span className="tag">GitHub Repo · 推荐 / 联合发布</span>
+            <span className="tag">GitHub · 推荐 / 联合发布</span>
             <h4>开源仓库联合推广</h4>
-            <p>在合适的开源项目里以原生方式接入；或针对你的工具撰写实战指南章节，纳入《AI 编程实战指南》。</p>
+            <p>在合适的开源项目里以原生方式接入；或针对你的工具撰写实战指南章节，纳入《AI 编程实战三卷书》。</p>
             <div className="price">
-              <span>README 推荐 · <b>面议</b></span>
+              <span>README 推荐 · <b>项目制</b></span>
               <span>联合章节 · <b>项目制</b></span>
             </div>
           </div>
@@ -600,15 +598,25 @@ function About(){
             <span className="frame-cnr tl"/><span className="frame-cnr tr"/>
             <span className="frame-cnr bl"/><span className="frame-cnr br"/>
             <div className="label"><span>BRAND MARK</span><span>v1</span></div>
-            <div className="center">
-              语<small>AI 不止语</small>
+            <div className="center" style={{padding: 0, alignItems: 'stretch'}}>
+              <img
+                src="/brand-mark.png"
+                alt="AI 不止语 · 印章"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  display: 'block'
+                }}
+              />
             </div>
-            <div className="label"><span>aibuzhiyu.com</span><span>CN</span></div>
+            <div className="label"><span>aibuzhiyu.com</span><span>丙午 · 2026</span></div>
           </div>
           <div className="about-body">
             <h3>把"会用 AI 写代码"做成可复制的事。</h3>
             <p>
-              全栈开发者，AI 与开源爱好者。从 2018 年开始写技术内容，2024 年起把重心移到
+              全栈开发者，AI 与开源实践者。从 2018 年开始写技术内容，2024 年起把重心移到
               <strong> AI 编程方法论</strong>这件事上。
               做过的产品包含 211 专家角色矩阵、AI Agent 安全中间件、多 LLM 编排器，
               累计 GitHub Stars 一万+。
@@ -978,7 +986,7 @@ function App(){
         <Trilogy/>
         <Repos/>
         <Standards/>
-        <Partners/>
+        {/* <Partners/> 暂时隐藏：粉丝基础起来再开放 */}
         <Channels/>
         <About/>
         <CTA/>
