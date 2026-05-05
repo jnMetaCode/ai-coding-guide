@@ -203,7 +203,7 @@ function Hero(){
               <div className="hero-id">
                 <span><i className="dot" /> jnMetaCode · 全栈开发者</span>
                 <span>/ 写作 · 开源 · 教学</span>
-                <span>/ Coding Since 2018 · Brand 2024</span>
+                <span>/ Coding Since 2018 · Brand 2026</span>
               </div>
             </FadeUp>
             <SplitTitle html={'AI <span class="accent">不止</span><br/><span class="stroke">于</span>语。'}/>
@@ -590,7 +590,7 @@ function About(){
             <div className="eyebrow">Section · 06 · About</div>
             <h2>关于<span className="em">主理人。</span></h2>
           </div>
-          <div className="right">jnMetaCode<br/>BRAND EST. 2024</div>
+          <div className="right">jnMetaCode<br/>BRAND EST. 2026/04</div>
         </div>
 
         <FadeUp className="about">
@@ -632,20 +632,20 @@ function About(){
             </div>
             <div className="timeline">
               <div className="timeline-row">
-                <span className="yr">2026 →</span>
-                <span className="ev"><b>三卷书</b> v1.0 发布（aibuzhiyu.com）；<b>ai-coding-guide</b> 加入 Codex CLI 章节（6 轮源码核实）。</span>
+                <span className="yr">2026 / 5</span>
+                <span className="ev"><b>三卷书</b> v1.0 发布（<b>aibuzhiyu.com</b> 上线）；<b>ai-coding-guide</b> 加入 OpenAI Codex CLI 章节（6 轮源码核实）。</span>
+              </div>
+              <div className="timeline-row">
+                <span className="yr">2026 / 4</span>
+                <span className="ev">公众号「<b>AI 不止语</b>」开张，正式启用品牌身份做内容主入口。</span>
               </div>
               <div className="timeline-row">
                 <span className="yr">2025</span>
-                <span className="ev">发布 <b>agency-agents-zh</b>（9.4k ★）、<b>agency-orchestrator</b>、<b>shellward</b>、<b>superpowers-zh</b>。</span>
+                <span className="ev">发布 <b>agency-agents-zh</b>（9.4k ★）、<b>agency-orchestrator</b>、<b>shellward</b>、<b>superpowers-zh</b>；<b>ai-coding-guide</b> 上线，66 个 Claude Code 实操技巧。</span>
               </div>
               <div className="timeline-row">
-                <span className="yr">2024</span>
-                <span className="ev">公众号「AI 不止语」开张；<b>ai-coding-guide</b> 上线，66 个 Claude Code 实操技巧。</span>
-              </div>
-              <div className="timeline-row">
-                <span className="yr">2018 — 2023</span>
-                <span className="ev">全栈开发与技术写作；积累为后续方法论的底层素材。</span>
+                <span className="yr">2018 — 2025</span>
+                <span className="ev">CSDN / 头条 / 抖音 持续输出技术内容；全栈开发踩过的坑与工程方法，成为后续 AI 编程方法论的底层素材。</span>
               </div>
             </div>
           </div>
