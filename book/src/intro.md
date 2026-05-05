@@ -1,3 +1,14 @@
+<div class="book-cover" markdown="0">
+  <div class="cover-eyebrow">THE COMPLETE GUIDE TO AI CODING</div>
+  <img src="./brand-mark.png" class="cover-mark" alt="AI 不止语 印章" />
+  <h1 class="cover-title">AI 编程实战<br/><span class="cover-vol">三卷书</span></h1>
+  <div class="cover-volumes">卷一 · 入门 &nbsp;|&nbsp; 卷二 · 工作流 &nbsp;|&nbsp; 卷三 · 架构 &nbsp;|&nbsp; 别册 · 速查</div>
+  <hr class="cover-rule" />
+  <div class="cover-author">「AI 不止语」</div>
+  <div class="cover-handle">jnMetaCode &nbsp;·&nbsp; aibuzhiyu.com</div>
+  <div class="cover-meta">v1.0 &nbsp;·&nbsp; 2026 / 05 &nbsp;·&nbsp; CC BY-NC-SA 4.0</div>
+</div>
+
 # 总序
 
 > 这套书的最大野心：让你看完之后，再也不用问"这个任务该用哪个 AI 工具"。

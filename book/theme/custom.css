@@ -238,6 +238,113 @@ html, body, .page, .content {
   .content { padding: 16px 4vw; }
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   封面 / 书脸
+   ══════════════════════════════════════════════════════════════════ */
+.book-cover {
+  text-align: center;
+  padding: 80px 24px 100px;
+  margin: -20px 0 60px;
+  background: linear-gradient(180deg,
+    var(--aibz-cream-soft) 0%,
+    var(--aibz-cream-deep) 50%,
+    var(--aibz-cream-soft) 100%);
+  border-bottom: 3px double var(--aibz-accent);
+  position: relative;
+}
+.book-cover .cover-eyebrow {
+  font-family: var(--aibz-mono);
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  color: var(--aibz-ink-3);
+  margin-bottom: 32px;
+}
+.book-cover .cover-mark {
+  width: 140px;
+  height: auto;
+  margin: 0 auto 24px;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(140, 60, 20, 0.2));
+}
+.book-cover .cover-title {
+  font-family: var(--aibz-serif) !important;
+  font-weight: 900 !important;
+  font-size: clamp(2.4rem, 6vw, 3.8rem) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--aibz-ink) !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 0 20px !important;
+}
+.book-cover .cover-vol {
+  color: var(--aibz-accent);
+  font-size: 0.85em;
+  letter-spacing: 0.4rem;
+  margin-left: 0.4rem;
+}
+.book-cover .cover-volumes {
+  font-family: var(--aibz-serif);
+  font-size: 1.05rem;
+  color: var(--aibz-ink-2);
+  margin: 12px auto 0;
+  max-width: 720px;
+  line-height: 1.8;
+}
+.book-cover .cover-rule {
+  width: 60px;
+  margin: 36px auto 28px;
+  border: none;
+  border-top: 1px solid var(--aibz-accent);
+}
+.book-cover .cover-author {
+  font-family: var(--aibz-serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--aibz-accent);
+  margin-bottom: 8px;
+}
+.book-cover .cover-handle {
+  font-family: var(--aibz-mono);
+  font-size: 13px;
+  color: var(--aibz-ink-3);
+  letter-spacing: 0.06em;
+  margin-bottom: 28px;
+}
+.book-cover .cover-meta {
+  font-family: var(--aibz-mono);
+  font-size: 11.5px;
+  color: var(--aibz-ink-3);
+  letter-spacing: 0.08em;
+}
+
+/* 印刷 / PDF：封面占一整页 */
+@media print {
+  .book-cover {
+    background: #fff !important;
+    border: none !important;
+    height: 96vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    page-break-after: always;
+    page-break-inside: avoid;
+    margin: 0 !important;
+    padding: 40px !important;
+    box-sizing: border-box;
+  }
+  .book-cover > * { page-break-inside: avoid; }
+  .book-cover .cover-eyebrow { color: #555 !important; }
+  .book-cover .cover-mark { width: 180px; margin-bottom: 30px; }
+  .book-cover .cover-title { color: #000 !important; font-size: 4rem !important; }
+  .book-cover .cover-vol { color: #c2410c !important; }
+  .book-cover .cover-volumes { color: #333 !important; }
+  .book-cover .cover-rule { border-top-color: #c2410c !important; }
+  .book-cover .cover-author { color: #c2410c !important; }
+  .book-cover .cover-handle, .book-cover .cover-meta { color: #555 !important; }
+}
+
 /* ── 顶部品牌"回 landing"按钮 ── */
 .menu-title::after {
   content: '· aibuzhiyu.com';

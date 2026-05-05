@@ -203,7 +203,7 @@ function Hero(){
               <div className="hero-id">
                 <span><i className="dot" /> jnMetaCode · 全栈开发者</span>
                 <span>/ 写作 · 开源 · 教学</span>
-                <span>/ Coding Since 2018 · Brand 2026</span>
+                <span>/ Coding 2018 · AI 2022 · 开源爆发 2026.03</span>
               </div>
             </FadeUp>
             <SplitTitle html={'AI <span class="accent">不止</span><br/><span class="stroke">于</span>语。'}/>
@@ -230,7 +230,7 @@ function Hero(){
               <div className="stat-label"><span className="k">Repos</span>开源仓库</div>
             </FadeUp>
             <FadeUp delay={3} className="stat-card">
-              <div className="stat-num"><CountUp to={10300}/><span className="plus">+</span></div>
+              <div className="stat-num"><CountUp to={10700}/><span className="plus">+</span></div>
               <div className="stat-label"><span className="k">Stars</span>社区累计星标</div>
             </FadeUp>
             <FadeUp delay={4} className="stat-card">
@@ -352,7 +352,7 @@ const REPOS = [
     name: 'agency-agents-zh',
     title: '211 专家角色 · 中文版',
     desc: '即插即用的 AI 专家角色矩阵 — 覆盖工程/设计/营销/金融 18 个部门，含 46 个中国市场原创智能体（小红书/抖音/微信/飞书/钉钉）。',
-    star: '9.4k', lang: 'Shell', langColor: 'oklch(0.7 0.12 130)',
+    star: '9.8k', lang: 'Shell', langColor: 'oklch(0.7 0.12 130)',
     flagship: true,
     href: 'https://github.com/jnMetaCode/agency-agents-zh'
   },
@@ -360,21 +360,21 @@ const REPOS = [
     name: 'superpowers-zh',
     title: 'AI 编程超能力 · 中文增强',
     desc: '让 16 款 AI 编程工具真正会干活 — Skills 体系完整汉化 + 6 个原创 skills。',
-    star: '1.8k', lang: 'Shell', langColor: 'oklch(0.7 0.12 130)',
+    star: '2.0k', lang: 'Shell', langColor: 'oklch(0.7 0.12 130)',
     href: 'https://github.com/jnMetaCode/superpowers-zh'
   },
   {
     name: 'agency-orchestrator',
     title: '一句话 → 多 AI 协作',
     desc: '一句话调度 211+ 专家角色，几分钟交付完整方案。9 家 LLM / 6 家免费，零代码 YAML。',
-    star: '634', lang: 'TypeScript', langColor: 'oklch(0.65 0.14 240)',
+    star: '687', lang: 'TypeScript', langColor: 'oklch(0.65 0.14 240)',
     href: 'https://github.com/jnMetaCode/agency-orchestrator'
   },
   {
     name: 'ai-coding-guide',
     title: 'AI 编程实战指南',
     desc: '66 个 Claude Code 技巧 + 10 款工具最佳实践 + 可复制的配置模板。',
-    star: '141', lang: 'Markdown', langColor: 'oklch(0.6 0.02 60)',
+    star: '147', lang: 'Markdown', langColor: 'oklch(0.6 0.02 60)',
     href: 'https://github.com/jnMetaCode/ai-coding-guide'
   },
   {
@@ -616,10 +616,12 @@ function About(){
           <div className="about-body">
             <h3>把"会用 AI 写代码"做成可复制的事。</h3>
             <p>
-              全栈开发者，AI 与开源实践者。从 2018 年开始写技术内容，2024 年起把重心移到
-              <strong> AI 编程方法论</strong>这件事上。
-              做过的产品包含 211 专家角色矩阵、AI Agent 安全中间件、多 LLM 编排器，
-              累计 GitHub Stars 一万+。
+              全栈开发者，AI 与开源实践者。
+              2018 年起在 CSDN / 头条 / 抖音 写技术内容；
+              2022 年 ChatGPT 出来就开始研究 AI，期间做过几个实验性产品（AI 风水应用等），
+              <strong>用四年时间踩坑、迭代、收敛方向</strong>，
+              2026 年初终于把"AI 编程方法论"这件事跑通——
+              两个月内密集发布的开源矩阵累计 GitHub Stars <strong>一万+</strong>。
             </p>
             <p>
               不卖课、不收徒、不带货。<strong>更愿意把时间花在工具的边界探索上</strong> —
@@ -640,12 +642,16 @@ function About(){
                 <span className="ev">公众号「<b>AI 不止语</b>」开张，正式启用品牌身份做内容主入口。</span>
               </div>
               <div className="timeline-row">
-                <span className="yr">2025</span>
-                <span className="ev">发布 <b>agency-agents-zh</b>（9.4k ★）、<b>agency-orchestrator</b>、<b>shellward</b>、<b>superpowers-zh</b>；<b>ai-coding-guide</b> 上线，66 个 Claude Code 实操技巧。</span>
+                <span className="yr">2026 / 3</span>
+                <span className="ev">两个月内密集发布开源矩阵：<b>agency-agents-zh</b>（9.8k ★）、<b>superpowers-zh</b>（1.9k ★）、<b>agency-orchestrator</b>、<b>shellward</b>、<b>ai-coding-guide</b>。</span>
               </div>
               <div className="timeline-row">
-                <span className="yr">2018 — 2025</span>
-                <span className="ev">CSDN / 头条 / 抖音 持续输出技术内容；全栈开发踩过的坑与工程方法，成为后续 AI 编程方法论的底层素材。</span>
+                <span className="yr">2022 — 2025</span>
+                <span className="ev">ChatGPT 公测起持续研究 AI 工具与方法论；做过几个 AI 实验性产品（含 AI 风水应用等），积累踩坑经验，逐步把方向收敛到「AI 编程方法论」。</span>
+              </div>
+              <div className="timeline-row">
+                <span className="yr">2018 — 2022</span>
+                <span className="ev">全栈开发底子；CSDN / 头条 / 抖音 多平台技术写作；为后续 AI 时代的内容沉淀素材。</span>
               </div>
             </div>
           </div>
