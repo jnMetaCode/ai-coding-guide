@@ -209,9 +209,9 @@ function Hero(){
             <SplitTitle html={'AI <span class="accent">不止</span><br/><span class="stroke">于</span>语。'}/>
             <FadeUp delay={2}>
               <p className="hero-sub">
-                AI 编程工具迭代极快，方法论永生。
-                <strong>记录踩过的坑、能复用的工作流，</strong>
-                把好东西整理成书、做成开源、写成清单。
+                工具会过时，方法论不会。
+                <strong>6 轮源码追踪、31 个真实陷阱、10 工具实战，</strong>
+                全部写成三卷书 · 读源码核实 · 永久免费。
                 给真心想用 AI 把活儿干好的人。
               </p>
             </FadeUp>
@@ -226,16 +226,16 @@ function Hero(){
           </div>
           <div className="hero-side">
             <FadeUp delay={2} className="stat-card">
-              <div className="stat-num"><CountUp to={109}/><span className="plus">+</span></div>
-              <div className="stat-label"><span className="k">Repos</span>开源仓库</div>
+              <div className="stat-num"><CountUp to={10}/><span className="plus">+</span></div>
+              <div className="stat-label"><span className="k">Tools</span>AI 编程工具实测</div>
             </FadeUp>
             <FadeUp delay={3} className="stat-card">
-              <div className="stat-num"><CountUp to={10700}/><span className="plus">+</span></div>
-              <div className="stat-label"><span className="k">Stars</span>社区累计星标</div>
+              <div className="stat-num"><CountUp to={31}/><span className="plus">+</span></div>
+              <div className="stat-label"><span className="k">Pitfalls</span>真实陷阱解析</div>
             </FadeUp>
             <FadeUp delay={4} className="stat-card">
-              <div className="stat-num"><CountUp to={211}/><span className="plus">+</span></div>
-              <div className="stat-label"><span className="k">Agents</span>专家角色矩阵</div>
+              <div className="stat-num"><CountUp to={28}/><span className="plus">+</span></div>
+              <div className="stat-label"><span className="k">Chapters</span>三卷书章数</div>
             </FadeUp>
             <FadeUp delay={4}>
               <Terminal/>
@@ -296,8 +296,6 @@ const TRILOGY = [
 ];
 
 function Trilogy(){
-  const [i, setI] = useState(0);
-  const t = TRILOGY[i];
   return (
     <section id="products">
       <div className="container">
@@ -315,31 +313,31 @@ function Trilogy(){
           </div>
         </div>
 
-        <FadeUp className="trilogy">
-          <div className="tri-tabs">
-            {TRILOGY.map((x, idx) => (
-              <button key={x.num} className={`tri-tab ${i===idx?'active':''}`} onClick={()=>setI(idx)}>
-                <span className="num">VOL · {x.num}</span>
-                <span className="ttl">{x.tab}</span>
-              </button>
-            ))}
-          </div>
-          <div className="tri-panel" key={i} style={{animation:'panelIn .5s ease'}}>
-            <h3>{t.title}</h3>
-            <p className="pitch">{t.pitch}</p>
-            <ul className="toc">
-              {t.toc.map((c, ix) => (
-                <li key={c}><span className="ix">{String(ix+1).padStart(2,'0')}</span>{c}</li>
-              ))}
-            </ul>
-            <div className="meta">
-              {t.meta.map(([k,v])=>(
-                <span key={k}>{k} · <span className="v">{v}</span></span>
-              ))}
-            </div>
-          </div>
-        </FadeUp>
-        <style>{`@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}`}</style>
+        <div className="trilogy-grid">
+          {TRILOGY.map((t) => (
+            <FadeUp key={t.num} className="tri-card">
+              <div className="tri-card-head">
+                <span className="num">VOL · {t.num}</span>
+                <span className="tab">{t.tab}</span>
+              </div>
+              <h3>{t.title.replace('三卷书 · ', '')}</h3>
+              <p className="pitch">{t.pitch}</p>
+              <ul className="toc">
+                {t.toc.slice(0, 5).map((c, ix) => (
+                  <li key={c}><span className="ix">{String(ix+1).padStart(2,'0')}</span>{c}</li>
+                ))}
+                {t.toc.length > 5 && (
+                  <li className="more">{`··· + ${t.toc.length - 5} 章`}</li>
+                )}
+              </ul>
+              <div className="meta">
+                {t.meta.map(([k,v])=>(
+                  <span key={k}>{k} · <span className="v">{v}</span></span>
+                ))}
+              </div>
+            </FadeUp>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -350,7 +348,7 @@ function Trilogy(){
 const REPOS = [
   {
     name: 'agency-agents-zh',
-    title: '211 专家角色 · 中文版',
+    title: '215 专家角色 · 中文版',
     desc: '即插即用的 AI 专家角色矩阵 — 覆盖工程/设计/营销/金融 18 个部门，含 46 个中国市场原创智能体（小红书/抖音/微信/飞书/钉钉）。',
     star: '9.8k', lang: 'Shell', langColor: 'oklch(0.7 0.12 130)',
     flagship: true,
@@ -366,7 +364,7 @@ const REPOS = [
   {
     name: 'agency-orchestrator',
     title: '一句话 → 多 AI 协作',
-    desc: '一句话调度 211+ 专家角色，几分钟交付完整方案。9 家 LLM / 6 家免费，零代码 YAML。',
+    desc: '一句话调度 215+ 专家角色，几分钟交付完整方案。9 家 LLM / 6 家免费，零代码 YAML。',
     star: '687', lang: 'TypeScript', langColor: 'oklch(0.65 0.14 240)',
     href: 'https://github.com/jnMetaCode/agency-orchestrator'
   },
@@ -413,6 +411,7 @@ function RepoCard({ r }){
   };
   return (
     <a className={`repo ${r.flagship?'flagship':''}`} data-tilt="1" href={r.href} target="_blank" rel="noreferrer" onMouseMove={handleMove} onMouseLeave={handleLeave}>
+      {r.flagship && <span className="flag-badge">★ FLAGSHIP</span>}
       <div className="repo-head">
         <i className="pulse"/> jnMetaCode / <strong>{r.name}</strong>
       </div>
@@ -668,12 +667,12 @@ function CTA(){
       <div className="cta">
         <div className="cta-inner">
           <FadeUp>
-            <h2>下一篇，<span className="em">见。</span></h2>
-            <p className="sub">关注公众号「AI 不止语」 · 回复 <b>"群"</b> 加入读者群 · 或在 GitHub 给个 ★。</p>
+            <h2>读三卷书 · <span className="em">把 AI 用对。</span></h2>
+            <p className="sub">31 真实陷阱 · 10 工具实测 · 28 章方法论 · 永久免费 · 在线 + PDF。<br/>想留个号？关注公众号「AI 不止语」回复 <b>群</b> 进读者群。</p>
           </FadeUp>
           <FadeUp delay={1} className="cta-btns">
-            <a className="btn btn-primary" href="#channels">关注公众号 <span className="arr">→</span></a>
-            <a className="btn btn-ghost" href="https://github.com/jnMetaCode" target="_blank" rel="noreferrer">浏览 GitHub <span className="arr">↗</span></a>
+            <a className="btn btn-primary" href="/book/">免费开始读三卷书 <span className="arr">→</span></a>
+            <a className="btn btn-ghost" href="#channels">关注公众号 <span className="arr">→</span></a>
           </FadeUp>
         </div>
       </div>

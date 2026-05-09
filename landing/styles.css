@@ -516,89 +516,75 @@ section{padding: clamp(70px, 9vw, 120px) 0; position: relative}
   letter-spacing: .08em;
 }
 
-/* ===== 三件套 Tabs ===== */
-.trilogy{
+/* ===== Trilogy Grid (3-column) ===== */
+.trilogy-grid{
   display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 32px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 980px){
+  .trilogy-grid{grid-template-columns: repeat(2, 1fr)}
+}
+@media (max-width: 640px){
+  .trilogy-grid{grid-template-columns: 1fr}
+}
+.tri-card{
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--bg-card);
-  padding: 8px;
+  padding: 28px 26px;
+  display: flex; flex-direction: column; gap: 18px;
 }
-@media (max-width: 880px){
-  .trilogy{grid-template-columns: 1fr}
+.tri-card-head{
+  display: flex; align-items: baseline; gap: 14px;
+  border-bottom: 1px dashed var(--line-2);
+  padding-bottom: 14px;
 }
-.tri-tabs{
-  display:flex; flex-direction: column; gap: 4px;
-  padding: 14px;
-}
-@media (max-width: 880px){
-  .tri-tabs{flex-direction: row; overflow-x: auto; padding: 8px}
-}
-.tri-tab{
-  text-align: left;
-  padding: 18px;
-  border-radius: 12px;
-  border: none; background: transparent;
-  cursor: pointer;
-  font-family: inherit; color: var(--ink-2);
-  display:flex; flex-direction: column; gap: 6px;
-  transition: background .25s, color .25s;
-  position: relative;
-  font-size: 14px;
-}
-.tri-tab .num{
+.tri-card-head .num{
   font-family: var(--mono); font-size: 11px;
   color: var(--ink-4); letter-spacing: .12em;
 }
-.tri-tab .ttl{
-  font-family: var(--serif); font-weight: 600; font-size: 19px;
-  color: var(--ink);
+.tri-card-head .tab{
+  font-family: var(--serif); font-weight: 600; font-size: 18px;
+  color: var(--accent);
 }
-.tri-tab:hover{background: var(--bg-soft)}
-.tri-tab.active{
-  background: var(--ink);
-  color: var(--bg-card);
-}
-.tri-tab.active .ttl{color: var(--bg)}
-.tri-tab.active .num{color: var(--accent-soft)}
-.tri-panel{
-  padding: 36px 40px 36px 16px;
-  display:flex; flex-direction: column; gap: 22px;
-}
-.tri-panel h3{
+.tri-card h3{
   font-family: var(--serif); font-weight: 700;
-  font-size: 32px; margin: 0;
+  font-size: 22px; margin: 0;
   letter-spacing: -.01em;
 }
-.tri-panel .pitch{
+.tri-card .pitch{
   color: var(--ink-2);
-  font-size: 16px; margin: 0;
+  font-size: 14px; line-height: 1.7; margin: 0;
 }
-.tri-panel .toc{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px 20px;
+.tri-card .toc{
+  display: flex; flex-direction: column; gap: 7px;
   border-top: 1px dashed var(--line-2);
-  padding-top: 18px;
+  padding-top: 16px;
+  margin: 0;
 }
-.tri-panel .toc li{
-  list-style: none; font-size: 14px;
+.tri-card .toc li{
+  list-style: none; font-size: 13px;
   color: var(--ink-2);
-  display:flex; gap: 10px; align-items: baseline;
+  display: flex; gap: 10px; align-items: baseline;
 }
-.tri-panel .toc li .ix{
+.tri-card .toc li.more{
+  font-family: var(--mono); font-size: 11px;
+  color: var(--ink-4); padding-left: 0;
+  margin-top: 2px;
+}
+.tri-card .toc li .ix{
   font-family: var(--mono); color: var(--ink-4); font-size: 11px;
 }
-.tri-panel .meta{
-  display:flex; gap: 24px; flex-wrap: wrap;
-  font-family: var(--mono); font-size: 12px;
+.tri-card .meta{
+  display: flex; gap: 16px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 11px;
   color: var(--ink-3);
   border-top: 1px solid var(--line);
-  padding-top: 18px;
+  padding-top: 14px;
+  margin-top: auto;
 }
-.tri-panel .meta .v{color: var(--ink); font-weight: 600}
+.tri-card .meta .v{color: var(--ink); font-weight: 600}
 
 /* ===== 开源矩阵 ===== */
 .repo-grid{
@@ -689,6 +675,19 @@ section{padding: clamp(70px, 9vw, 120px) 0; position: relative}
   color: oklch(0.7 0.025 75);
 }
 .repo.flagship .repo-head .pulse{background: oklch(0.75 0.16 45)}
+.repo.flagship h3{font-size: 28px}
+.flag-badge{
+  position: absolute;
+  top: 18px; right: 18px;
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: .14em; font-weight: 600;
+  color: oklch(0.95 0.04 75);
+  border: 1px solid oklch(0.45 0.08 50);
+  padding: 5px 11px;
+  border-radius: 100px;
+  background: oklch(0.35 0.06 50);
+  z-index: 1;
+}
 
 /* ===== 内容渠道矩阵 ===== */
 .channels{
