@@ -390,3 +390,16 @@ html, body, .page, .content {
   }
   .menu-title::after { content: '' !important; }
 }
+
+/* ===== PDF 水印（@media print 平铺 SVG 文字）===== */
+/* 「AI 不止语 · aibuzhiyu.com」防营销号贩卖；不影响阅读、每页都有、旋转 25° */
+@media print {
+  html {
+    background-image: url("data:image/svg+xml;charset=utf8,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='260'><text x='260' y='130' text-anchor='middle' fill='rgba(60,40,30,0.07)' font-family='Noto Serif SC, Songti SC, serif' font-size='26' font-weight='700' transform='rotate(-25 260 130)'>AI 不止语 · aibuzhiyu.com</text></svg>") !important;
+    background-repeat: repeat !important;
+    background-attachment: fixed !important;
+  }
+  body {
+    background: transparent !important;
+  }
+}

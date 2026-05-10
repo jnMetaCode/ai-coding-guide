@@ -9,6 +9,12 @@
   <div class="cover-meta">v1.0 &nbsp;·&nbsp; 2026 / 05 &nbsp;·&nbsp; CC BY-NC-SA 4.0</div>
 </div>
 
+> 📖 **关于水印** —— 《AI 编程实战三卷书》PDF 完全开源免费。为防止营销号加水印后贩卖给 AI 编程初学者，我们在 PDF 中预先添加了不影响阅读的「**AI 不止语 · aibuzhiyu.com**」浅色水印，敬请谅解。
+>
+> **原版永久免费**，认准：
+> - 在线阅读：[aibuzhiyu.com/book/](https://aibuzhiyu.com/book/)
+> - PDF 下载：[github.com/jnMetaCode/ai-coding-trilogy](https://github.com/jnMetaCode/ai-coding-trilogy)
+
 # 总序
 
 > 这套书的最大野心：让你看完之后，再也不用问"这个任务该用哪个 AI 工具"。
