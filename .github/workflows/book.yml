@@ -43,21 +43,16 @@ jobs:
         working-directory: ./book
         run: mdbook build
 
-      - name: Compose site (landing at root + book at /book/)
+      - name: Compose site (book at root, served on book.aibuzhiyu.com)
         run: |
           mkdir -p _site
-          # 1) Landing 页放在根（index.html + 静态资源）
-          cp -r landing/. _site/
-          # 2) mdbook 输出放到 /book/ 子路径
-          mkdir -p _site/book
-          cp -r book/book/. _site/book/
-          # 3) CNAME 必须在根（GitHub Pages 要求）
-          echo "aibuzhiyu.com" > _site/CNAME
-          # 4) 调试用：列出最终发布树的关键文件
+          # mdbook 输出直接放根（landing 已迁去 jnMetaCode/aibuzhiyu 仓 + CF Workers）
+          cp -r book/book/. _site/
+          # CNAME 锁定子域名（aibuzhiyu.com 主站已切到 Cloudflare Workers）
+          echo "book.aibuzhiyu.com" > _site/CNAME
+          # 调试用：列出最终发布树
           echo "--- _site root ---"
-          ls -la _site/
-          echo "--- _site/book ---"
-          ls _site/book/ | head -10
+          ls -la _site/ | head -20
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
