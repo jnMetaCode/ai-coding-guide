@@ -93,11 +93,16 @@
 
 ## 🌐 相关项目
 
-> 以下项目均由「AI不止语」品牌持续维护，构成 AI 编程从学习到生产的完整链路：
+> 以下项目均由「AI不止语」品牌持续维护，构成从 AI 编程到 AI 视频创作的完整链路：
 
 ```
+AI 编程线：
 读书 → 学工具 → 注入方法论 → 加载专家 → 多角色编排 → 安全防护
 (book)  (guide)  (superpowers) (agents)   (orchestrator)  (shellward)
+
+AI 视频线：
+方法论 + 案例 + Skill
+(ai-shortfilm-prompts)
 ```
 
 | 项目 | 定位 | 一句话 | 教程 |
@@ -108,6 +113,7 @@
 | [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) ![](https://img.shields.io/github/stars/jnMetaCode/agency-agents-zh?style=flat&label=⭐) | 🎭 专家角色库 | 211 个**即插即用** AI 专家，含 46 中国原创（小红书 / 抖音 / 飞书 / 钉钉） | [安装与使用](ecosystem.md#2-agency-agents-zh--211-个-ai-专家角色) |
 | [agency-orchestrator](https://github.com/jnMetaCode/agency-orchestrator) | 🚀 编排引擎 | 一句话 → 211 专家协作，**几分钟出方案**（9 家 LLM / 6 免费） | [安装与使用](ecosystem.md#3-agency-orchestrator--多角色-yaml-编排) |
 | [shellward](https://github.com/jnMetaCode/shellward) | 🛡️ 安全中间件 | 8 层防御 + DLP 数据流 + 注入检测，**零依赖**（含 MCP Server） | [安装与使用](ecosystem.md#4-shellward--ai-agent-安全防护) |
+| 🆕 [ai-shortfilm-prompts](https://github.com/jnMetaCode/ai-shortfilm-prompts) | 🎬 视频提示词 | Mx-Shell《丧尸清道夫》5 段式方法论 + Skill，覆盖 Seedance / 小云雀 / Sora / 可灵 / 即梦 | — |
 
 👉 **[完整安装教程和组合使用指南 →](ecosystem.md)**
 
