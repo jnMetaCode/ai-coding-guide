@@ -19,8 +19,6 @@
 [![免费学习](https://img.shields.io/badge/📖_免费学习-从零学会AI编程-orange)](https://aiolaola.com/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 
-> 📖 **免费配套学习** → [从零学会 AI 编程](https://aiolaola.com/)：180 节免费实操课 + 《AI 编程实战三卷书》在线阅读（卷一·入门 / 卷二·工作流 / 卷三·架构 / 别册·速查）+ 实战社区 · 永久免费 · 有想法或需求，欢迎来社区一起拆解
-
 <table>
 <tr>
 <td align="center"><strong>10 款工具</strong><br/>全覆盖教程</td>
