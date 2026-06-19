@@ -1,5 +1,15 @@
 # AI Coding Tools — The Practical Guide
 
+
+
+
+<!-- aiolaola:start -->
+> 📖 **Free companion learning** · [aiOlaOla — Learn AI coding from zero →](https://aiolaola.com/?utm_source=github&utm_campaign=guide)
+> 180 free hands-on lessons + the AI Coding Trilogy online + community + AI tutor · **Free forever, sign in to learn.**
+>
+> 🌟 **Sister projects**: [agency-orchestrator ⭐1.4k](https://github.com/jnMetaCode/agency-orchestrator) · [agency-agents-zh ⭐15.2k](https://github.com/jnMetaCode/agency-agents-zh) · [superpowers-zh ⭐5.6k](https://github.com/jnMetaCode/superpowers-zh) · [ai-shortfilm-prompts](https://github.com/jnMetaCode/ai-shortfilm-prompts) · [ai-coding-trilogy](https://github.com/jnMetaCode/ai-coding-trilogy)
+<!-- aiolaola:end -->
+
 > **Hands-on best practices for 10 AI coding tools** — No hype, just what works. Prompt techniques, workflow design, multi-tool orchestration, and copy-paste configs to maximize your AI-assisted development.
 
 [简体中文](./README.md) | **English**

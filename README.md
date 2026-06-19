@@ -1,5 +1,15 @@
 # AI 编程工具实战指南
 
+
+
+
+<!-- aiolaola:start -->
+> 📖 **免费配套学习** · [aiOlaOla — 从零学会 AI 编程 →](https://aiolaola.com/?utm_source=github&utm_campaign=guide)
+> 180 节免费实操课 + 《AI 编程实战三卷书》在线读 + 实战社区 + AI 助教 · **永久免费,登录即学。**
+>
+> 🌟 **姐妹项目**:[agency-orchestrator ⭐1.4k](https://github.com/jnMetaCode/agency-orchestrator) · [agency-agents-zh ⭐15.2k](https://github.com/jnMetaCode/agency-agents-zh) · [superpowers-zh ⭐5.6k](https://github.com/jnMetaCode/superpowers-zh) · [ai-shortfilm-prompts](https://github.com/jnMetaCode/ai-shortfilm-prompts) · [ai-coding-trilogy](https://github.com/jnMetaCode/ai-coding-trilogy)
+<!-- aiolaola:end -->
+
 **简体中文** | [English](./README.en.md)
 
 > **10 款主流 AI 编程工具的中文最佳实践** — 不讲概念，只讲怎么用好。从提示词技巧到工作流设计，从单工具精通到多工具协作，帮你把 AI 编程效率拉满。
