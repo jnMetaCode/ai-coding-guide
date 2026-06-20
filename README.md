@@ -6,10 +6,10 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/jnMetaCode/ai-coding-guide?style=social)](https://github.com/jnMetaCode/ai-coding-guide)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
-[![免费学习](https://img.shields.io/badge/📖_免费学习-从零学会AI编程-orange)](https://aiolaola.com/)
+[![免费学习](https://img.shields.io/badge/📖_免费学习-从零学会AI编程-orange)](https://aiolaola.com/?utm_source=github&utm_campaign=guide)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 
-> 📖 **免费配套学习** → [从零学会 AI 编程](https://aiolaola.com/)：180 节免费实操课 + 《AI 编程实战三卷书》在线阅读（卷一·入门 / 卷二·工作流 / 卷三·架构 / 别册·速查）+ 实战社区 · 永久免费 · 有想法或需求，欢迎来社区一起拆解
+> 📖 **免费配套学习** → [从零学会 AI 编程](https://aiolaola.com/?utm_source=github&utm_campaign=guide)：180 节免费实操课 + 《AI 编程实战三卷书》在线阅读（卷一·入门 / 卷二·工作流 / 卷三·架构 / 别册·速查）+ 实战社区 · 永久免费 · 有想法或需求，欢迎来社区一起拆解
 
 <table>
 <tr>
