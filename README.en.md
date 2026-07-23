@@ -5,6 +5,8 @@
 
 <!-- aiolaola:start -->
 > 📖 **Free companion courses (English)** · [Learn AI Coding](https://aiolaola.com/en?utm_source=github&utm_campaign=guide) (180 lessons) + [Build AI Agents](https://aiolaola.com/en/course/agents?utm_source=github&utm_campaign=guide) (40 lessons) — hands-on, free · also in [日本語](https://aiolaola.com/ja?utm_source=github&utm_campaign=guide) / [Español](https://aiolaola.com/es?utm_source=github&utm_campaign=guide) / [한국어](https://aiolaola.com/ko?utm_source=github&utm_campaign=guide)
+>
+> 🌟 **Sister projects**: [agency-orchestrator ⭐1.9k](https://github.com/jnMetaCode/agency-orchestrator) · [agency-agents-zh ⭐18.2k](https://github.com/jnMetaCode/agency-agents-zh) · [superpowers-zh ⭐7.2k](https://github.com/jnMetaCode/superpowers-zh) · [ai-shortfilm-prompts](https://github.com/jnMetaCode/ai-shortfilm-prompts) · [ai-coding-trilogy](https://github.com/jnMetaCode/ai-coding-trilogy)
 <!-- aiolaola:end -->
 
 > **Hands-on best practices for 10 AI coding tools** — No hype, just what works. Prompt techniques, workflow design, multi-tool orchestration, and copy-paste configs to maximize your AI-assisted development.
