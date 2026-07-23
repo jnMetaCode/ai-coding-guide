@@ -9,6 +9,8 @@
 [![免费学习](https://img.shields.io/badge/📖_免费学习-从零学会AI编程-orange)](https://aiolaola.com/?utm_source=github&utm_campaign=guide)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 
+> 📖 **免费配套学习** → [从零学会 AI 编程](https://aiolaola.com/?utm_source=github&utm_campaign=guide)（180 节）＋ [从零构建 AI 智能体](https://aiolaola.com/course/ai-agent?utm_source=github&utm_campaign=guide)（40 节）· 🌍 [English](https://aiolaola.com/en?utm_source=github&utm_campaign=guide) / [日本語](https://aiolaola.com/ja?utm_source=github&utm_campaign=guide) / [Español](https://aiolaola.com/es?utm_source=github&utm_campaign=guide) / [한국어](https://aiolaola.com/ko?utm_source=github&utm_campaign=guide) / [繁體中文](https://aiolaola.com/zh-Hant?utm_source=github&utm_campaign=guide)
+
 > 📖 **免费配套学习** → [从零学会 AI 编程](https://aiolaola.com/?utm_source=github&utm_campaign=guide)：180 节免费实操课 + 《AI 编程实战三卷书》在线阅读（卷一·入门 / 卷二·工作流 / 卷三·架构 / 别册·速查）+ 实战社区 · 永久免费 · 有想法或需求，欢迎来社区一起拆解
 
 <table>
