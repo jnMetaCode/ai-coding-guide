@@ -145,6 +145,10 @@
   - swyx 主持的 AI 工程播客 + newsletter
   - 采访 Cursor / Anthropic / GitHub 核心团队的第一手观点
 
+- [AI Weekly](https://aiweekly.co/) · 英
+  - 追踪 AI 专家正在阅读和分享的内容，每周更新三次
+  - 需要快速了解模型、Agent、融资、政策与研究动态时阅读
+
 - [宝玉的分享](https://baoyu.io/) · 中
   - 宝玉翻译整理的大量 AI 编程英文好文**中文版**
   - 不想读英文原文时的高质量中转站
