@@ -147,6 +147,10 @@
   - swyx's AI engineering podcast + newsletter
   - Interviews with core teams at Cursor / Anthropic / GitHub
 
+- [AI Weekly](https://aiweekly.co/) · EN
+  - Tracks what AI experts are reading and sharing, with three editions per week
+  - Use it to scan model, agent, funding, policy, and research developments quickly
+
 - [baoyu.io](https://baoyu.io/) · ZH
   - Baoyu's translations and curated Chinese versions of top AI coding articles
   - High-quality middleman when you don't want to read English originals
