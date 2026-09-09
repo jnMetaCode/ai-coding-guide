@@ -6,7 +6,7 @@
 <!-- aiolaola:start -->
 > 📖 **Free companion courses (English)** · [Learn AI Coding](https://aiolaola.com/en?utm_source=github&utm_campaign=guide) (180 lessons) + [Build AI Agents](https://aiolaola.com/en/course/agents?utm_source=github&utm_campaign=guide) (40 lessons) — hands-on, free · also in [日本語](https://aiolaola.com/ja?utm_source=github&utm_campaign=guide) / [Español](https://aiolaola.com/es?utm_source=github&utm_campaign=guide) / [한국어](https://aiolaola.com/ko?utm_source=github&utm_campaign=guide)
 >
-> 🌟 **Sister projects**: [agency-orchestrator ⭐1.9k](https://github.com/jnMetaCode/agency-orchestrator) · [agency-agents-zh ⭐18.2k](https://github.com/jnMetaCode/agency-agents-zh) · [superpowers-zh ⭐7.2k](https://github.com/jnMetaCode/superpowers-zh) · [ai-shortfilm-prompts](https://github.com/jnMetaCode/ai-shortfilm-prompts) · [ai-coding-trilogy](https://github.com/jnMetaCode/ai-coding-trilogy)
+> 🌟 **Sister projects**: [agency-agents-zh ⭐20.4k](https://github.com/jnMetaCode/agency-agents-zh) · [superpowers-zh ⭐8k](https://github.com/jnMetaCode/superpowers-zh) · [agency-orchestrator ⭐2.2k](https://github.com/jnMetaCode/agency-orchestrator) · [ai-shortfilm-prompts](https://github.com/jnMetaCode/ai-shortfilm-prompts) · [ai-coding-trilogy](https://github.com/jnMetaCode/ai-coding-trilogy) · [openshorts](https://github.com/jnMetaCode/openshorts)
 <!-- aiolaola:end -->
 
 > **Hands-on best practices for 10 AI coding tools** — No hype, just what works. Prompt techniques, workflow design, multi-tool orchestration, and copy-paste configs to maximize your AI-assisted development.
@@ -114,9 +114,10 @@ Read → Learn tools → Inject methodologies → Load experts → Orchestrate �
 | [**ai-coding-trilogy**](https://github.com/jnMetaCode/ai-coding-trilogy) ![](https://img.shields.io/github/stars/jnMetaCode/ai-coding-trilogy?style=flat&label=⭐) | 📚 Trilogy Book | This repo, reorganized by reader persona: Getting Started / Workflows / Architecture (PDF + web edition) | [Product page](https://github.com/jnMetaCode/ai-coding-trilogy) |
 | **This repo** (ai-coding-guide) | 📖 Practical Guide | 66 Claude Code tips + best practices for 10 tools + config templates | — |
 | [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) ![](https://img.shields.io/github/stars/jnMetaCode/superpowers-zh?style=flat&label=⭐) | 🧠 Methodology | 20 skills teaching AI how to work (TDD / debugging / code review) | [Install & Use](ecosystem.en.md#1-superpowers-zh--inject-work-methodology-into-ai) |
-| [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) ![](https://img.shields.io/github/stars/jnMetaCode/agency-agents-zh?style=flat&label=⭐) | 🎭 Expert Roles | 211 **plug-and-play** AI specialists, incl. 46 China-native (Xiaohongshu / Douyin / Feishu / DingTalk) | [Install & Use](ecosystem.en.md#2-agency-agents-zh--211-ai-expert-roles) |
-| [agency-orchestrator](https://github.com/jnMetaCode/agency-orchestrator) | 🚀 Orchestration Engine | One prompt → 211 specialists collaborate, **plan in minutes** (9 LLMs / 6 free) | [Install & Use](ecosystem.en.md#3-agency-orchestrator--multi-role-yaml-orchestration) |
+| [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) ![](https://img.shields.io/github/stars/jnMetaCode/agency-agents-zh?style=flat&label=⭐) | 🎭 Expert Roles | 277 **plug-and-play** AI specialists, incl. 64 China-native (Xiaohongshu / Douyin / Feishu / DingTalk / Qt HMI / mechanical design) | [Install & Use](ecosystem.en.md#2-agency-agents-zh--277-ai-expert-roles) |
+| [agency-orchestrator](https://github.com/jnMetaCode/agency-orchestrator) ![](https://img.shields.io/github/stars/jnMetaCode/agency-orchestrator?style=flat&label=%E2%AD%90) | 🚀 Orchestration Engine | One prompt → 276 specialists collaborate, **plan in minutes** (15 LLMs / 11 key-free) | [Install & Use](ecosystem.en.md#3-agency-orchestrator--multi-role-yaml-orchestration) |
 | [shellward](https://github.com/jnMetaCode/shellward) | 🛡️ Security Middleware | 8-layer defense + DLP dataflow + injection detection, **zero-dep** (MCP Server included) | [Install & Use](ecosystem.en.md#4-shellward--security-guardrails-for-ai-agents) |
+| 🆕 [openshorts](https://github.com/jnMetaCode/openshorts) | 🎥 Short-video Pipeline | Topic in, finished video out — script / TTS / subtitles / render / publish kit in one run, **first video costs $0 and no API key**, local-first | — |
 
 > [Full ecosystem setup guide →](ecosystem.en.md)
 
@@ -127,7 +128,7 @@ Read → Learn tools → Inject methodologies → Load experts → Orchestrate �
 Most AI coding resources fall into two camps: shallow "getting started" posts, or single-tool deep dives. This guide fills the gap:
 
 - **Practical over theoretical** — Every tip has been tested in real projects. No "AI will change everything" filler.
-- **Cross-tool coverage** — Compare approaches across 9 tools. Know when to use Cursor vs Claude Code vs Copilot.
+- **Cross-tool coverage** — Compare approaches across 10 tools. Know when to use Cursor vs Claude Code vs Copilot.
 - **Multi-tool workflows** — The biggest wins come from combining tools. We show you how.
 - **Copy-paste ready** — Config templates, prompt snippets, and .cursorrules you can drop into your project today.
 - **Prompt engineering for code** — Generic prompt guides don't cover the nuances of AI coding. This one does.
@@ -136,7 +137,7 @@ Most AI coding resources fall into two camps: shallow "getting started" posts, o
 
 ## 📚 Further Learning
 
-This project covers "how to use the 9 tools well." Want to go deeper? See **[Further Learning Resources](resources.en.md)** — a curated list of **20+ high-quality GitHub repos / blogs / podcasts** organized by topic (Prompt Engineering / MCP Ecosystem / Claude Code Deep Dive / Agent Engineering / Chinese Resources / Official Blogs).
+This project covers "how to use the 10 tools well." Want to go deeper? See **[Further Learning Resources](resources.en.md)** — a curated list of **20+ high-quality GitHub repos / blogs / podcasts** organized by topic (Prompt Engineering / MCP Ecosystem / Claude Code Deep Dive / Agent Engineering / Chinese Resources / Official Blogs).
 
 ## 🆕 Changelog
 

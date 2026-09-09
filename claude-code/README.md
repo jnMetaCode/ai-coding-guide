@@ -173,7 +173,7 @@ npx superpowers-zh
 
 安装后 Claude Code 会自动加载这些 skill，你可以用 `/` 命令调用，比如 `/brainstorming` 做需求分析、`/debugging` 做系统化调试。详见 [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh)。
 
-**需要专业角色？** 用 [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) 的 211 个 AI 专家角色：
+**需要专业角色？** 用 [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) 的 277 个 AI 专家角色：
 
 ```bash
 # 把角色文件复制到 .claude/skills/ 即可使用
@@ -445,4 +445,4 @@ git log 看看 src/api/payment.ts 最近的改动，
 
 - [Claude Code 官方文档](https://docs.anthropic.com/en/docs/claude-code)
 - [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) — 20 个 AI 编程 skills
-- [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) — 211 个 AI 专家角色
+- [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) — 277 个 AI 专家角色

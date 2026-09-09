@@ -11,8 +11,6 @@
 
 > 📖 **免费配套学习** → [从零学会 AI 编程](https://aiolaola.com/?utm_source=github&utm_campaign=guide)（180 节）＋ [从零构建 AI 智能体](https://aiolaola.com/course/ai-agent?utm_source=github&utm_campaign=guide)（40 节）· 🌍 [English](https://aiolaola.com/en?utm_source=github&utm_campaign=guide) / [日本語](https://aiolaola.com/ja?utm_source=github&utm_campaign=guide) / [Español](https://aiolaola.com/es?utm_source=github&utm_campaign=guide) / [한국어](https://aiolaola.com/ko?utm_source=github&utm_campaign=guide) / [繁體中文](https://aiolaola.com/zh-Hant?utm_source=github&utm_campaign=guide)
 
-> 📖 **免费配套学习** → [从零学会 AI 编程](https://aiolaola.com/?utm_source=github&utm_campaign=guide)：180 节免费实操课 + 《AI 编程实战三卷书》在线阅读（卷一·入门 / 卷二·工作流 / 卷三·架构 / 别册·速查）+ 实战社区 · 永久免费 · 有想法或需求，欢迎来社区一起拆解
-
 <table>
 <tr>
 <td align="center"><strong>10 款工具</strong><br/>全覆盖教程</td>
@@ -103,8 +101,8 @@ AI 编程线：
 (book)  (guide)  (superpowers) (agents)   (orchestrator)  (shellward)
 
 AI 视频线：
-方法论 + 案例 + Skill
-(ai-shortfilm-prompts)
+提示词方法论 ────────────→ 一句话到成片
+(ai-shortfilm-prompts)      (openshorts)
 ```
 
 | 项目 | 定位 | 一句话 | 教程 |
@@ -112,10 +110,11 @@ AI 视频线：
 | [**ai-coding-trilogy**](https://github.com/jnMetaCode/ai-coding-trilogy) ![](https://img.shields.io/github/stars/jnMetaCode/ai-coding-trilogy?style=flat&label=⭐) | 📚 三卷书 | 把本仓内容按读者画像重组：入门/工作流/架构（PDF + 在线版） | [产品页](https://github.com/jnMetaCode/ai-coding-trilogy) |
 | **本项目**（ai-coding-guide） | 📖 实战教程 | 66 个 Claude Code 技巧 + 10 款工具最佳实践 + 配置模板 | — |
 | [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) ![](https://img.shields.io/github/stars/jnMetaCode/superpowers-zh?style=flat&label=⭐) | 🧠 工作方法论 | 20 个 skills 教 AI 怎么干活（TDD / 调试 / 代码审查等） | [安装与使用](ecosystem.md#1-superpowers-zh--给-ai-注入工作方法论) |
-| [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) ![](https://img.shields.io/github/stars/jnMetaCode/agency-agents-zh?style=flat&label=⭐) | 🎭 专家角色库 | 211 个**即插即用** AI 专家，含 46 中国原创（小红书 / 抖音 / 飞书 / 钉钉） | [安装与使用](ecosystem.md#2-agency-agents-zh--211-个-ai-专家角色) |
-| [agency-orchestrator](https://github.com/jnMetaCode/agency-orchestrator) | 🚀 编排引擎 | 一句话 → 211 专家协作，**几分钟出方案**（9 家 LLM / 6 免费） | [安装与使用](ecosystem.md#3-agency-orchestrator--多角色-yaml-编排) |
+| [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) ![](https://img.shields.io/github/stars/jnMetaCode/agency-agents-zh?style=flat&label=⭐) | 🎭 专家角色库 | 277 个**即插即用** AI 专家，含 64 中国原创（小红书 / 抖音 / 飞书 / 钉钉 / Qt 上位机 / 机械设计） | [安装与使用](ecosystem.md#2-agency-agents-zh--277-个-ai-专家角色) |
+| [agency-orchestrator](https://github.com/jnMetaCode/agency-orchestrator) ![](https://img.shields.io/github/stars/jnMetaCode/agency-orchestrator?style=flat&label=%E2%AD%90) | 🚀 编排引擎 | 一句话 → 276 专家协作，**几分钟出方案**（15 种大模型 / 11 种免 key） | [安装与使用](ecosystem.md#3-agency-orchestrator--多角色-yaml-编排) |
 | [shellward](https://github.com/jnMetaCode/shellward) | 🛡️ 安全中间件 | 8 层防御 + DLP 数据流 + 注入检测，**零依赖**（含 MCP Server） | [安装与使用](ecosystem.md#4-shellward--ai-agent-安全防护) |
 | 🆕 [ai-shortfilm-prompts](https://github.com/jnMetaCode/ai-shortfilm-prompts) | 🎬 视频提示词 | Mx-Shell《丧尸清道夫》5 段式方法论 + Skill，覆盖 Seedance / 小云雀 / Sora / 可灵 / 即梦 | — |
+| 🆕 [openshorts](https://github.com/jnMetaCode/openshorts) | 🎥 短视频生产线 | 开片 —— 文案进，成片出：脚本 / 配音 / 字幕 / 成片 / 发布包一条龙，**0 元 0 key 跑通第一条**，本地优先 | — |
 
 👉 **[完整安装教程和组合使用指南 →](ecosystem.md)**
 
@@ -179,7 +178,7 @@ AI 视频线：
 
 ## 📚 延伸学习
 
-本项目讲"怎么用好 9 款工具"，要继续深入推荐看 **[延伸学习资源](resources.md)**——精选了 **20+ 个高质量 GitHub 仓库 / 博客 / 播客**，按主题分类（Prompt 工程 / MCP 生态 / Claude Code 进阶 / Agent 工程 / 中文优秀资源 / 官方博客）。
+本项目讲"怎么用好 10 款工具"，要继续深入推荐看 **[延伸学习资源](resources.md)**——精选了 **20+ 个高质量 GitHub 仓库 / 博客 / 播客**，按主题分类（Prompt 工程 / MCP 生态 / Claude Code 进阶 / Agent 工程 / 中文优秀资源 / 官方博客）。
 
 ## 🆕 更新日志
 

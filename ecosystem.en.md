@@ -105,7 +105,7 @@ AI:  Before I start implementing, I need to clarify a few things:
 
 ---
 
-## 2. agency-agents-zh — 211 AI Expert Roles
+## 2. agency-agents-zh — 277 AI Expert Roles
 
 **What problem it solves**: AI defaults to being a "general assistant" that can chat about anything but lacks deep expertise. With expert roles installed, AI follows domain-specific professional workflows and standards.
 
@@ -181,16 +181,16 @@ AI:  (activates database-optimizer role)
      4. Estimated improvement: down to 0.05s
 ```
 
-### Role Categories (18 Departments, 211 Roles)
+### Role Categories (20 Departments, 277 Roles)
 
 | Department | # Roles | Examples |
 |------------|:---:|---------|
-| Engineering | 27 | Backend architect, frontend dev, security engineer, DevOps |
-| Design | 8 | UI designer, UX researcher, accessibility expert |
-| Marketing | 29 | Social media strategist, SEO expert |
+| Engineering | 42 | Backend architect, frontend dev, security engineer, DevOps |
+| Design | 10 | UI designer, UX researcher, accessibility expert |
+| Marketing | 43 | Social media strategist, SEO expert |
 | Product | 5 | Product manager, sprint prioritizer |
 | Testing | 8 | API tester, performance benchmarker |
-| More | 110 | Finance, legal, supply chain, game dev, etc. |
+| More | 168 | Finance, legal, supply chain, game dev, etc. |
 
 ### Common Issues
 
@@ -212,7 +212,7 @@ AI:  (activates database-optimizer role)
 # Global install (recommended — gives you the ao command)
 npm install -g agency-orchestrator
 
-# Initialize: download 211 role definitions locally
+# Initialize: download 276 role definitions locally
 ao init
 # Role files are downloaded to ~/.ao/roles/
 ```

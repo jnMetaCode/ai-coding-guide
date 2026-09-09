@@ -175,7 +175,7 @@ npx superpowers-zh
 
 After installation, Claude Code loads these skills automatically. Invoke them with `/` commands — e.g., `/brainstorming` for requirements analysis, `/debugging` for systematic debugging. See [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh).
 
-**Need specialized roles?** Use the 211 AI expert personas from [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh):
+**Need specialized roles?** Use the 277 AI expert personas from [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh):
 
 ```bash
 # Copy role files to .claude/skills/ to use them
@@ -447,4 +447,4 @@ Copy these directly into your project:
 
 - [Claude Code Official Docs](https://docs.anthropic.com/en/docs/claude-code)
 - [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) — 20 AI coding skills
-- [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) — 211 AI expert personas
+- [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) — 277 AI expert personas
