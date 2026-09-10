@@ -9,7 +9,7 @@
 [![免费学习](https://img.shields.io/badge/📖_免费学习-从零学会AI编程-orange)](https://aiolaola.com/?utm_source=github&utm_campaign=guide)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 
-> 📖 **免费配套学习** → [从零学会 AI 编程](https://aiolaola.com/?utm_source=github&utm_campaign=guide)（180 节）＋ [从零构建 AI 智能体](https://aiolaola.com/course/ai-agent?utm_source=github&utm_campaign=guide)（40 节）· 🌍 [English](https://aiolaola.com/en?utm_source=github&utm_campaign=guide) / [日本語](https://aiolaola.com/ja?utm_source=github&utm_campaign=guide) / [Español](https://aiolaola.com/es?utm_source=github&utm_campaign=guide) / [한국어](https://aiolaola.com/ko?utm_source=github&utm_campaign=guide) / [繁體中文](https://aiolaola.com/zh-Hant?utm_source=github&utm_campaign=guide)
+> 📖 **免费配套学习** → [从零学会 AI 编程](https://aiolaola.com/?utm_source=github&utm_campaign=guide)（182 节）＋ [从零构建 AI 智能体](https://aiolaola.com/course/ai-agent?utm_source=github&utm_campaign=guide)（40 节）· 🌍 [English](https://aiolaola.com/en?utm_source=github&utm_campaign=guide) / [日本語](https://aiolaola.com/ja?utm_source=github&utm_campaign=guide) / [Español](https://aiolaola.com/es?utm_source=github&utm_campaign=guide) / [한국어](https://aiolaola.com/ko?utm_source=github&utm_campaign=guide) / [繁體中文](https://aiolaola.com/zh-Hant?utm_source=github&utm_campaign=guide)（站上共 13 门课、648 节，**全部 ¥0**——另有 AI 绘画 / 写小说 / 漫剧 / 量化 / DeepSeek / 深度专注 等）
 
 <table>
 <tr>
