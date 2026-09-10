@@ -1,0 +1,117 @@
+name: 刷新姐妹项目星数
+
+# README 里的星数是写死的文本（如 `⭐20.4k`），不刷新就会随时间失真。
+# 每周一 09:00（北京时间）跑一次，把这些数字对齐 GitHub 上的真实值。
+# 也可以在 Actions 页面手动触发。
+
+on:
+  schedule:
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-stars
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 重写星数
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re, subprocess, urllib.request
+
+          TOKEN = os.environ.get('GH_TOKEN', '')
+          OWNER = os.environ.get('GITHUB_REPOSITORY', '/').split('/')[0]
+
+          def api(path):
+              req = urllib.request.Request('https://api.github.com' + path)
+              req.add_header('Accept', 'application/vnd.github+json')
+              if TOKEN:
+                  req.add_header('Authorization', 'Bearer ' + TOKEN)
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  return json.load(r)
+
+          _stars = {}
+          def stars(owner, repo):
+              key = owner + '/' + repo
+              if key not in _stars:
+                  try:
+                      _stars[key] = api('/repos/' + key)['stargazers_count']
+                  except Exception as e:
+                      print('  跳过 %s：%s' % (key, e))
+                      _stars[key] = None
+              return _stars[key]
+
+          def fmt(n):
+              """20487 → 20.4k ／ 8038 → 8k ／ 521 → 521（截断，不四舍五入，与现有写法一致）"""
+              if n < 1000:
+                  return str(n)
+              s = '%.1f' % (int(n / 100) / 10.0)
+              return (s[:-2] if s.endswith('.0') else s) + 'k'
+
+          # 形如 [agency-agents-zh ⭐20.4k](https://github.com/jnMetaCode/agency-agents-zh)
+          INLINE = re.compile(
+              r'(\[[^\]\n]*?⭐ ?)([0-9][0-9.]*k?)(\]\(https://github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+?)/?\))')
+          # 主页首屏徽章：开源项目累计-⭐%2032k+
+          TOTAL = re.compile(r'(累计-⭐%20)([0-9.]+)(k\+)')
+
+          def total_stars(owner):
+              n, page = 0, 1
+              while True:
+                  batch = api('/users/%s/repos?per_page=100&page=%d' % (owner, page))
+                  if not batch:
+                      break
+                  n += sum(r['stargazers_count'] for r in batch if not r['fork'])
+                  page += 1
+              return n
+
+          files = subprocess.run(['git', 'ls-files', '*.md'],
+                                 capture_output=True, text=True, check=True).stdout.split()
+          changed = []
+          for path in files:
+              with open(path, encoding='utf-8') as f:
+                  src = f.read()
+
+              def sub_inline(m):
+                  n = stars(m.group(4), m.group(5))
+                  if n is None:
+                      return m.group(0)
+                  new = fmt(n)
+                  if new != m.group(2):
+                      print('  %s: %s/%s ⭐%s → ⭐%s' % (path, m.group(4), m.group(5), m.group(2), new))
+                  return m.group(1) + new + m.group(3)
+
+              def sub_total(m):
+                  new = str(int(total_stars(OWNER) / 1000))
+                  if new != m.group(2):
+                      print('  %s: 累计 ⭐%sk+ → ⭐%sk+' % (path, m.group(2), new))
+                  return m.group(1) + new + m.group(3)
+
+              out = TOTAL.sub(sub_total, INLINE.sub(sub_inline, src))
+              if out != src:
+                  with open(path, 'w', encoding='utf-8') as f:
+                      f.write(out)
+                  changed.append(path)
+
+          print('已更新：' + (', '.join(changed) if changed else '无（星数已是最新）'))
+          PY
+
+      - name: 有变化才提交
+        run: |
+          if git diff --quiet; then
+            echo "星数无变化，不产生提交。"
+            exit 0
+          fi
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -am 'chore(readme): 自动刷新姐妹项目星数'
+          git push
