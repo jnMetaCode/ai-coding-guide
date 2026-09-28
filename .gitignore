@@ -9,3 +9,6 @@
 # Node (for future tooling scripts)
 node_modules/
 npm-debug.log*
+
+# lychee 本地缓存
+.lycheecache
