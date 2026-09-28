@@ -186,8 +186,8 @@ This guide builds on excellent work from:
 - [awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) — Cursor rules collection
 - [awesome-copilot](https://github.com/github/awesome-copilot) — Official GitHub Copilot resources
 - [gemini-cli-tips](https://github.com/addyosmani/gemini-cli-tips) — Gemini CLI tips
-- [Everything Claude Code](https://github.com/anthropics/everything-claude-code) — Instinct scoring, AgentShield, multi-language rules
-- [BMAD-METHOD](https://github.com/bmadcode/BMAD-METHOD) — Full SDLC, agent roles, multi-platform
+- [Everything Claude Code](https://github.com/affaan-m/ECC) — Instinct scoring, AgentShield, multi-language rules
+- [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) — Full SDLC, agent roles, multi-platform
 
 ---
 

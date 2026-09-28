@@ -194,8 +194,8 @@ AI 视频线：
 - [awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) — Cursor 规则集合
 - [awesome-copilot](https://github.com/github/awesome-copilot) — GitHub Copilot 官方资源
 - [gemini-cli-tips](https://github.com/addyosmani/gemini-cli-tips) — Gemini CLI 技巧
-- [Everything Claude Code](https://github.com/anthropics/everything-claude-code) — 本能评分、AgentShield、多语言规则
-- [BMAD-METHOD](https://github.com/bmadcode/BMAD-METHOD) — 完整 SDLC、Agent 角色、多平台
+- [Everything Claude Code](https://github.com/affaan-m/ECC) — 本能评分、AgentShield、多语言规则
+- [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) — 完整 SDLC、Agent 角色、多平台
 
 ---
 

@@ -21,6 +21,10 @@ exclude_path = [
   "node_modules",
   ".git",
   ".github/ISSUE_TEMPLATE",
+  # book/src 下这些是指向仓库根目录的软链接，lychee 会按软链接所在位置解析相对路径导致大量误报；
+  # 原文件已在仓库根目录被检查过，这里跳过（intro.md / about.md 等真实文件仍会检查）
+  "book/src/(changelog|cheatsheet|resources)\\.md",
+  "book/src/(methods|pitfalls-src|workflows-src|tools)/",
 ]
 
 # 排除链接
@@ -41,6 +45,9 @@ exclude = [
   "^https?://(www\\.)?twitter\\.com",
   "^https?://(www\\.)?x\\.com",
   "^https?://(www\\.)?linkedin\\.com",
+
+  # 需要登录的 GitHub 仓库设置页
+  "^https?://github\\.com/.+/settings",
 
   # QQ 链接跳转
   "^https?://qm\\.qq\\.com",

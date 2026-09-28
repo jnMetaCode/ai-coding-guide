@@ -73,7 +73,7 @@
   - Anthropic 官方课程合集：Prompt、Tool use、RAG、MCP 全套
   - 想系统吃透 Anthropic 全家桶
 
-- [anthropics/anthropic-cookbook](https://github.com/anthropics/anthropic-cookbook) · ⭐ 高 · 英
+- [anthropics/claude-cookbooks](https://github.com/anthropics/claude-cookbooks) · ⭐ 高 · 英
   - Claude API 实战示例：多模态、工具调用、RAG、Agent 模式
   - 用 Claude API 做定制化 AI 编程工具时的参考
 
@@ -125,7 +125,7 @@
   - 黄峰达《构筑大语言模型应用》电子书
   - AI 编程架构师视角，适合看工程化与团队落地
 
-- [unit-mesh/auto-dev](https://github.com/unit-mesh/auto-dev) · ⭐ 3k+ · 中英
+- [unit-mesh/auto-dev](https://github.com/phodal/auto-dev) · ⭐ 3k+ · 中英
   - **国产 JetBrains AI 编程插件**，支持自定义 Agent + 中文 DevIns 脚本
   - IDEA/PyCharm 生态里的 AI 编程选择
 

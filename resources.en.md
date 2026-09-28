@@ -75,7 +75,7 @@
   - Anthropic's official course collection: Prompt, Tool use, RAG, MCP
   - The full Anthropic syllabus in one place
 
-- [anthropics/anthropic-cookbook](https://github.com/anthropics/anthropic-cookbook) · ⭐ high · EN
+- [anthropics/claude-cookbooks](https://github.com/anthropics/claude-cookbooks) · ⭐ high · EN
   - Claude API practical examples: multimodal, tool use, RAG, Agent patterns
   - Reference when building custom AI coding tools on top of Claude
 
@@ -127,7 +127,7 @@
   - Phodal Huang's book "Building LLM Applications"
   - AI coding architect's perspective, engineering and team adoption
 
-- [unit-mesh/auto-dev](https://github.com/unit-mesh/auto-dev) · ⭐ 3k+ · ZH/EN
+- [unit-mesh/auto-dev](https://github.com/phodal/auto-dev) · ⭐ 3k+ · ZH/EN
   - **Domestic Chinese JetBrains AI coding plugin** with custom Agent + Chinese DevIns scripts
   - AI coding option for IDEA/PyCharm ecosystem
 

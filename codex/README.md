@@ -386,7 +386,7 @@ $skill-creator                 # 用 $ 前缀显式触发某个技能
 - 给目标和约束，**别 railroad**（强制每一步怎么做），让模型自己决策路径
 - 加一个 `## Gotchas` 段，把 Codex 在这个领域常踩的坑记下来——这是最高信号的内容
 
-> 现成 Skill 库可以直接抄：[ComposioHQ/awesome-codex-skills](https://github.com/ComposioHQ/awesome-codex-skills)、[VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills)（跨工具）
+> 现成 Skill 库可以直接抄：[ComposioHQ/awesome-codex-skills](https://github.com/composio-community/awesome-codex-skills)、[VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills)（跨工具）
 
 ### 7. Hooks — 在 Agent 循环里挂自定义脚本（beta）
 
@@ -691,7 +691,7 @@ codex execpolicy check --rules .codex/rules/safety.rules git push --force
 
 - [**RoggeOhta/awesome-codex-cli**](https://github.com/RoggeOhta/awesome-codex-cli) — 280+ 资源大全（Subagent / Skill / Plugin / MCP / IDE 集成 / CI），按类别整理
 - [**shanraisshan/codex-cli-best-practice**](https://github.com/shanraisshan/codex-cli-best-practice) — 50 条战场验证的提示词技巧 + 完整 .codex/ 实现样例（已对齐 v0.125.0）
-- [**ComposioHQ/awesome-codex-skills**](https://github.com/ComposioHQ/awesome-codex-skills) — 38 个常用 Skill（开发工具 / 数据分析 / Composio 1000+ SaaS 集成）
+- [**ComposioHQ/awesome-codex-skills**](https://github.com/composio-community/awesome-codex-skills) — 38 个常用 Skill（开发工具 / 数据分析 / Composio 1000+ SaaS 集成）
 - [**VoltAgent/awesome-codex-subagents**](https://github.com/VoltAgent/awesome-codex-subagents) — 136+ subagent 跨 10 个领域（开发 / 安全 / 基建 / 数据 / DX）
 - [**hashgraph-online/awesome-codex-plugins**](https://github.com/hashgraph-online/awesome-codex-plugins) — 第一个 Plugin marketplace 索引
 - [**agents.md**](https://agents.md) — 跨工具 AGENTS.md 标准（已被 60k+ 项目采用，Codex / Claude Code / Gemini CLI 通用）
