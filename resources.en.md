@@ -2,7 +2,7 @@
 
 # Further Learning Resources
 
-> This project covers "how to use the 9 tools well." To go deeper, here's a curated external resource list. **Quality over completeness** — every entry states **when it's worth your time**.
+> This project covers "how to use the 10 tools well." To go deeper, here's a curated external resource list. **Quality over completeness** — every entry states **when it's worth your time**.
 >
 > Snapshot date: **2026-04**. Report dead links via Issue.
 
@@ -155,7 +155,7 @@
 
 ## 📌 This Project vs External Resources
 
-This project's scope is **"practical Chinese AI coding guide"** — covering the 9 tools in depth. External resources complement, not duplicate:
+This project's scope is **"practical Chinese AI coding guide"** — covering the 10 tools in depth. External resources complement, not duplicate:
 
 ```
 External: teaches principles and generic methods

@@ -14,7 +14,7 @@ Write a [`pitfalls/<tool>.md`](./pitfalls/README.en.md) entry for a pitfall you 
 
 Format: Symptom / Cause / Recovery / Prevention. Full template in [pitfalls/README.en.md](./pitfalls/README.en.md).
 
-Tools not yet covered: Windsurf / Gemini CLI / Kiro / Trae / OpenClaw.
+Tools not yet covered: Codex CLI / Windsurf / Gemini CLI / Kiro / Trae / OpenClaw.
 
 ### 🔥 Practical tool tips
 
@@ -71,7 +71,7 @@ If CI is red, check the Actions output and fix.
 cheatsheet.md             — 9-tool cheatsheet (comparison + command reference)
 ecosystem.md              — Related ecosystem projects (superpowers / agents / etc.)
 
-<tool>/README.md          — Full guide for one tool (9 tools total)
+<tool>/README.md          — Full guide for one tool (10 tools total)
 <tool>/templates/         — Copy-ready config templates
 
 common/xxx.md             — Cross-tool methodologies (prompting / debugging / ...)

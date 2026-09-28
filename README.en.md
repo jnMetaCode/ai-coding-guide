@@ -47,7 +47,7 @@
 | Cost-conscious / solo dev | [Cheatsheet](cheatsheet.en.md) → [Gemini CLI](gemini-cli/) or [Aider](aider/) + local models |
 | Team / high-quality delivery | [Kiro](kiro/) → [Code Review](common/code-review.en.md) → [Testing](common/testing.en.md) |
 
-**Already using AI tools?** Jump to: [Cheatsheet](cheatsheet.en.md) · [Advanced Tips](#9-tool-guides) · [Real-World Workflows](#real-world-workflows) · [Ecosystem](#ecosystem)
+**Already using AI tools?** Jump to: [Cheatsheet](cheatsheet.en.md) · [Advanced Tips](#10-tool-guides) · [Real-World Workflows](#real-world-workflows) · [Ecosystem](#ecosystem)
 
 ---
 
@@ -93,7 +93,7 @@ How real projects run end-to-end, and how different tools play to their strength
 | Workflow | Description |
 |----------|-------------|
 | [Real-World Scenarios](workflows/scenarios.en.md) | Refactor, collaborative dev, test backfill — 3 end-to-end scripts, copy and adapt |
-| [⚠️ Pitfalls](pitfalls/README.en.md) | Claude Code / Cursor / Copilot — 8 real-world traps each, with Symptom / Cause / Recovery / Prevention |
+| [⚠️ Pitfalls](pitfalls/README.en.md) | Claude Code / Cursor / Copilot / Aider — 31 real-world traps, with Symptom / Cause / Recovery / Prevention |
 | [Claude Code + Cursor](workflows/claude-code-cursor.en.md) | Claude Code for architecture & complex refactoring, Cursor for daily coding |
 | [Claude Code + Copilot](workflows/claude-code-copilot.en.md) | Claude Code for agentic tasks, Copilot for inline completions |
 | [Tool Selection Guide](workflows/tool-selection.en.md) | Which tool for which scenario — one table to rule them all |
