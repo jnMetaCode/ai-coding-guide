@@ -51,6 +51,8 @@ exclude = [
 
   # 对 CI 爬虫返回 403 的站点（人工访问正常）
   "^https?://platform\\.openai\\.com",
+  # 仅对中国大陆 IP 开放
+  "^https?://(www\\.)?trae\\.cn",
 
   # QQ 链接跳转
   "^https?://qm\\.qq\\.com",
