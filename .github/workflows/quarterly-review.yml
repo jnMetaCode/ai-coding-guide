@@ -1,0 +1,55 @@
+name: 季度内容核实提醒
+
+# AI 编程工具变化很快（改名、停服、配置格式变更），内容半年不核实就会大面积过时。
+# 每季度第一天自动开一个 Issue，列出需要对照官方文档复核的清单。
+# 已有未关闭的核实 Issue 时不重复创建。也可以在 Actions 页面手动触发。
+
+on:
+  schedule:
+    - cron: '0 1 1 1,4,7,10 *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  open-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 创建核实 Issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -e
+          gh label create content-review --color FBCA04 --description "定期内容核实" 2>/dev/null || true
+          open=$(gh issue list --label content-review --state open --json number --jq 'length')
+          if [ "$open" != "0" ]; then
+            echo "已有未关闭的核实 Issue，跳过"
+            exit 0
+          fi
+          quarter="$(date -u +%Y)-Q$(( ($(date -u +%-m) - 1) / 3 + 1 ))"
+          cat > body.md <<'MD'
+          对照各工具**官方文档 / changelog / release notes** 复核以下内容，中英同步修改。
+
+          ### 各工具页（重点：改名、停服、定价、配置文件格式、命令/flag、模型 ID）
+          - [ ] Claude Code — code.claude.com/docs、anthropics/claude-code CHANGELOG
+          - [ ] Codex CLI — learn.chatgpt.com、openai/codex releases
+          - [ ] Cursor — cursor.com/docs、cursor.com/changelog
+          - [ ] GitHub Copilot — docs.github.com/copilot、github.blog/changelog
+          - [ ] Devin Desktop（原 Windsurf）— docs.devin.ai/desktop
+          - [ ] Gemini CLI / Antigravity CLI — geminicli.com/docs、Google Developers Blog
+          - [ ] Kiro — kiro.dev/docs、kiro.dev/changelog
+          - [ ] Aider — aider.chat/HISTORY.html（关注维护状态）
+          - [ ] Trae — docs.trae.ai、trae.ai/pricing
+          - [ ] OpenClaw — docs.openclaw.ai
+
+          ### 共享页面
+          - [ ] cheatsheet：能力矩阵、配置文件表、命令速查、定价
+          - [ ] 所有示例里的模型 ID 是否已退役（Anthropic / OpenAI / DeepSeek 的 deprecations 页）
+          - [ ] ecosystem：姐妹项目安装方式与数字
+          - [ ] resources：仓库是否改名 / 归档，星数
+          - [ ] workflows/、common/ 里的工具推荐是否仍成立
+          - [ ] 更新各页「信息截止」日期，CHANGELOG 记一笔
+          MD
+          gh issue create --title "🔍 季度内容核实 ${quarter}" --label content-review --body-file body.md

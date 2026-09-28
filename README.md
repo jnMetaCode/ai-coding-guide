@@ -30,7 +30,7 @@
 
 | 你是... | 推荐顺序 |
 |---------|---------|
-| 纯新手，还没用过 AI 编程 | [速查表](cheatsheet.md) → [Trae](trae/)（免费入门）→ [提示词工程](common/prompting.md) |
+| 纯新手，还没用过 AI 编程 | [速查表](cheatsheet.md) → [Copilot](copilot/) 免费版（VS Code 里直接用；国内网络选 [Trae](trae/) 国内版）→ [提示词工程](common/prompting.md) |
 | 前端 / 日常编码为主 | [Cursor](cursor/) → [提示词工程](common/prompting.md) → [实战场景](workflows/scenarios.md) |
 | 后端 / 重构 / 大项目 | [Claude Code](claude-code/) → [需求拆解](common/task-decomposition.md) → [实战场景](workflows/scenarios.md) |
 | 从 Copilot 迁来 | [Copilot](copilot/) → [Claude Code](claude-code/)（对比差异）→ [多工具选型](workflows/tool-selection.md) |
