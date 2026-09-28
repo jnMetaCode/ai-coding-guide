@@ -4,6 +4,32 @@
 
 > See `git log` for full commit history. This file records user-facing major updates.
 
+## September 2026 · Full Refresh Against Current Official Docs
+
+Nearly six months since the last verification — several tools were renamed, retired, or changed config formats. Every item was re-checked against official docs / source / release notes, in both languages.
+
+### ⚠️ Major Changes
+- **Windsurf → Devin Desktop** (renamed 2026-06, now under Cognition): page largely rewritten (Devin Local, Code/Plan/Ask modes, `.devin/rules/`)
+- **Gemini CLI**: stopped serving individual / free users on 2026-06-18; enterprise and paid API keys still work, individuals move to Antigravity CLI; context corrected to 1M
+- **Trae**: international edition removed Claude in 2025-09; IDE renamed TraeCode
+- **Aider**: added maintenance-status note (last release 2026-02, no native MCP)
+
+### 🔧 Fixes for Copy-Paste Errors
+- All retired model IDs replaced (`claude-sonnet-4-20250514`, `deepseek-chat`, `gpt-5.4`, etc.)
+- Codex: `codex exec` rejects `--ask-for-approval`; profiles are now separate `<name>.config.toml` files; `mcp-server` → `app-server`
+- Claude Code: skills must be `<name>/SKILL.md` folders; `.claude/rules/` uses `paths:`; only exit-2 hooks block
+- Cursor: rules must be `.mdc`; Notepads removed; Composer panel → Agent
+- Copilot: MCP config lives in `.vscode/mcp.json`; chatModes → `.github/agents/`
+- Kiro: steering `inclusion:` with four modes; new hooks format
+- OpenClaw: config keys, `models set` syntax, Node version
+- shellward: MCP / SDK usage synced to latest
+
+### 🔄 Other
+- Cheatsheet capability matrix refreshed (most tools now support Hooks / Subagents / MCP)
+- Each tool guide gets a compact "New in H2 2026" list
+- Resource star counts and renamed / archived repos updated
+- CI: fixed the persistently failing Link Check (book/src symlink false positives, etc.)
+
 ## Late April 2026 · OpenAI Codex CLI Guide Added
 
 ### 🆕 New Tool: Codex CLI (now 10 tools total)
