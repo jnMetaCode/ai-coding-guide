@@ -1,3 +1,10 @@
+---
+trigger: always_on
+---
+
+<!-- 用法：复制到项目的 .devin/rules/project.md（Devin Desktop，原 Windsurf；旧项目也可放 .windsurf/rules/）。
+     单文件上限 12,000 字符。.windsurfrules 根目录单文件仅作兼容保留，新项目不建议再用。 -->
+
 # 项目规则
 
 ## 项目背景
@@ -28,7 +35,7 @@
 - src/utils/     — 工具函数
 - src/types/     — TypeScript 类型定义
 
-## Cascade 行为
+## Agent 行为
 - 修改组件时自动检查 Props 类型是否完整
 - 修改 API 接口时提醒更新对应的 TypeScript 类型
 - 不要自动重构我没要求改的代码

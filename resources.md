@@ -2,7 +2,7 @@
 
 > 本项目讲"10 款工具怎么用好"。要继续深入，这里是精选外部资源。**不求全，只求高质量**——每个条目都说清楚"什么情况值得看"。
 >
-> 信息截止：**2026-04**。链接失效请提 Issue。
+> 信息截止：**2026-09**。链接失效请提 Issue。
 
 ---
 
@@ -25,15 +25,11 @@
   - Anthropic 官方 **9 章交互式 Prompt 教程**，可运行 Jupyter
   - 系统入门 Prompt 工程最快的路径，2-3 小时能跑完
 
-- [dair-ai/Prompt-Engineering-Guide](https://github.com/dair-ai/Prompt-Engineering-Guide) · ⭐ 60k+ · 英（有中文翻译）
+- [dair-ai/Prompt-Engineering-Guide](https://github.com/dair-ai/Prompt-Engineering-Guide) · ⭐ 75k+ · 英（有中文翻译）
   - Prompt 工程百科全书：CoT、ReAct、RAG、Tool-use 各种 pattern
   - 想深入原理、看各种技术名词对应什么场景时翻
 
-- [datawhalechina/prompt-engineering-for-developers](https://github.com/datawhalechina/prompt-engineering-for-developers) · ⭐ 13k+ · 中
-  - Datawhale 翻译的**吴恩达 Prompt 工程系列**+ 中文注解
-  - 中文用户看视频 + 跟代码的最佳组合
-
-- [phodal/prompt-patterns](https://github.com/phodal/prompt-patterns) · ⭐ 1k+ · 中
+- [phodal/prompt-patterns](https://github.com/phodal/prompt-patterns) · ⭐ 3k+ · 中
   - 国内知名架构师黄峰达写的 Prompt 模式与 DSL 设计指南
   - 写复杂 AI 编程工作流、设计可复用 Prompt 时的进阶参考
 
@@ -41,9 +37,9 @@
 
 ## 🛠️ 工具专项 Awesome 列表
 
-- [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) · ⭐ 30k+ · 英
-  - 社区收集的 `.cursorrules` 文件大全，按技术栈分类
-  - 新项目起手抄一份对应技术栈的 rules
+- [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) · ⭐ 40k+ · 英
+  - 社区收集的 Cursor 规则文件大全，按技术栈分类
+  - 新项目起手抄一份对应技术栈的 rules（注意新版 Cursor 要放进 `.cursor/rules/*.mdc`）
 
 - [hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) · ⭐ 高 · 英
   - Claude Code 社区最全资源：技巧、Skills、Hooks、工作流
@@ -51,15 +47,15 @@
 
 - [github/awesome-copilot](https://github.com/github/awesome-copilot) · ⭐ 高 · 英
   - GitHub 官方维护的 Copilot 资源集合
-  - 查 Copilot 的 instruction / Chat mode / Agent 示例
+  - 查 Copilot 的 instructions / 自定义 Agent / Skills 示例
 
 - [addyosmani/gemini-cli-tips](https://github.com/addyosmani/gemini-cli-tips) · ⭐ 中 · 英
   - Google 开发者 Addy Osmani 整理的 **30 个 Gemini CLI 技巧**
-  - Gemini CLI 用户直接抄作业
+  - Gemini CLI 用户直接抄作业（注：2025-10 后未更新；个人用户已需迁往 Antigravity CLI）
 
-- [detailobsessed/awesome-windsurf](https://github.com/detailobsessed/awesome-windsurf) · ⭐ 中 · 英
-  - Windsurf 社区资源集合（规则、工作流、MCP）
-  - 用 Windsurf Cascade 找社区模式
+- [detailobsessed/awesome-devin](https://github.com/detailobsessed/awesome-devin) · ⭐ 中 · 英
+  - 原 awesome-windsurf，Devin Desktop（原 Windsurf）社区资源集合（规则、工作流、MCP）
+  - 找 Devin Desktop 的社区规则和工作流
 
 ---
 
@@ -69,9 +65,9 @@
   - **官方仓库**，Issues 和 Discussions 是新功能 / 新技巧的一手信息源
   - 追 Claude Code 新特性（slash command / hooks / skill 新能力）
 
-- [anthropics/courses](https://github.com/anthropics/courses) · ⭐ 高 · 英
+- [anthropics/courses](https://github.com/anthropics/courses) · ⭐ 高 · 英（已归档）
   - Anthropic 官方课程合集：Prompt、Tool use、RAG、MCP 全套
-  - 想系统吃透 Anthropic 全家桶
+  - 仓库已归档不再更新，原理仍适用；新 API 用法以 cookbooks 为准
 
 - [anthropics/claude-cookbooks](https://github.com/anthropics/claude-cookbooks) · ⭐ 高 · 英
   - Claude API 实战示例：多模态、工具调用、RAG、Agent 模式
@@ -113,21 +109,21 @@
 
 ## 🇨🇳 中文优秀资源
 
-- [datawhalechina/llm-cookbook](https://github.com/datawhalechina/llm-cookbook) · ⭐ 22k+ · 中
-  - Datawhale 的 LLM 开发中文指南合集
+- [datawhalechina/llm-cookbook](https://github.com/datawhalechina/llm-cookbook) · ⭐ 25k+ · 中
+  - Datawhale 的 LLM 开发中文指南合集（含**吴恩达 Prompt 工程系列**中文版，原 prompt-engineering-for-developers 已并入）
   - 把 LLM 能力嵌入自己项目时的中文参考手册
 
-- [liaokongVFX/LangChain-Chinese-Getting-Started-Guide](https://github.com/liaokongVFX/LangChain-Chinese-Getting-Started-Guide) · ⭐ 8k+ · 中
+- [liaokongVFX/LangChain-Chinese-Getting-Started-Guide](https://github.com/liaokongVFX/LangChain-Chinese-Getting-Started-Guide) · ⭐ 9k+ · 中
   - LangChain 中文入门指南：Agent / Chain / Memory
   - 自己造 AI 编程工具、Agent 型助手的基础
 
-- [phodal/aigc](https://github.com/phodal/aigc) · ⭐ 1k+ · 中
+- [phodal/aigc](https://github.com/phodal/aigc) · ⭐ 1.5k+ · 中
   - 黄峰达《构筑大语言模型应用》电子书
   - AI 编程架构师视角，适合看工程化与团队落地
 
-- [unit-mesh/auto-dev](https://github.com/phodal/auto-dev) · ⭐ 3k+ · 中英
-  - **国产 JetBrains AI 编程插件**，支持自定义 Agent + 中文 DevIns 脚本
-  - IDEA/PyCharm 生态里的 AI 编程选择
+- [phodal/auto-dev](https://github.com/phodal/auto-dev) · ⭐ 4k+ · 中英
+  - 黄峰达主导的 AI 编程平台，从 JetBrains 插件演进为 Kotlin 多平台多 Agent 平台
+  - IDEA/PyCharm 生态里的国产 AI 编程选择
 
 ---
 

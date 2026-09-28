@@ -2,7 +2,9 @@
 
 # Gemini CLI Best Practices
 
-> Gemini CLI is Google's command-line AI coding tool. Its biggest advantages: **generous free tier + massive context window (2M tokens)**. Great for large codebase analysis, long-running tasks, and budget-conscious individual developers.
+> ⚠️ **Important change (since 2026-06-18)**: According to the [Google Developers Blog](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/), Gemini CLI **no longer serves individual users** (free Gemini Code Assist for individuals and Google AI Pro / Ultra sign-ins no longer work). Enterprise users (Gemini Code Assist Standard / Enterprise) and **paid Gemini API keys** still work, and Google continues to ship updates and support for enterprise users. Individual developers should switch to **Antigravity CLI**, which keeps Skills, Hooks, and Subagents, with Extensions becoming Antigravity plugins.
+
+> Gemini CLI is Google's command-line AI coding tool. Its biggest advantage: **a massive context window (1M tokens on Gemini 3 models)**. Great for large codebase analysis and long-running tasks.
 
 ---
 
@@ -13,8 +15,10 @@
 | **GEMINI.md** | Project configuration file | Similar to Claude Code's CLAUDE.md |
 | **Tools** | Built-in tools (read/write files, run commands, etc.) | Foundation for Agent capabilities |
 | **Extensions** | Plugins | Connect to Google services and third-party APIs |
-| **Context Window** | 2M tokens | Understand massive codebases in a single pass |
+| **Context Window** | 1M tokens (Gemini 3 models) | Understand massive codebases in a single pass |
 | **Sandbox** | Security sandbox | Isolate execution of untrusted code |
+| **Skills** | `.gemini/skills/` or `.agents/skills/` | Manage with `gemini skills install / list / uninstall` |
+| **Other built-ins** | Native MCP, Hooks, Subagents, Plan Mode, Policy Engine, checkpointing, headless mode | Broadly on par with Claude Code / Codex |
 
 ---
 
@@ -24,9 +28,12 @@
 
 ```bash
 npm install -g @google/gemini-cli
+
+# or Homebrew
+brew install gemini-cli
 ```
 
-After installation, run `gemini` to enter interactive mode and follow the prompts to log in with your Google account.
+After installation, run `gemini` to enter interactive mode and sign in with an enterprise Google account (Code Assist Standard / Enterprise), or set a paid `GEMINI_API_KEY`. Personal Google account sign-in has not worked since 2026-06-18.
 
 > For the latest installation instructions, see the [official repository](https://github.com/google-gemini/gemini-cli).
 
@@ -58,7 +65,7 @@ This is a Go microservices project with 12 services.
 
 ## Using the Large Context Window Effectively
 
-Gemini CLI's 2M token context window is its core advantage. But bigger isn't always better — the key is using it right.
+Gemini CLI's 1M token context window is its core advantage. But bigger isn't always better — the key is using it right.
 
 ### Good Use Cases for Large Context
 
@@ -89,7 +96,7 @@ Do NOT use large context as a substitute for precise investigation
 
 ## Prompting Tips
 
-### 1. Leverage the Free Tier for Batch Analysis
+### 1. Batch Analysis
 
 ```
 Check error handling in every Go file under src/:
@@ -128,12 +135,12 @@ Sort by migration priority.
 
 | Dimension | Gemini CLI | Claude Code |
 |-----------|-----------|-------------|
-| Context window | **2M tokens** (largest) | 200K tokens |
-| Free tier | **Generous** | Limited |
+| Context window | 1M tokens (Gemini 3) | 1M tokens (Opus 5.5 / Sonnet 5.5) |
+| Individual users | No longer served since 2026-06-18 (enterprise accounts / paid API keys only) | Pro / Max subscriptions or API |
 | Agent capabilities | 2/3 | 3/3 |
 | Tool ecosystem | Strong Google services integration | Richest MCP ecosystem |
-| Skill support | Yes (`.gemini/skills/`) | Yes (`.claude/skills/`) |
-| Best for | Large codebase analysis, budget-conscious | Complex Agent tasks, strong execution needed |
+| Skill support | Yes (`.gemini/skills/` or `.agents/skills/`) | Yes (`.claude/skills/`) |
+| Best for | Large codebase analysis, teams already on Google enterprise plans | Complex Agent tasks, strong execution needed |
 
 **Recommended combo**: Use Gemini CLI for large-scale analysis and comprehension, use Claude Code for precise modifications and execution.
 
@@ -143,8 +150,8 @@ Sort by migration priority.
 
 | Pitfall | Description | Solution |
 |---------|-------------|----------|
-| Too much context slows things down | Filling the full 2M is slow to process | Only use large context when you need a global view |
-| Free tier runs out | Heavy usage triggers rate limits | Plan ahead, batch large tasks together |
+| Too much context slows things down | Filling the full 1M is slow to process | Only use large context when you need a global view |
+| Personal account sign-in fails | Individual users are no longer served since 2026-06-18 | Switch to Antigravity CLI, or use an enterprise account / paid API key |
 | Weaker tooling than Claude Code | File ops and command execution not as strong | Use Gemini for analysis, Claude Code for execution |
 
 ---

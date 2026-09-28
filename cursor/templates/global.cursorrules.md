@@ -1,6 +1,9 @@
 ---
-globs: ["**/*"]
+description: 全局规则（技术栈、代码风格、禁止事项）
+alwaysApply: true
 ---
+
+<!-- 用法：保存为 .cursor/rules/global.mdc（扩展名必须是 .mdc，普通 .md 会被忽略） -->
 
 # 全局规则
 

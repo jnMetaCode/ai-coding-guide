@@ -1,6 +1,10 @@
 ---
-globs: ["src/app/api/**/*", "src/api/**/*"]
+description: API 开发规则（接口格式、安全、命名）
+globs: src/app/api/**/*,src/api/**/*
+alwaysApply: false
 ---
+
+<!-- 用法：保存为 .cursor/rules/api.mdc（扩展名必须是 .mdc，普通 .md 会被忽略） -->
 
 # API 开发规则
 

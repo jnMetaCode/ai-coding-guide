@@ -15,7 +15,7 @@
 
 | 依赖 | 最低版本 | 检查命令 | 安装方式 |
 |------|---------|---------|---------|
-| **Node.js** | 18+ | `node -v` | [nodejs.org](https://nodejs.org) |
+| **Node.js** | 20+ | `node -v` | [nodejs.org](https://nodejs.org) |
 | **npm** | 9+ | `npm -v` | 随 Node.js 安装 |
 | **Git** | 2.0+ | `git -v` | [git-scm.com](https://git-scm.com) |
 | **AI 编程工具** | 任意一个 | — | 至少装一个：Claude Code / Cursor / Copilot / Windsurf 等 |
@@ -38,7 +38,7 @@ cd /your/project
 npx superpowers-zh
 ```
 
-安装器会自动检测你项目中使用的工具（Claude Code / Cursor / Copilot / Windsurf 等 14 种），将 20 个 skills 安装到正确位置。
+安装器会自动检测你项目中使用的工具（Claude Code / Codex CLI / Cursor / Kiro / Gemini CLI 等 26 种），将 21 个 skills 安装到正确位置。
 
 ### 验证安装成功
 
@@ -47,7 +47,7 @@ npx superpowers-zh
 ```bash
 # Claude Code 用户
 ls .claude/skills/
-# 应该看到 brainstorming.md、systematic-debugging.md 等 20 个文件
+# 应该看到 brainstorming/、systematic-debugging/ 等 21 个 skill 目录（每个目录里一个 SKILL.md）
 
 # Cursor 用户
 ls .cursor/skills/
@@ -97,7 +97,7 @@ AI：在开始实现之前，我需要了解几个关键问题：
 
 | 问题 | 解决 |
 |------|------|
-| `npx superpowers-zh` 报错 | 检查 Node.js 版本（需要 18+）：`node -v` |
+| `npx superpowers-zh` 报错 | 检查 Node.js 版本（需要 20+）：`node -v` |
 | 安装后 AI 行为没变化 | 重启 AI 工具（关掉再打开），让它重新加载 skills |
 | 想卸载 | 删除对应目录即可，如 `rm -rf .claude/skills/` |
 
@@ -134,7 +134,7 @@ cd agency-agents-zh
 
 ```bash
 # Claude Code 用户 —— 检查是否有角色文件
-ls ~/.claude/skills/ | head -10
+ls ~/.claude/agents/ | head -10
 # 应该看到 engineering-security-engineer.md 等文件
 
 # 或者直接问 AI：
@@ -210,9 +210,11 @@ AI：（激活 database-optimizer 角色）
 # 全局安装（推荐，之后可以直接用 ao 命令）
 npm install -g agency-orchestrator
 
-# 初始化：下载 276 个角色定义到本地
+# 零配置先体验（不需要 init）
+ao demo
+
+# （可选）把 276 个中文角色复制到本地，方便自己修改
 ao init
-# 角色文件会下载到 ~/.ao/roles/ 目录
 ```
 
 ### 快速体验（无需 API Key）
@@ -349,7 +351,7 @@ npm install shellward
 
 | 防护 | 说明 |
 |------|------|
-| 提示词注入检测 | 32 条规则（18 条中文 + 14 条英文），风险评分 |
+| 提示词注入检测 | 37 条规则（20 条中文 + 17 条英文），风险评分；另含 MCP 工具投毒 / rug-pull 检测 |
 | 危险命令拦截 | `rm -rf`、反弹 shell、fork bomb、`chmod 777` 等 |
 | PII 检测 | 身份证、银行卡、手机号、SSN、信用卡、API Key、JWT |
 | 数据外泄链检测 | 读取敏感数据 → 发邮件/HTTP POST/curl = 拦截 |
@@ -363,24 +365,17 @@ npm install shellward
 
 适用于 Claude Desktop / Cursor / Claude Code 等支持 MCP 的工具。
 
-把以下配置加到你的 MCP 配置文件里：
-
-```bash
-# 先找到 shellward 的安装路径
-npm list -g shellward    # 全局安装的路径
-# 或
-ls node_modules/shellward/src/mcp-server.ts    # 项目内安装的路径
-```
+把以下配置加到你的 MCP 配置文件里（`npx` 会自动拉取 `shellward-mcp`，不用找安装路径）：
 
 ```json
 // Claude Desktop: ~/Library/Application Support/Claude/claude_desktop_config.json
 // Cursor: .cursor/mcp.json
-// Claude Code: .claude/settings.json 的 mcpServers 部分
+// Claude Code: 项目根目录 .mcp.json（或 claude mcp add）
 {
   "mcpServers": {
     "shellward": {
       "command": "npx",
-      "args": ["shellward", "--mcp"]
+      "args": ["-y", "-p", "shellward", "shellward-mcp"]
     }
   }
 }
@@ -391,14 +386,15 @@ ls node_modules/shellward/src/mcp-server.ts    # 项目内安装的路径
 3 行代码集成到任何 AI Agent 框架（LangChain、AutoGPT 等）：
 
 ```javascript
-const { ShellWard } = require('shellward');
-const guard = new ShellWard();
+import { ShellWard } from 'shellward';
+const guard = new ShellWard({ mode: 'enforce' });
 
-// 在 Agent 执行工具调用之前检查
-const result = guard.check(toolCall);
+// 在 Agent 执行命令之前检查
+const result = guard.checkCommand(cmd);
 if (!result.allowed) {
   console.log(`已拦截：${result.reason}`);
 }
+// 另有 checkInjection / scanData / checkOutbound
 ```
 
 ### 效果对比
@@ -524,13 +520,13 @@ npm install shellward
 然后配置 MCP，让 AI 工具在执行操作时经过 shellward 检查：
 
 ```json
-// 加到 .claude/settings.json（Claude Code）
+// 加到 .mcp.json（Claude Code，项目根目录）
 // 或 .cursor/mcp.json（Cursor）
 {
   "mcpServers": {
     "shellward": {
       "command": "npx",
-      "args": ["shellward", "--mcp"]
+      "args": ["-y", "-p", "shellward", "shellward-mcp"]
     }
   }
 }
