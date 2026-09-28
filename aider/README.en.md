@@ -3,6 +3,8 @@
 # Aider Best Practices
 
 > Aider is an open-source CLI AI coding tool. Its defining feature is being **Git-native** — every change is auto-committed, with built-in version control support. It works with virtually all major LLMs (Claude, GPT, DeepSeek, Qwen, local models), making it the most flexible AI coding CLI out there.
+>
+> ⚠️ **Maintenance status (verified 2026-09)**: the latest PyPI release is still 0.86.2 (published 2026-02-12), and the last GitHub commit was around 2026-05 — development has clearly slowed. There is **no native MCP support**. Built-in model metadata lags behind new model releases, so newer models need a bit of manual config (see "New model config" below).
 
 ---
 
@@ -12,7 +14,7 @@
 |---------|-------------|----------|
 | **Chat Modes** | `code` / `ask` / `architect` | Different modes for different tasks |
 | **Auto Git Commits** | Every change auto-committed | Roll back anytime |
-| **Map Mode** | Auto-indexes project structure | Understand large codebases |
+| **Repo Map** | Extracts key symbols and their definition lines (signatures), graph-ranked by references | Understand large codebases |
 | **Multi-Model Support** | Claude/GPT/DeepSeek/Ollama etc. | Flexible selection, cost control |
 | **Lint & Test** | Built-in code checking and testing | Auto-verify after changes |
 
@@ -23,7 +25,9 @@
 ### Installation
 
 ```bash
-pip install aider-chat
+python -m pip install aider-install && aider-install
+# Or: uv tool install --force --python python3.12 --with pip aider-chat@latest
+# Or: pipx install aider-chat
 
 # Set an API key (pick one)
 export ANTHROPIC_API_KEY=sk-xxx    # Claude
@@ -37,15 +41,17 @@ export DEEPSEEK_API_KEY=sk-xxx     # DeepSeek
 cd /your/project
 aider
 
-# Specify a model
-aider --model claude-sonnet-4-5
+# Specify a model (pass the latest Claude model ID explicitly)
+aider --model anthropic/claude-sonnet-5-5
 
 # Use DeepSeek (cheaper)
-aider --model deepseek/deepseek-chat
+aider --model deepseek/deepseek-v4-pro
 
 # Use a local model (free)
-aider --model ollama/qwen2.5-coder
+aider --model ollama/qwen3-coder
 ```
+
+> The built-in aliases are outdated: `--model sonnet` → `claude-sonnet-4-6`, `--model opus` → `claude-opus-4-7`, and `--model deepseek` still points to `deepseek/deepseek-chat`, which was retired on 2026-07-24. Always spell out the full model ID.
 
 ### Three Chat Modes
 
@@ -108,23 +114,25 @@ git log --oneline  # View Aider's commit history
 git diff HEAD~1    # See the last change
 git revert HEAD    # Not happy? One-command rollback
 
-# Set a custom commit prefix
-aider --commit-prefix "[ai] "
+# Mark AI commits: a Co-authored-by trailer is added by default; tune it with the --attribute-* flags
+aider --attribute-commit-message-author   # Prefix commit messages for AI changes with "aider: "
+# Customize the commit message style
+aider --commit-prompt "Write commit messages in Conventional Commits format"
 ```
 
 ### 4. Multi-Model Strategy
 
 ```bash
 # Complex architecture design — use the strongest model
-aider --model claude-sonnet-4-5
+aider --model anthropic/claude-opus-5-5
 /architect Design a microservices split plan
 
 # Daily coding — use a cost-effective model
-aider --model deepseek/deepseek-chat
+aider --model deepseek/deepseek-v4-pro
 /code Implement user-service according to the plan
 
 # Code review — use a free local model
-aider --model ollama/qwen2.5-coder
+aider --model ollama/qwen3-coder
 /ask Any issues with this code?
 ```
 
@@ -136,13 +144,27 @@ aider --model ollama/qwen2.5-coder
 
 ```yaml
 # .aider.conf.yml
-model: claude-sonnet-4-5
+model: anthropic/claude-sonnet-5-5
 auto-commits: true
 auto-lint: true
 auto-test: true
 test-cmd: pytest
 lint-cmd: ruff check
 ```
+
+### New Model Config — `.aider.model.settings.yml`
+
+Aider sends a `temperature` parameter by default, but newer Claude models (Sonnet 5.5, Opus 5.5, etc.) reject non-default temperature values with a 400 error. Add this to your project root or home directory:
+
+```yaml
+# .aider.model.settings.yml
+- name: anthropic/claude-sonnet-5-5
+  edit_format: diff
+  use_repo_map: true
+  use_temperature: false
+```
+
+For models missing from Aider's built-in metadata, you'll get an "unknown context window" warning on startup. It's usually safe to ignore, or you can fill it in via `.aider.model.metadata.json`.
 
 ### Lint + Test Automation
 
@@ -183,16 +205,18 @@ git push -u origin feature/add-notifications
 | Cost control | 3/3 (free models available) | 1/3 | 3/3 |
 | Best for | Flexibility, saving money, Git power users | Complex Agent tasks | Large codebase analysis |
 
+> Gemini CLI stopped serving individual/free users (including Google AI Pro/Ultra subscribers) on 2026-06-18. Enterprise licenses and paid API keys still work; the official migration path for individuals is Antigravity CLI. The "Cost control" row no longer applies to individual users.
+
 ---
 
 ## Common Pitfalls
 
 | Pitfall | Description | Solution |
 |---------|-------------|----------|
-| Auto-commit swallows WIP | Auto-commit sweeps your unstaged changes into the commit | `git stash` before session, or use a dedicated branch |
+| Auto-commit commits your edits too | If a file Aider is about to edit has your uncommitted changes, it first commits them separately (`--dirty-commits` is on by default) | Commit/`git stash` yourself before the session, use `--no-dirty-commits`, or work on a dedicated branch |
 | `/add` misses deps | Incomplete context, AI guesses from filenames | Have it `/ask` list dependencies first, then `/add` all of them |
 | Model-switch quality drop | Cheaper model → cliff drop in output quality | Switch by task type; return to Claude for complex work |
-| Lint loop burns tokens | `auto-lint` retries failing checks via LLM | `--max-reflections 3`, use `--fix` linters |
+| Lint loop burns tokens | `auto-lint` retries failing checks via LLM | Use `--fix` linters; if it still loops, turn it off with `--no-auto-lint` |
 
 👉 **Deep dive**: [Aider Pitfalls](../pitfalls/aider.en.md) — 7 real-world traps, each with Symptom / Cause / Recovery / Prevention
 
@@ -209,5 +233,5 @@ git push -u origin feature/add-notifications
 ## Further Reading
 
 - [Aider Official Docs](https://aider.chat/docs/)
-- [Aider GitHub](https://github.com/Aider-AI/aider) (42k+ stars)
+- [Aider GitHub](https://github.com/Aider-AI/aider) (49k+ stars)
 - [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) — Skills methodology (also supports Aider)

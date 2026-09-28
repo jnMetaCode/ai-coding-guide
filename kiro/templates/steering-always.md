@@ -1,5 +1,5 @@
 ---
-mode: always
+inclusion: always
 ---
 
 # 项目规则
