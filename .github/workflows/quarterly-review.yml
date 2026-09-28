@@ -52,5 +52,4 @@ jobs:
           - [ ] workflows/、common/ 里的工具推荐是否仍成立
           - [ ] 更新各页「信息截止」日期，CHANGELOG 记一笔
           MD
-          sed -i 's/^          //' body.md
           gh issue create --title "🔍 季度内容核实 ${quarter}" --label content-review --body-file body.md
