@@ -1,6 +1,6 @@
 # GitHub Copilot 陷阱合集
 
-> Copilot 是最老牌的 AI 编程工具，也最容易被低估——以为就是补全，结果 Agent 模式和 MCP 支持都挺深。8 个常见坑。
+> Copilot 是最老牌的 AI 编程工具，也最容易被低估——以为就是补全，结果 Agent 模式和 MCP 支持都挺深。8 个常见坑。信息更新于 2026-09。
 >
 > 踩过新坑？提 Issue 或 PR。
 
@@ -37,7 +37,7 @@ import { useQuery } from '@tanstack/react-query';
 
 ---
 
-## 陷阱 2：Agent 模式改了 `.env` 或敏感文件
+## 陷阱 2：Agent 模式读了 `.env` 或敏感文件
 
 **症状**
 - 让 Copilot Agent 改个配置，它顺手扫了 `.env` 把 key 读进上下文
@@ -45,34 +45,22 @@ import { useQuery } from '@tanstack/react-query';
 - 最坏：补全建议里带出了真实的 secret
 
 **根因**
-Copilot 的 exclude 配置不是默认启用的。`.gitignore` 里的文件 Copilot 依然会读。`.env`、`.aws/credentials`、`id_rsa` 这类敏感文件如果不显式排除，都在它的感知范围。
+`.gitignore` 里的文件 Copilot 依然可能读到。GitHub 提供的 **Content Exclusion（内容排除）** 只能在仓库 / 组织 / 企业级由管理员配置，而且官方文档明确写着：**IDE 里 Copilot Chat 的 Agent 模式不支持内容排除**。也就是说，即使配了排除规则，Agent 模式照样可能读到 `.env`、`.aws/credentials`、`id_rsa` 这类文件。
+
+（早期流传的 `github.copilot.advanced.exclude` 设置并不是官方的排除机制，别指望它。）
 
 **出坑**
-立刻在 `.vscode/settings.json` 加排除：
-
-```json
-{
-  "github.copilot.enable": {
-    "*": true,
-    "env": false,
-    "secrets": false
-  },
-  "github.copilot.advanced": {
-    "exclude": ["**/.env*", "**/secrets/**", "**/*.pem", "**/*.key"]
-  }
-}
-```
-
-如果敏感信息已经进了 Chat 历史：清空 Chat（`Ctrl+L` 或面板里清除），**并轮换相关密钥**。
+如果敏感信息已经进了 Chat 历史：开一个新会话 / 清空当前会话，**并立即轮换相关密钥**。
 
 **预防**
-- 项目初始化就配好 exclude，不要等出事
-- 用 GitHub 的 Copilot Content Exclusion（企业版）做组织级兜底
-- 敏感配置用 `direnv` / `1Password CLI` 等从非项目目录注入，不落地
+- **敏感信息别放在项目目录里**：用 `direnv` / `1Password CLI` 等从项目外注入，不落地
+- 仓库 / 组织层面配好 Content Exclusion，至少能覆盖补全和普通 Chat（对 Agent 模式无效）
+- Agent 执行读文件、跑命令前留意确认提示，别无脑全部批准
+- 在 instructions 里写明"不要读取 `.env*`、`*.pem`、`*.key`"——这是软约束，只能降低概率
 
 ---
 
-## 陷阱 3：`.github/copilot-instructions.md` 太长被忽略
+## 陷阱 3：`.github/copilot-instructions.md` 太长，重点被淹没
 
 **症状**
 - 你在 instructions 里写了 20 条规则
@@ -80,76 +68,85 @@ Copilot 的 exclude 配置不是默认启用的。`.gitignore` 里的文件 Copi
 - 尤其 Chat 窗口里提问时，细节规则几乎不生效
 
 **根因**
-copilot-instructions.md 超过 ~150 行时效果显著下降。Copilot 在注入上下文时会做截断，靠后的内容被牺牲。
+instructions 会整体注入上下文，写得越长、越杂，每条规则的"分量"越低；和当前任务无关的规则还会挤占注意力。
 
 **出坑**
 拆文件：
-- 核心不变规则 → `.github/copilot-instructions.md`（< 100 行）
-- 场景化规则 → `.github/chatModes/` 下各自的 `.chatmode.md`
+- 核心不变规则 → `.github/copilot-instructions.md`（尽量短）
+- 按路径生效的规则 → `.github/instructions/*.instructions.md`，用 `applyTo` 指定 glob
 - 专项角色 → `.github/agents/` 下各自的 `.agent.md`
+- 成套方法论 → Agent Skills（`.github/skills/`）
 
 **预防**
 Instructions 里**只放跨场景的全局规则**（技术栈、命名、禁止事项）。具体场景规则：
 
 ```
 .github/
-├── copilot-instructions.md     # 核心规则
-├── chatModes/
-│   ├── security-review.md      # 安全审查专用
-│   └── write-tests.md          # 写测试专用
+├── copilot-instructions.md          # 核心规则
+├── instructions/
+│   ├── python.instructions.md       # applyTo: "**/*.py"
+│   └── tests.instructions.md        # applyTo: "tests/**"
 └── agents/
-    └── migration-helper.md     # 迁移项目专用
+    ├── security-reviewer.agent.md   # 安全审查专用
+    └── migration-helper.agent.md    # 迁移项目专用
 ```
 
 ---
 
-## 陷阱 4：`#file` 引用的 vs `@workspace` 找到的不一致
+## 陷阱 4：`#file` 引用的 vs Agent 自己搜到的不一致
 
 **症状**
 - 你说 `#file:src/api/user.ts 按这个改`
 - Copilot 改得基本对，但不完全
-- 另一次你用 `@workspace` 让它找 user.ts，它提到了 2 个 user.ts（项目有两处重名）
+- 另一次你只说"改一下 user.ts"，Agent 自己搜索，找到了 2 个 user.ts（项目有两处重名）
 
 **根因**
 - `#file` 精确引用你给的路径
-- `@workspace` 会让 Copilot 自主搜索整个工作区
-- 项目里有重名文件时，`@workspace` 可能选错那个
+- Agent 模式会自动搜索整个代码库（`#codebase` 可以强制做一次语义搜索）
+- 项目里有重名文件时，自动搜索可能选错那个
 
 **出坑**
-明确路径 > 模糊索引：
+明确路径 > 模糊搜索：
 
 ```
-❌ @workspace 改一下 user.ts 的 register 方法
+❌ 改一下 user.ts 的 register 方法
 ✅ #file:src/api/v2/user.ts 改一下这里的 register 方法
 ```
 
 **预防**
 - 项目里避免重名文件（`user.ts` × 3 这种结构重构一下）
 - 如果必须重名，引用时用完整路径而非文件名
-- `@workspace` 只用于**探索**（"项目里有没有 XX"），不用于**指向**（"改 XX"）
+- 自动搜索 / `#codebase` 只用于**探索**（"项目里有没有 XX"），不用于**指向**（"改 XX"）
 
 ---
 
 ## 陷阱 5：MCP Server 配置了但没生效
 
 **症状**
-- 在 `.vscode/settings.json` 配了 `github.copilot.chat.mcpServers`
-- Chat 里该用 MCP 工具时它没用，走了别的路径
+- 配了 MCP server，Chat 里该用 MCP 工具时它没用，走了别的路径
 - 不报错，就是悄悄没用
 
 **根因**
-常见三种：
-1. MCP server 启动命令写错（`npx` 路径、参数顺序）
-2. MCP server 启动了但 Copilot 版本不支持（需要较新 VS Code + Copilot Chat）
-3. server 启动成功但工具 schema 定义有问题，Copilot 认不出
+常见四种：
+1. **配置位置或格式不对**：VS Code 的 MCP 配置在 `.vscode/mcp.json`，顶层键是 `servers`；写在 `settings.json` 里的旧 `github.copilot.chat.mcpServers` 不是当前的配置方式
+2. MCP server 启动命令写错（`npx` 路径、参数顺序）
+3. 当前不在 Agent 模式，或工具没在工具列表里勾选
+4. server 启动成功但工具 schema 定义有问题，Copilot 认不出
 
 **出坑**
-```
-# 在 Chat 里直接问
-你当前可以调用哪些 MCP 工具？列出来。
+```jsonc
+// .vscode/mcp.json
+{
+  "servers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
+    }
+  }
+}
 ```
 
-如果它列不出你配的工具 → MCP 没加载。看 VS Code 的 Output 面板 → Copilot Chat，找错误日志。
+然后命令面板运行 **MCP: List Servers**，选中你的 server → **Show Output** 看日志。Chat 视图里 MCP 出错时也会显示错误标记，点开可以直接看输出。
 
 **预防**
 - 先用官方示例 server（比如 `@modelcontextprotocol/server-filesystem`）验证 MCP 能接通
@@ -158,76 +155,84 @@ Instructions 里**只放跨场景的全局规则**（技术栈、命名、禁止
 
 ---
 
-## 陷阱 6：补全在 JetBrains 和 VS Code 行为不一致
+## 陷阱 6：JetBrains 和 VS Code 功能不同步
 
 **症状**
-- 团队里 VS Code 用户的补全质量明显比 JetBrains 用户好
-- 同一个 prompt 给的建议不一样
-- 共享 `.github/copilot-instructions.md` 后，VS Code 生效，JetBrains 部分生效
+- 团队里 VS Code 用户用上了某个新功能，JetBrains 用户那边还没有
+- 同一份配置在两边表现有差异
 
 **根因**
-- VS Code 是 Copilot 的主战场，新功能优先 ship
-- JetBrains 插件的 instructions 支持、MCP 支持、Agent 模式都滞后
-- 底层模型也可能不一样（JetBrains 插件有时用老模型）
+- VS Code 通常是 Copilot 新功能最先上线的地方
+- 不过差距已经明显缩小：JetBrains 的自定义 Agent、子 Agent、Plan Agent 已于 2026 年 3 月 GA，也支持 AGENTS.md / CLAUDE.md
+- 个别最新功能在 JetBrains 上仍可能晚一步，插件版本旧时差异更明显
 
 **出坑**
-要么全团队统一 IDE，要么接受 JetBrains 体验差一截。
+先把 JetBrains 的 Copilot 插件升到最新；遇到某个功能缺失，查一下官方文档里该功能的 IDE 支持情况。
 
 **预防**
-- 团队 AI 工具选型时，把 IDE 一致性当硬约束
-- JetBrains 用户补 instructions 时，在文件开头加上**复述式核心规则**（即使 instructions 不生效，开头几行总会被注入）
+- 团队共享的规则优先用两边都支持的格式（`.github/copilot-instructions.md`、`AGENTS.md`、`.agent.md`）
+- 依赖某个新功能前，先确认团队用的所有 IDE 都支持
+- 插件保持最新版
 
 ---
 
-## 陷阱 7：免费用户遇到隐形限流
+## 陷阱 7：AI Credits 用完 / 免费额度耗尽
 
 **症状**
-- 免费额度（Copilot Free）用得好好的，某天开始补全延迟暴涨
-- Chat 请求经常排队或直接拒绝（"已达使用上限"之类的提示）
-- 补全变慢、建议数量减少
+- Copilot Free 用得好好的，某天补全或 Chat 突然不能用了（"已达使用上限"之类的提示）
+- 付费用户月中发现 Agent 模式、代码审查开始提示额度不足
+- VS Code 里提示不一定醒目，容易忽略
 
 **根因**
-Copilot Free 有每月补全数和 Chat 次数上限。接近上限时会排队/限速，超出后直接拒绝请求。VS Code 里提示不一定醒目，容易忽略。企业版用户也可能遇到组织级配额。
+2026-06-01 起 Copilot 按 **GitHub AI Credits** 计费：
+- Chat、Agent 模式、代码审查、云端 Agent、Copilot CLI 等都消耗 Credits（代码审查还会消耗 GitHub Actions 分钟数）
+- 代码补全在付费套餐中不限量；Free 每月 2,000 次补全 + 少量 Credits
+- 每个套餐每月有包含额度（Pro 1,500 / Pro+ 7,000 / Max 20,000 Credits；Business 每人 1,900、Enterprise 每人 3,900），用完需要额外购买或等下个月
+- 高推理、大模型的请求消耗更快
 
 **出坑**
 - 在 GitHub 账户 → Copilot 设置页查看用量
-- 用量接近上限：升级 Pro / Pro+ / Business，或当月剩余时间依赖其他工具
+- 用量接近上限：升级 Pro / Pro+ / Max，设置额外支出上限，或当月剩余时间依赖其他工具
 
 **预防**
-- 高频使用者直接上 Pro（$10/月），别在 Free 上省
-- 团队用户和管理员对齐配额和使用策略
-- 建立"Copilot 挂了用谁"的 fallback（比如切 Claude Code 或 Cursor）
+- 高频使用者直接上 Pro（$10/月）或更高档，别在 Free 上省
+- 日常小任务用消耗低的模型，复杂任务再切大模型
+- 团队用户和管理员对齐额度和支出上限
+- 建立"Copilot 额度用完用谁"的 fallback（比如切 Claude Code 或 Cursor）
 
 ---
 
-## 陷阱 8：自定义 Chat Mode / Agent 不被发现
+## 陷阱 8：自定义 Agent 不被发现
 
 **症状**
-- 你在 `.github/chatModes/security-review.md` 写了个专家角色
-- 在 Chat 里输入 `@security-review`，Copilot 不识别
-- 或者识别了但行为和普通 Chat 没区别
+- 你写了个专家角色文件，在 Chat 里输入 `@security-review`，Copilot 不识别
+- 或者 Agent 下拉框里根本找不到它
+- 或者选中了但行为和普通 Chat 没区别
 
 **根因**
-- 文件名和 frontmatter 里的 `name` 字段不匹配
-- 没有 frontmatter 或字段缺失
-- VS Code / Copilot 版本太旧不支持自定义 Chat Mode
+- **调用方式不对**：自定义 Agent 不是用 `@名字` 调用的，要在 Chat 视图的 **Agent 下拉框**里选，或在输入框输入 `/agents` 打开列表
+- **还在用旧格式**：Chat Modes（`.github/chatModes/*.chatmode.md`）已弃用，现在叫自定义 Agent
+- **位置或扩展名不对**：必须是 `.github/agents/` 下的 `*.agent.md`（也支持 `.claude/agents/`）
+- frontmatter 缺失，或设置了 `user-invocable: false`（不在下拉框中显示）
 
 **出坑**
-检查 frontmatter 必备字段：
+把文件改名/移动到 `.github/agents/security-review.agent.md`，检查 frontmatter：
 
 ```markdown
 ---
-name: security-review       # 和文件名一致
+name: security-review
 description: Security review using OWASP Top 10
 ---
 
 # 后面是角色内容
 ```
 
+然后在 Agent 下拉框里选中它。
+
 **预防**
-- 拷一个官方示例 Chat Mode 文件，基于它改，别从零写
-- 改完重启 VS Code（不是重启 Copilot）
-- `.github/chatModes/*.md` 路径固定，别放错目录
+- 用命令面板的 **Chat: New Custom Agent** 生成文件，基于它改，别从零写
+- 老项目的 `.chatmode.md` 统一改名为 `.agent.md` 并挪到 `.github/agents/`
+- 需要工具限制时在 frontmatter 里写 `tools`，需要固定模型时写 `model`
 
 ---
 

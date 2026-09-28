@@ -2,7 +2,7 @@
 
 # GitHub Copilot Pitfalls
 
-> Copilot is the oldest AI coding tool and most underestimated — people think "it's just completion," but Agent mode and MCP support are deep. 8 real-world pitfalls.
+> Copilot is the oldest AI coding tool and most underestimated — people think "it's just completion," but Agent mode and MCP support are deep. 8 real-world pitfalls. Last updated: 2026-09.
 >
 > Hit a new one? Open an Issue or PR.
 
@@ -47,34 +47,22 @@ Declare key library versions and API style in `.github/copilot-instructions.md`:
 - Worst: completion suggestions leak real secrets
 
 **Cause**
-Copilot's exclude config isn't on by default. Files in `.gitignore` are still readable. `.env`, `.aws/credentials`, `id_rsa` are all in scope unless explicitly excluded.
+Files in `.gitignore` can still be read by Copilot. GitHub's **content exclusion** can only be configured by admins at the repository / organization / enterprise level, and the official docs state plainly: **agent mode in Copilot Chat in IDEs does not support content exclusion**. So even with exclusions configured, agent mode may still read `.env`, `.aws/credentials`, `id_rsa` and the like.
+
+(The widely shared `github.copilot.advanced.exclude` setting is not an official exclusion mechanism — don't rely on it.)
 
 **Recovery**
-Add excludes to `.vscode/settings.json`:
-
-```json
-{
-  "github.copilot.enable": {
-    "*": true,
-    "env": false,
-    "secrets": false
-  },
-  "github.copilot.advanced": {
-    "exclude": ["**/.env*", "**/secrets/**", "**/*.pem", "**/*.key"]
-  }
-}
-```
-
-If secrets already hit Chat history: clear Chat (`Ctrl+L` or panel button) **and rotate the affected keys**.
+If secrets already hit Chat history: start a new session / clear the current one **and rotate the affected keys immediately**.
 
 **Prevention**
-- Configure excludes at project init, don't wait for an incident
-- Enterprise: use GitHub's Copilot Content Exclusion as org-level backstop
-- Inject sensitive config via `direnv` / `1Password CLI` from outside the project dir
+- **Keep secrets out of the project directory**: inject them via `direnv` / `1Password CLI` from outside, never on disk in the repo
+- Configure content exclusion at repo / org level — it covers completions and regular Chat at least (not agent mode)
+- Pay attention to the agent's confirmation prompts before it reads files or runs commands; don't blanket-approve
+- State "don't read `.env*`, `*.pem`, `*.key`" in instructions — a soft constraint that only lowers the odds
 
 ---
 
-## Pitfall 3: `.github/copilot-instructions.md` Too Long, Silently Ignored
+## Pitfall 3: `.github/copilot-instructions.md` Too Long, Key Points Buried
 
 **Symptom**
 - You wrote 20 rules in instructions
@@ -82,76 +70,85 @@ If secrets already hit Chat history: clear Chat (`Ctrl+L` or panel button) **and
 - Especially in Chat, detail rules barely take effect
 
 **Cause**
-copilot-instructions.md effectiveness drops sharply past ~150 lines. Copilot truncates on context injection; trailing content gets cut.
+The instructions file is injected into context as a whole. The longer and messier it gets, the less weight each rule carries, and rules unrelated to the current task compete for attention.
 
 **Recovery**
 Split by role:
-- Stable core rules → `.github/copilot-instructions.md` (< 100 lines)
-- Scenario rules → `.github/chatModes/*.chatmode.md`
+- Stable core rules → `.github/copilot-instructions.md` (keep it short)
+- Path-scoped rules → `.github/instructions/*.instructions.md` with an `applyTo` glob
 - Specialist personas → `.github/agents/*.agent.md`
+- Full methodologies → Agent Skills (`.github/skills/`)
 
 **Prevention**
 Keep instructions **cross-scenario globals only** (tech stack, naming, forbidden patterns). Scenario-specific rules:
 
 ```
 .github/
-├── copilot-instructions.md     # Core rules
-├── chatModes/
-│   ├── security-review.md      # Security review
-│   └── write-tests.md          # Test writing
+├── copilot-instructions.md          # Core rules
+├── instructions/
+│   ├── python.instructions.md       # applyTo: "**/*.py"
+│   └── tests.instructions.md        # applyTo: "tests/**"
 └── agents/
-    └── migration-helper.md     # Project migration
+    ├── security-reviewer.agent.md   # Security review
+    └── migration-helper.agent.md    # Project migration
 ```
 
 ---
 
-## Pitfall 4: `#file` References Don't Match `@workspace` Finds
+## Pitfall 4: `#file` References Don't Match What the Agent Finds
 
 **Symptom**
 - You say `#file:src/api/user.ts apply this change`
 - Copilot gets it mostly right, but not exactly
-- Another time you `@workspace` for user.ts — it mentions 2 user.ts (project has two same-named files)
+- Another time you just say "change user.ts" — the agent searches on its own and finds 2 user.ts files (the project has two with the same name)
 
 **Cause**
 - `#file` precisely references the path you give
-- `@workspace` makes Copilot search the whole workspace
-- With duplicate filenames, `@workspace` may pick the wrong one
+- Agent mode searches the codebase automatically (`#codebase` forces a semantic search)
+- With duplicate filenames, automatic search may pick the wrong one
 
 **Recovery**
-Explicit path beats fuzzy index:
+Explicit path beats fuzzy search:
 
 ```
-❌ @workspace fix the register method in user.ts
+❌ Fix the register method in user.ts
 ✅ #file:src/api/v2/user.ts fix the register method
 ```
 
 **Prevention**
 - Avoid duplicate filenames in your project (`user.ts` × 3 is a smell)
 - If duplicates must exist, always reference by full path, not filename
-- Use `@workspace` for **discovery** ("is there an X?"), not for **targeting** ("change X")
+- Use automatic search / `#codebase` for **discovery** ("is there an X?"), not for **targeting** ("change X")
 
 ---
 
 ## Pitfall 5: MCP Server Configured But Not Working
 
 **Symptom**
-- You set `github.copilot.chat.mcpServers` in `.vscode/settings.json`
-- Chat doesn't use the MCP tool when it should; takes a different path
+- You configured an MCP server, but Chat doesn't use its tools when it should; takes a different path
 - No error, just silently unused
 
 **Cause**
-Three common reasons:
-1. Startup command wrong (`npx` path, arg order)
-2. MCP server starts but Copilot version doesn't support it (needs recent VS Code + Copilot Chat)
-3. Server starts OK but tool schema is malformed; Copilot can't recognize it
+Four common reasons:
+1. **Wrong config location or format**: VS Code's MCP config lives in `.vscode/mcp.json` with a top-level `servers` key; the old `github.copilot.chat.mcpServers` in `settings.json` is not the current way to configure it
+2. Startup command wrong (`npx` path, arg order)
+3. You're not in agent mode, or the tools aren't enabled in the tools picker
+4. Server starts OK but tool schema is malformed; Copilot can't recognize it
 
 **Recovery**
-```
-# In Chat, ask directly
-What MCP tools can you call right now? List them.
+```jsonc
+// .vscode/mcp.json
+{
+  "servers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
+    }
+  }
+}
 ```
 
-If your configured tools aren't listed → MCP didn't load. Check VS Code Output panel → Copilot Chat for errors.
+Then run **MCP: List Servers** from the Command Palette, pick your server → **Show Output** for logs. When a server fails, the Chat view also shows an error indicator you can click to see the output.
 
 **Prevention**
 - Verify MCP with an official sample server (e.g. `@modelcontextprotocol/server-filesystem`) first
@@ -160,76 +157,84 @@ If your configured tools aren't listed → MCP didn't load. Check VS Code Output
 
 ---
 
-## Pitfall 6: Completion Behaves Differently in JetBrains vs VS Code
+## Pitfall 6: JetBrains and VS Code Features Out of Sync
 
 **Symptom**
-- Your team's VS Code users get noticeably better completions than JetBrains users
-- Same prompt yields different suggestions
-- Shared `.github/copilot-instructions.md` takes full effect in VS Code, partial in JetBrains
+- VS Code users on your team get a new feature that JetBrains users don't have yet
+- The same config behaves a bit differently in the two IDEs
 
 **Cause**
-- VS Code is Copilot's primary target; new features ship there first
-- JetBrains support for instructions, MCP, Agent mode lags behind
-- Underlying models may differ (JetBrains sometimes uses older models)
+- VS Code is usually where new Copilot features ship first
+- The gap has narrowed a lot, though: custom agents, subagents and the plan agent went GA in JetBrains in March 2026, along with AGENTS.md / CLAUDE.md support
+- A few of the newest features may still land in JetBrains a bit later, and outdated plugins make the gap more visible
 
 **Recovery**
-Either standardize IDE team-wide, or accept JetBrains being a step behind.
+Update the Copilot plugin in JetBrains first; if a feature is missing, check the official docs for its IDE support.
 
 **Prevention**
-- Make IDE consistency a hard constraint when adopting AI tools
-- JetBrains users: put **restated core rules at the top** of instructions — even if mid-doc rules don't load, the first few lines do
+- For team-shared rules, prefer formats both IDEs support (`.github/copilot-instructions.md`, `AGENTS.md`, `.agent.md`)
+- Before depending on a new feature, confirm every IDE your team uses supports it
+- Keep plugins up to date
 
 ---
 
-## Pitfall 7: Free Tier Users Hit Hidden Rate Limits
+## Pitfall 7: Running Out of AI Credits / Free Allowance
 
 **Symptom**
-- Copilot Free worked fine; one day completion latency spikes
-- Chat requests queue or get outright rejected ("usage limit reached"-style messages)
-- Completions slow down, fewer suggestions
+- Copilot Free worked fine; one day completions or Chat stop working ("usage limit reached"-style messages)
+- Paid users find agent mode or code review warning about insufficient credits mid-month
+- The notification in VS Code isn't always prominent, so it's easy to miss
 
 **Cause**
-Copilot Free has monthly completion and Chat quotas. As you approach them you get rate-limited; once exceeded, requests are rejected. The notification in VS Code isn't always prominent, so it's easy to miss. Enterprise users may hit org-level quotas similarly.
+Since 2026-06-01 Copilot bills in **GitHub AI Credits**:
+- Chat, agent mode, code review, the cloud agent, Copilot CLI, etc. consume credits (code review also consumes GitHub Actions minutes)
+- Code completions are unlimited on paid plans; Free includes 2,000 completions + a small credit allowance per month
+- Each plan includes a monthly allowance (Pro 1,500 / Pro+ 7,000 / Max 20,000 credits; Business 1,900 and Enterprise 3,900 per user); beyond that you buy more or wait for next month
+- Requests to large, high-reasoning models burn credits faster
 
 **Recovery**
 - GitHub Account → Copilot settings to check usage
-- Near the cap: upgrade to Pro / Pro+ / Business, or lean on another tool for the rest of the month
+- Near the cap: upgrade to Pro / Pro+ / Max, set an additional spending limit, or lean on another tool for the rest of the month
 
 **Prevention**
-- Heavy users: pay for Pro ($10/mo) from day 1, don't try to squeeze Free
-- Teams: align quota and usage strategy with admins
-- Build a "Copilot fallback" plan (switch to Claude Code or Cursor when capped)
+- Heavy users: pay for Pro ($10/mo) or higher from day 1, don't try to squeeze Free
+- Use cheaper models for small everyday tasks; switch to large models for complex work
+- Teams: align allowances and spending limits with admins
+- Build a "Copilot out of credits" fallback plan (switch to Claude Code or Cursor)
 
 ---
 
-## Pitfall 8: Custom Chat Mode / Agent Not Discovered
+## Pitfall 8: Custom Agent Not Discovered
 
 **Symptom**
-- You wrote a specialist in `.github/chatModes/security-review.md`
-- Type `@security-review` in Chat — Copilot doesn't recognize it
-- Or it recognizes it but behaves like plain Chat
+- You wrote a specialist role file and typed `@security-review` in Chat — Copilot doesn't recognize it
+- Or it doesn't show up in the Agent dropdown at all
+- Or you selected it but it behaves like plain Chat
 
 **Cause**
-- Filename and frontmatter `name` don't match
-- Missing frontmatter or missing fields
-- VS Code / Copilot version too old to support custom Chat Mode
+- **Wrong invocation**: custom agents aren't invoked with `@name` — pick them from the **Agent dropdown** in the Chat view, or type `/agents` in the chat input to open the list
+- **Still on the old format**: Chat Modes (`.github/chatModes/*.chatmode.md`) are deprecated; they're now called custom agents
+- **Wrong location or extension**: must be `*.agent.md` under `.github/agents/` (`.claude/agents/` also works)
+- Missing frontmatter, or `user-invocable: false` is set (hides it from the dropdown)
 
 **Recovery**
-Verify required frontmatter:
+Rename/move the file to `.github/agents/security-review.agent.md` and check the frontmatter:
 
 ```markdown
 ---
-name: security-review       # Matches filename
+name: security-review
 description: Security review using OWASP Top 10
 ---
 
 # Role content below
 ```
 
+Then pick it from the Agent dropdown.
+
 **Prevention**
-- Start from an official sample Chat Mode file, modify from there
-- Restart VS Code (not just Copilot) after edits
-- `.github/chatModes/*.md` path is fixed — don't put it elsewhere
+- Generate the file with **Chat: New Custom Agent** from the Command Palette and edit from there, rather than writing from scratch
+- Rename old `.chatmode.md` files to `.agent.md` and move them into `.github/agents/`
+- Add `tools` in frontmatter to restrict tools, or `model` to pin a model
 
 ---
 
