@@ -2,7 +2,7 @@
 
 # Gemini CLI Best Practices
 
-> ⚠️ **Important change (since 2026-06-18)**: According to the [Google Developers Blog](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/), Gemini CLI **no longer serves individual users** (free Gemini Code Assist for individuals and Google AI Pro / Ultra sign-ins no longer work). Enterprise users (Gemini Code Assist Standard / Enterprise) and **paid Gemini API keys** still work, and Google continues to ship updates and support for enterprise users. Individual developers should switch to **Antigravity CLI**, which keeps Skills, Hooks, and Subagents, with Extensions becoming Antigravity plugins.
+> ⚠️ **Important change (since 2026-06-18)**: According to the [Google Developers Blog](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/), Gemini CLI **no longer serves individual users** (free Gemini Code Assist for individuals and Google AI Pro / Ultra sign-ins no longer work). Enterprise users (Gemini Code Assist Standard / Enterprise) and **paid Gemini API keys** still work, and Google continues to ship updates and support for enterprise users. Individual developers should switch to **Antigravity CLI** ([migration steps below](#migrating-to-antigravity-cli-individual-users)), which keeps Skills, Hooks, and Subagents, with Extensions becoming Antigravity plugins.
 
 > Gemini CLI is Google's command-line AI coding tool. Its biggest advantage: **a massive context window (1M tokens on Gemini 3 models)**. Great for large codebase analysis and long-running tasks.
 
@@ -153,6 +153,63 @@ Sort by migration priority.
 | Too much context slows things down | Filling the full 1M is slow to process | Only use large context when you need a global view |
 | Personal account sign-in fails | Individual users are no longer served since 2026-06-18 | Switch to Antigravity CLI, or use an enterprise account / paid API key |
 | Weaker tooling than Claude Code | File ops and command execution not as strong | Use Gemini for analysis, Claude Code for execution |
+
+---
+
+## Migrating to Antigravity CLI (Individual Users)
+
+> Everything below comes from official Google docs, last checked 2026-09-29. Official guide: [Migration from Gemini CLI](https://antigravity.google/docs/cli/gcli-migration).
+
+### Install and Sign In
+
+The command is **`agy`** ([install docs](https://antigravity.google/docs/cli/install/)):
+
+```bash
+# macOS / Linux (installs to ~/.local/bin/agy)
+curl -fsSL https://antigravity.google/cli/install.sh | bash
+
+# Windows PowerShell
+irm https://antigravity.google/cli/install.ps1 | iex
+```
+
+- **Google account**: on first run, `agy` opens a browser to sign in and stores credentials in the OS keyring. Over SSH, you authorize by opening a URL yourself. Sign out with `/logout`
+- **Gemini API key**: put `{"modelProvider": "gemini"}` in `~/.gemini/antigravity-cli/settings.json`, then `export GEMINI_API_KEY=...`. This works for headless / CI runs with no browser
+
+### Config Migration Map
+
+| Item | Gemini CLI | Antigravity CLI |
+|------|-----------|-----------------|
+| Context files | `GEMINI.md` / `AGENTS.md`, `~/.gemini/GEMINI.md` | **No change**, same rules |
+| Global skills | `~/.gemini/skills/` | `~/.gemini/antigravity-cli/skills/` |
+| Workspace skills | `.gemini/skills/` | `.agents/skills/` (**move manually**) |
+| Extensions | Gemini extensions | Plugins: `agy plugin import gemini` converts them |
+| MCP | `mcpServers` in `~/.gemini/settings.json` | Global `~/.gemini/config/mcp_config.json`, workspace `.agents/mcp_config.json`. For remote servers, rename `url` / `httpUrl` to `serverUrl` |
+| Hooks | (not listed in the guide) | Workspace `.agents/hooks.json`, global `~/.gemini/config/hooks.json` or `~/.gemini/antigravity-cli/settings.json` ([Hooks](https://antigravity.google/docs/hooks/)) |
+| Subagents | (not listed in the guide) | Workspace `.agents/agents/<name>.md`, global `~/.gemini/config/agents/<name>.md` ([Subagents](https://antigravity.google/docs/subagents/)) |
+
+- If `agy` finds legacy config on first launch, it shows a migration checklist. The checklist converts extensions and global settings and moves session tokens to the OS keyring. Some custom terminal themes aren't supported
+- `agy plugin import gemini` parses legacy extensions and migrates their skills and MCP servers. It also converts legacy custom commands into skills
+- The official migration guide does **not** cover automatic conversion of Hooks or Subagents. Check them by hand against the new paths above
+
+### Pricing and Quota
+
+Per the [Plans docs](https://antigravity.google/docs/plans/) and [pricing page](https://antigravity.google/pricing): individuals can use it for free ($0 with a weekly rate limit), and the CLI is included in every plan. Google AI Pro / Ultra get higher quota that refreshes every five hours, up to a weekly cap. Pro / Ultra subscribers can also buy AI Credits. In the CLI, `/usage` shows your quota and `/credits` shows AI Credits.
+
+### Key Differences from Gemini CLI
+
+- Rewritten in Go and more responsive, with async multi-agent workflows ([Google Developers Blog](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/))
+- Uses the same agent harness as the Antigravity 2.0 desktop app. Settings sync automatically, and you can export conversations between the CLI and the desktop app ([CLI Overview](https://antigravity.google/docs/cli/overview/))
+- New slash commands include `/plan`, `/agents`, `/codesearch`, `/diff`, `/permissions`, `/resume` and `/usage`
+
+### Migration Checklist
+
+1. Install `agy`, run it and sign in with Google (or set `GEMINI_API_KEY`)
+2. Accept the conversions in the first-launch migration checklist
+3. Run `agy plugin import gemini` and check the output to confirm each extension migrated
+4. Move each project's `.gemini/skills/` to `.agents/skills/`
+5. Confirm MCP config is now in `mcp_config.json` and remote servers use `serverUrl` instead of `url` / `httpUrl`
+6. Put Hooks and Subagents in the new paths listed above
+7. Leave `GEMINI.md` / `AGENTS.md` as they are. Run `agy` once in the project to confirm your rules load
 
 ---
 
