@@ -127,7 +127,7 @@
   - Phodal Huang's book "Building LLM Applications"
   - AI coding architect's perspective, engineering and team adoption
 
-- [unit-mesh/auto-dev](https://github.com/phodal/auto-dev) · ⭐ 3k+ · ZH/EN
+- [phodal/auto-dev](https://github.com/phodal/auto-dev) · ⭐ 3k+ · ZH/EN
   - **Domestic Chinese JetBrains AI coding plugin** with custom Agent + Chinese DevIns scripts
   - AI coding option for IDEA/PyCharm ecosystem
 
