@@ -4,7 +4,7 @@
 
 > This project covers "how to use the 10 tools well." To go deeper, here's a curated external resource list. **Quality over completeness** — every entry states **when it's worth your time**.
 >
-> Snapshot date: **2026-04**. Report dead links via Issue.
+> Snapshot date: **2026-09**. Report dead links via Issue.
 
 ---
 
@@ -27,15 +27,11 @@
   - Anthropic's official **9-chapter interactive prompt tutorial**, runnable Jupyter
   - Fastest systematic onboarding to prompt engineering (2-3 hours)
 
-- [dair-ai/Prompt-Engineering-Guide](https://github.com/dair-ai/Prompt-Engineering-Guide) · ⭐ 60k+ · EN (with Chinese translation)
+- [dair-ai/Prompt-Engineering-Guide](https://github.com/dair-ai/Prompt-Engineering-Guide) · ⭐ 75k+ · EN (with Chinese translation)
   - The prompt-engineering encyclopedia: CoT, ReAct, RAG, tool-use patterns
   - Go here to understand terminology and which technique fits which scenario
 
-- [datawhalechina/prompt-engineering-for-developers](https://github.com/datawhalechina/prompt-engineering-for-developers) · ⭐ 13k+ · ZH
-  - Datawhale's Chinese translation of **DeepLearning.AI prompt engineering courses** with notes
-  - Best combo for Chinese learners: video + code
-
-- [phodal/prompt-patterns](https://github.com/phodal/prompt-patterns) · ⭐ 1k+ · ZH
+- [phodal/prompt-patterns](https://github.com/phodal/prompt-patterns) · ⭐ 3k+ · ZH
   - Prompt patterns and DSL design guide by prominent Chinese architect Phodal Huang
   - Advanced reference for building complex AI coding workflows and reusable prompts
 
@@ -43,9 +39,9 @@
 
 ## 🛠️ Awesome Lists per Tool
 
-- [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) · ⭐ 30k+ · EN
-  - Community collection of `.cursorrules` files, categorized by tech stack
-  - Copy a matching stack's rules when starting a new project
+- [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) · ⭐ 40k+ · EN
+  - Community collection of Cursor rule files, categorized by tech stack
+  - Copy a matching stack's rules when starting a new project (note: newer Cursor versions expect them in `.cursor/rules/*.mdc`)
 
 - [hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) · ⭐ high · EN
   - Most comprehensive Claude Code community resources: tips, Skills, Hooks, workflows
@@ -53,15 +49,15 @@
 
 - [github/awesome-copilot](https://github.com/github/awesome-copilot) · ⭐ high · EN
   - GitHub's official Copilot resource collection
-  - Look up instruction / Chat mode / Agent examples
+  - Look up instructions / custom agent / Skills examples
 
 - [addyosmani/gemini-cli-tips](https://github.com/addyosmani/gemini-cli-tips) · ⭐ medium · EN
   - Google DevRel Addy Osmani's **30 Gemini CLI tips**
-  - Gemini CLI users: just copy these
+  - Gemini CLI users: just copy these (note: not updated since 2025-10; individual users now need to move to Antigravity CLI)
 
-- [detailobsessed/awesome-windsurf](https://github.com/detailobsessed/awesome-windsurf) · ⭐ medium · EN
-  - Windsurf community resources (rules, workflows, MCP)
-  - Find community patterns for Cascade
+- [detailobsessed/awesome-devin](https://github.com/detailobsessed/awesome-devin) · ⭐ medium · EN
+  - Formerly awesome-windsurf; community resources for Devin Desktop (formerly Windsurf) (rules, workflows, MCP)
+  - Find community rules and workflows for Devin Desktop
 
 ---
 
@@ -71,9 +67,9 @@
   - **Official repo**. Issues and Discussions are the primary source for new features and techniques
   - Track new features (slash commands / hooks / skills)
 
-- [anthropics/courses](https://github.com/anthropics/courses) · ⭐ high · EN
+- [anthropics/courses](https://github.com/anthropics/courses) · ⭐ high · EN (archived)
   - Anthropic's official course collection: Prompt, Tool use, RAG, MCP
-  - The full Anthropic syllabus in one place
+  - The repo is archived and no longer updated; the concepts still apply, but follow the cookbooks for current API usage
 
 - [anthropics/claude-cookbooks](https://github.com/anthropics/claude-cookbooks) · ⭐ high · EN
   - Claude API practical examples: multimodal, tool use, RAG, Agent patterns
@@ -115,21 +111,21 @@
 
 ## 🇨🇳 Chinese Resources
 
-- [datawhalechina/llm-cookbook](https://github.com/datawhalechina/llm-cookbook) · ⭐ 22k+ · ZH
-  - Datawhale's Chinese LLM development cookbook collection
+- [datawhalechina/llm-cookbook](https://github.com/datawhalechina/llm-cookbook) · ⭐ 25k+ · ZH
+  - Datawhale's Chinese LLM development cookbook collection (includes the Chinese edition of the **DeepLearning.AI prompt engineering courses**; the former prompt-engineering-for-developers repo has been merged in)
   - Chinese reference manual for embedding LLM capabilities into your project
 
-- [liaokongVFX/LangChain-Chinese-Getting-Started-Guide](https://github.com/liaokongVFX/LangChain-Chinese-Getting-Started-Guide) · ⭐ 8k+ · ZH
+- [liaokongVFX/LangChain-Chinese-Getting-Started-Guide](https://github.com/liaokongVFX/LangChain-Chinese-Getting-Started-Guide) · ⭐ 9k+ · ZH
   - LangChain Chinese getting-started guide: Agent / Chain / Memory
   - Foundation for building your own AI coding tools / Agent assistants
 
-- [phodal/aigc](https://github.com/phodal/aigc) · ⭐ 1k+ · ZH
+- [phodal/aigc](https://github.com/phodal/aigc) · ⭐ 1.5k+ · ZH
   - Phodal Huang's book "Building LLM Applications"
   - AI coding architect's perspective, engineering and team adoption
 
-- [unit-mesh/auto-dev](https://github.com/phodal/auto-dev) · ⭐ 3k+ · ZH/EN
-  - **Domestic Chinese JetBrains AI coding plugin** with custom Agent + Chinese DevIns scripts
-  - AI coding option for IDEA/PyCharm ecosystem
+- [phodal/auto-dev](https://github.com/phodal/auto-dev) · ⭐ 4k+ · ZH/EN
+  - AI coding platform led by Phodal Huang, evolved from a JetBrains plugin into a Kotlin Multiplatform multi-agent platform
+  - Chinese-made AI coding option for the IDEA/PyCharm ecosystem
 
 ---
 

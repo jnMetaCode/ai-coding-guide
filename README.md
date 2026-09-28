@@ -35,7 +35,7 @@
 | 后端 / 重构 / 大项目 | [Claude Code](claude-code/) → [需求拆解](common/task-decomposition.md) → [实战场景](workflows/scenarios.md) |
 | 从 Copilot 迁来 | [Copilot](copilot/) → [Claude Code](claude-code/)（对比差异）→ [多工具选型](workflows/tool-selection.md) |
 | 已订阅 ChatGPT Plus/Pro | [Codex CLI](codex/) → [Claude Code](claude-code/) 对比 → [多工具选型](workflows/tool-selection.md) |
-| 控成本 / 独立开发者 | [速查表](cheatsheet.md) → [Gemini CLI](gemini-cli/) 或 [Aider](aider/) + 本地模型 |
+| 控成本 / 独立开发者 | [速查表](cheatsheet.md) → [Aider](aider/) + 本地模型 或 [Codex CLI](codex/) `--oss` |
 | 团队协作 / 高质量交付 | [Kiro](kiro/) → [代码审查](common/code-review.md) → [测试策略](common/testing.md) |
 
 **已经在用了？** 直接看：[速查表](cheatsheet.md) · [进阶技巧](#-10-款工具教程) · [实战工作流](#-实战工作流) · [生态项目](#-相关项目)
@@ -48,14 +48,14 @@
 |------|------|------|
 | [**Claude Code**](claude-code/) | CLI Agent | 66 个技巧，Agent + Skill + Hook 完整工作流 |
 | [**Codex CLI**](codex/) | CLI Agent | OpenAI 官方开源（Rust），Sandbox + AGENTS.md，ChatGPT 订阅可用 |
-| [**Cursor**](cursor/) | IDE | .cursorrules 配置，Composer Agent 模式 |
-| [**GitHub Copilot**](copilot/) | IDE 插件 | 行内补全 + Agent 模式 + 自定义指令 |
-| [**OpenClaw**](openclaw/) | AI Agent 框架 | 338k Stars，多平台连接 + Skills + Cron 自动化 |
-| [Windsurf](windsurf/) | IDE | Cascade Agent，自动上下文 |
-| [Gemini CLI](gemini-cli/) | CLI | Google 出品，大代码库分析 |
-| [Kiro](kiro/) | IDE | AWS 出品，Spec 驱动开发 |
+| [**Cursor**](cursor/) | IDE | `.cursor/rules/*.mdc` 规则，Agent / Plan 模式，并行 Agents Window |
+| [**GitHub Copilot**](copilot/) | IDE 插件 | 行内补全 + Agent 模式 + 自定义 Agent / 指令 |
+| [**OpenClaw**](openclaw/) | AI Agent 框架 | 39 万+ Stars，多平台连接 + Skills + 定时自动化 |
+| [Devin Desktop（原 Windsurf）](windsurf/) | IDE | Devin Local Agent，本地 + 云端 Agent 看板 |
+| [Gemini CLI](gemini-cli/) | CLI | Google 出品，1M 上下文；个人用户已转向 Antigravity CLI |
+| [Kiro](kiro/) | IDE + CLI | AWS 出品，Spec 驱动开发 |
 | [Aider](aider/) | CLI | Git 原生，支持几乎所有 LLM |
-| [Trae](trae/) | IDE | 字节出品，免费 Claude/GPT，国内直连 |
+| [Trae](trae/) | IDE | 字节出品，有免费档，国内版直连 |
 
 > 每个工具都有：**核心概念 → 快速上手 → 提示词技巧 → 进阶用法 → 配置模板**
 

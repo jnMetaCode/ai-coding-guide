@@ -17,7 +17,7 @@ Before you begin, make sure your environment is ready:
 
 | Dependency | Minimum Version | Check Command | How to Install |
 |------------|----------------|---------------|----------------|
-| **Node.js** | 18+ | `node -v` | [nodejs.org](https://nodejs.org) |
+| **Node.js** | 20+ | `node -v` | [nodejs.org](https://nodejs.org) |
 | **npm** | 9+ | `npm -v` | Comes with Node.js |
 | **Git** | 2.0+ | `git -v` | [git-scm.com](https://git-scm.com) |
 | **AI Coding Tool** | Any one | -- | Install at least one: Claude Code / Cursor / Copilot / Windsurf, etc. |
@@ -40,7 +40,7 @@ cd /your/project
 npx superpowers-zh
 ```
 
-The installer auto-detects which tools you use (Claude Code / Cursor / Copilot / Windsurf and 14 others), installing 20 skills to the correct locations.
+The installer auto-detects which tools you use (Claude Code / Codex CLI / Cursor / Kiro / Gemini CLI and more — 26 in total), installing 21 skills to the correct locations.
 
 ### Verify Installation
 
@@ -49,7 +49,7 @@ Check that the skill files were created:
 ```bash
 # Claude Code users
 ls .claude/skills/
-# You should see brainstorming.md, systematic-debugging.md, and 20 other files
+# You should see brainstorming/, systematic-debugging/, and other skill directories — 21 in total (each containing a SKILL.md)
 
 # Cursor users
 ls .cursor/skills/
@@ -99,7 +99,7 @@ AI:  Before I start implementing, I need to clarify a few things:
 
 | Issue | Solution |
 |-------|----------|
-| `npx superpowers-zh` errors out | Check your Node.js version (requires 18+): `node -v` |
+| `npx superpowers-zh` errors out | Check your Node.js version (requires 20+): `node -v` |
 | AI behavior unchanged after install | Restart your AI tool (close and reopen) so it reloads the skills |
 | Want to uninstall | Just delete the directory, e.g., `rm -rf .claude/skills/` |
 
@@ -136,7 +136,7 @@ cd agency-agents-zh
 
 ```bash
 # Claude Code users — check for role files
-ls ~/.claude/skills/ | head -10
+ls ~/.claude/agents/ | head -10
 # You should see files like engineering-security-engineer.md
 
 # Or just ask the AI:
@@ -212,9 +212,11 @@ AI:  (activates database-optimizer role)
 # Global install (recommended — gives you the ao command)
 npm install -g agency-orchestrator
 
-# Initialize: download 276 role definitions locally
+# Try it with zero config first (no init needed)
+ao demo
+
+# (Optional) Copy the 276 Chinese roles locally so you can customize them
 ao init
-# Role files are downloaded to ~/.ao/roles/
 ```
 
 ### Quick Demo (No API Key Required)
@@ -351,7 +353,7 @@ npm install shellward
 
 | Protection | Description |
 |------------|-------------|
-| Prompt injection detection | 32 rules (18 Chinese + 14 English), with risk scoring |
+| Prompt injection detection | 37 rules (20 Chinese + 17 English), with risk scoring; also detects MCP tool poisoning / rug-pulls |
 | Dangerous command interception | `rm -rf`, reverse shells, fork bombs, `chmod 777`, etc. |
 | PII detection | National IDs, bank cards, phone numbers, SSN, credit cards, API keys, JWTs |
 | Data exfiltration chain detection | Read sensitive data -> send email/HTTP POST/curl = blocked |
@@ -365,24 +367,17 @@ npm install shellward
 
 Works with Claude Desktop / Cursor / Claude Code and other MCP-compatible tools.
 
-Add this to your MCP configuration file:
-
-```bash
-# Find shellward's install path
-npm list -g shellward    # If globally installed
-# or
-ls node_modules/shellward/src/mcp-server.ts    # If project-installed
-```
+Add this to your MCP configuration file (`npx` fetches `shellward-mcp` automatically — no need to find the install path):
 
 ```json
 // Claude Desktop: ~/Library/Application Support/Claude/claude_desktop_config.json
 // Cursor: .cursor/mcp.json
-// Claude Code: .claude/settings.json under mcpServers
+// Claude Code: .mcp.json in the project root (or claude mcp add)
 {
   "mcpServers": {
     "shellward": {
       "command": "npx",
-      "args": ["shellward", "--mcp"]
+      "args": ["-y", "-p", "shellward", "shellward-mcp"]
     }
   }
 }
@@ -393,14 +388,15 @@ ls node_modules/shellward/src/mcp-server.ts    # If project-installed
 3 lines of code to integrate with any AI Agent framework (LangChain, AutoGPT, etc.):
 
 ```javascript
-const { ShellWard } = require('shellward');
-const guard = new ShellWard();
+import { ShellWard } from 'shellward';
+const guard = new ShellWard({ mode: 'enforce' });
 
-// Check before the Agent executes a tool call
-const result = guard.check(toolCall);
+// Check before the Agent executes a command
+const result = guard.checkCommand(cmd);
 if (!result.allowed) {
   console.log(`Blocked: ${result.reason}`);
 }
+// Also available: checkInjection / scanData / checkOutbound
 ```
 
 ### Before and After
@@ -526,13 +522,13 @@ npm install shellward
 Then configure MCP so your AI tool routes operations through shellward:
 
 ```json
-// Add to .claude/settings.json (Claude Code)
+// Add to .mcp.json (Claude Code, project root)
 // or .cursor/mcp.json (Cursor)
 {
   "mcpServers": {
     "shellward": {
       "command": "npx",
-      "args": ["shellward", "--mcp"]
+      "args": ["-y", "-p", "shellward", "shellward-mcp"]
     }
   }
 }
