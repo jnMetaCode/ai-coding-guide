@@ -37,7 +37,7 @@ Phase 2: Skeleton Code (Claude Code)
 
 Phase 3: Implementation Details (Cursor)
 Open Cursor and flesh out the implementation on top of the skeleton Claude Code created.
-Use Composer mode to implement business logic file by file.
+Use the Agent panel (Cmd+I) to implement business logic file by file.
 
 Phase 4: Testing (Claude Code)
 > Write comprehensive tests for the notification module.
@@ -71,7 +71,7 @@ Phase 3: Verify (Claude Code)
 Keep project configuration consistent across both tools:
 
 ```
-# Write the same core rules in both CLAUDE.md and .cursorrules
+# Write the same core rules in both CLAUDE.md and .cursor/rules/*.mdc
 # Or use superpowers-zh, which supports both tools
 
 cd /your/project

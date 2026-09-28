@@ -12,10 +12,10 @@ Every AI coding tool has a **context window** — think of it as the AI's "worki
 
 | Tool | Context Window | Notes |
 |---|---|---|
-| Claude Code | 200K tokens | ~150K words, largest among coding tools |
-| Cursor | 128K-200K tokens | Depends on the selected model |
-| Copilot | 128K tokens | Includes open files |
-| Gemini CLI | 1M-2M tokens | Largest window, but bigger isn't always better |
+| Claude Code | 1M tokens | Opus/Sonnet 5.5 both 1M (Haiku 200K) |
+| Cursor | per model | Depends on the selected model |
+| Copilot | per model | Depends on the selected model; includes open files |
+| Gemini CLI | 1M tokens | Large window, but bigger isn't always better (no longer serves individual users — enterprise / paid API keys only) |
 
 **Key insight**: More context is not always better. Stuffing in irrelevant information causes "attention dilution" — important details get buried.
 
@@ -39,9 +39,9 @@ Every tool has a project config file that loads automatically at startup:
 | Tool | Config File | Purpose |
 |---|---|---|
 | Claude Code | `CLAUDE.md` | Project background, conventions, common commands |
-| Cursor | `.cursorrules` / `.cursor/rules/` | Project rules |
+| Cursor | `.cursor/rules/*.mdc` | Project rules (`.cursorrules` is legacy) |
 | Copilot | `.github/copilot-instructions.md` | Project guidelines |
-| Windsurf | `.windsurfrules` | Project rules |
+| Devin Desktop (formerly Windsurf) | `.devin/rules/*.md` | Project rules (`.windsurfrules` kept only for backward compatibility) |
 | Gemini CLI | `GEMINI.md` | Project config |
 
 **A well-written config file = the most critical context automatically included in every conversation.**
@@ -90,7 +90,7 @@ The longer a conversation runs, the less weight earlier messages carry. When AI 
 @src/models/user.ts @src/schemas/user.ts
 Write a user registration endpoint based on these two files
 
-# Use Notepads to save frequently used context
+# Use Rules / Skills to save frequently used context (Notepads were removed in 2.0)
 # Use Rules globs to auto-load rules by file type
 
 # Open related files as implicit context

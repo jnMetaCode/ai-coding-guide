@@ -15,12 +15,12 @@
 | **New project scaffolding** | Claude Code | Starting from scratch needs big-picture planning ability |
 | **Bug debugging** | Claude Code | Can read logs, run commands, do systematic analysis |
 | **Code review** | Claude Code / Cursor | Claude Code is more thorough, Cursor is quicker |
-| **Learning a new codebase** | Cursor + Chat | Select code and ask questions — the most natural interaction |
+| **Learning a new codebase** | Cursor (Ask mode) | Select code and ask questions — the most natural interaction |
 | **Writing tests** | Claude Code | Can run tests, check coverage, auto-fix failures |
 | **Documentation / comments** | Copilot | Inline completion makes writing comments seamless |
 | **Frontend UI tweaks** | Cursor | Live preview + visual editing |
-| **CLI / scripting** | Claude Code / Gemini CLI | CLI-native, fits terminal workflows |
-| **Exploring large codebases** | Gemini CLI | Largest context window (2M tokens) |
+| **CLI / scripting** | Claude Code / Codex CLI | CLI-native, fits terminal workflows |
+| **Exploring large codebases** | Claude Code | Opus/Sonnet 5.5 both have 1M context (Gemini CLI is also 1M, but no longer serves individual users — enterprise / paid API keys only) |
 | **CI / automated code review** | Codex CLI | Official GitHub Action with built-in restricted sandbox proxy |
 | **Already on ChatGPT Plus/Pro** | Codex CLI | Subscription quota included; OS-kernel sandbox out of the box |
 | **Fully offline / zero API cost** | Codex CLI or Aider | `codex --oss --local-provider ollama` runs local models |
@@ -39,11 +39,11 @@
 | Multi-file coordination | 3/3 | 2/3 | 2/3 | 2/3 | 2/3 |
 | Project rules config | 3/3 | 3/3 | 3/3 | 2/3 | 2/3 |
 | Extensibility (MCP) | 3/3 | 3/3 | 2/3 | 2/3 | 2/3 |
-| Sandbox depth | App-layer + hooks | **OS kernel** | -- | -- | -- |
+| Sandbox depth | OS-level Bash sandbox + hooks | **OS kernel** | -- | -- | -- |
 | Local model support | -- | 3/3 (--oss) | -- | -- | -- |
-| Context window | 2/3 | 2/3 | 2/3 | 2/3 | 3/3 |
+| Context window | 3/3 (1M) | 2/3 | 2/3 | 2/3 | 3/3 (1M) |
 | IDE integration | -- | -- | 3/3 | 3/3 | -- |
-| Free tier | 1/3 | 2/3 (ChatGPT plan included) | 1/3 | 2/3 | 3/3 |
+| Free tier | 1/3 | 2/3 (ChatGPT plan included) | 1/3 | 2/3 | -- (individual free tier ended) |
 
 ---
 
@@ -67,14 +67,14 @@ Copilot     -> Inline completion, writing comments, simple Q&A
 
 Best for: Backend developers, VS Code users
 
-### Combo 3: Gemini CLI + Cursor (Budget-Friendly)
+### Combo 3: Copilot Free + Aider with a Local Model (Budget-Friendly)
 
 ```
-Gemini CLI -> Large-scale analysis, code exploration (free)
-Cursor     -> Daily coding, interactive editing
+Copilot Free           -> Inline completion, simple Q&A
+Aider + local model    -> Terminal Agent tasks (e.g. `aider --model ollama/qwen3-coder`)
 ```
 
-Best for: Solo developers who want to keep costs down
+Best for: Solo developers who want to keep costs down (IDE completion + terminal Agent with zero subscriptions; Trae's free tier, Auto mode only, also works)
 
 ### Combo 4: Codex CLI + Cursor (ChatGPT Subscribers)
 
@@ -84,7 +84,7 @@ Cursor    -> Daily coding, Tab completion
 ```
 
 Best for: ChatGPT Plus/Pro subscribers who want their plan to drive Agent value;
-especially for security-sensitive work needing kernel-level sandbox (Seatbelt / Landlock).
+especially for security-sensitive work needing kernel-level sandbox (Seatbelt / bubblewrap).
 
 ### Combo 5: Codex CLI + Claude Code (Dual CLI)
 
@@ -107,8 +107,8 @@ Signals that it's time to switch from one tool to another:
 | Cursor's completion is wrong after 3 attempts | Switch to Claude Code for systematic analysis |
 | Claude Code conversation is too long and quality drops | Start a new conversation, or switch to Cursor for remaining small tasks |
 | Need to see live results | Switch to Cursor / Copilot (in-IDE preview) |
-| Need to run commands to verify | Switch to Claude Code / Gemini CLI (in-terminal) |
-| Need to understand a large codebase | Switch to Gemini CLI (largest context) |
+| Need to run commands to verify | Switch to Claude Code / Codex CLI (in-terminal) |
+| Need to understand a large codebase | Switch to Claude Code (1M context) |
 | Need to run a non-interactive Agent in CI | Switch to Codex CLI (`codex exec --json` + official Action) |
 | Handling sensitive data / offline environment | Switch to Codex CLI (`--oss --local-provider ollama`) |
-| Need kernel-level sandbox guarantees | Switch to Codex CLI (Seatbelt / Landlock) |
+| Need kernel-level sandbox guarantees | Switch to Codex CLI (Seatbelt / bubblewrap) |

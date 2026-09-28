@@ -42,5 +42,5 @@
 ## Why This Works
 
 - **No context switching** — Claude Code lives in the terminal, Copilot lives in VS Code, each doing its own thing
-- **Cost control** — Copilot is a flat monthly fee with unlimited completions, no extra charges for heavy usage
+- **Cost control** — Copilot paid plans include unlimited code completions, no extra charges for heavy completion usage (Chat / Agent are billed in AI Credits)
 - **Strong complementarity** — Claude Code isn't great at inline completion, Copilot isn't great at Agent tasks

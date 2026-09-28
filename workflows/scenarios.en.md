@@ -89,7 +89,7 @@ Type definitions should be complete so IDE autocomplete works in the next step.
 
 ### Step 3: Switch to Cursor — fill in the implementation
 
-Open the skeletons in Cursor and use Composer file by file. Example prompt for `order-export.service.ts`:
+Open the skeletons in Cursor and use the Agent panel file by file. Example prompt for `order-export.service.ts`:
 
 ```
 @order-export.service.ts Implement each method per the TODOs.

@@ -13,15 +13,15 @@
 | Tool | # of pitfalls | Topics |
 |------|--------------|--------|
 | [Claude Code](./claude-code.en.md) | 8 | Context overflow / hallucinated APIs / over-refactoring / fake verification / CLAUDE.md ignored / git amend / plan drift / subagent context |
-| [Cursor](./cursor.en.md) | 8 | Composer rogue / Tab blast / .cursorrules too long / @file silent fail / mode confusion / model switching / stale Notepads / stale index |
-| [GitHub Copilot](./copilot.en.md) | 8 | Outdated APIs / Agent reads .env / instructions too long / #file vs @workspace / MCP silent fail / IDE differences / free tier throttling / custom roles not discovered |
+| [Cursor](./cursor.en.md) | 8 | Agent rogue / Tab blast / rules not applied / @file silent fail / Agent·Ask mode confusion / model switching / Notepads removed / stale index |
+| [GitHub Copilot](./copilot.en.md) | 8 | Outdated APIs / Agent reads .env / instructions too long / #file vs Agent search / MCP silent fail / IDE differences / AI Credits exhausted / custom agents not discovered |
 | [Aider](./aider.en.md) | 7 | Auto-commit swallows WIP / /add misses deps / model-switch quality drop / lint loop burns tokens / stale map / Architect→Code drift / amend chaos |
 
 ---
 
 ## Other Tools
 
-Windsurf / Gemini CLI / Kiro / Trae / OpenClaw pitfall pages aren't written yet. You're welcome to:
+Devin Desktop (formerly Windsurf) / Codex CLI / Gemini CLI / Kiro / Trae / OpenClaw pitfall pages aren't written yet. You're welcome to:
 
 1. Check if you've hit any pain points with the tool you use
 2. Send a PR using the template below
@@ -74,7 +74,7 @@ Pitfalls of writing pitfalls (the meta-pitfall):
 - ❌ **Symptom and cause conflated**: readers can't tell "is this me?"
 - ✅ **Reproducible symptoms**: readers can recognize themselves
 - ✅ **Concrete recovery**: give a command or prompt, not "pay attention"
-- ✅ **Copy-pasteable prevention**: directly droppable into `CLAUDE.md` / `.cursorrules` / settings.json
+- ✅ **Copy-pasteable prevention**: directly droppable into `CLAUDE.md` / `.cursor/rules/*.mdc` / settings.json
 
 ---
 
