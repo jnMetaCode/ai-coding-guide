@@ -2,6 +2,32 @@
 
 > 完整提交历史见 `git log`。本文档记录面向用户的重要更新。
 
+## 2026-09 · 全面刷新：10 款工具按最新官方文档核实
+
+距上次核实已近半年，多款工具发生了改名、停服、配置格式变更。本次逐项对照官方文档 / 源码 / release notes 更新，中英同步。
+
+### ⚠️ 重大变化
+- **Windsurf → Devin Desktop**（2026-06 改名，Cognition 旗下）：页面基本重写（Devin Local、Code/Plan/Ask 模式、`.devin/rules/`）
+- **Gemini CLI**：2026-06-18 起个人 / 免费用户停服，企业版与付费 API Key 仍可用，个人转 Antigravity CLI；上下文更正为 1M
+- **Trae**：国际版 2025-09 已下架 Claude，IDE 改名 TraeCode
+- **Aider**：补充维护状态说明（最后发版 2026-02，无原生 MCP）
+
+### 🔧 照抄会报错的修复
+- 退役模型 ID 全部替换（`claude-sonnet-4-20250514`、`deepseek-chat`、`gpt-5.4` 等）
+- Codex：`codex exec` 不接受 `--ask-for-approval`；profile 改为独立 `<name>.config.toml`；`mcp-server` → `app-server`
+- Claude Code：skill 必须是 `<name>/SKILL.md` 目录；`.claude/rules/` 用 `paths:`；只有 exit 2 的 hook 会阻断
+- Cursor：规则文件必须是 `.mdc`；Notepads 已移除；Composer 面板 → Agent
+- Copilot：MCP 配置改为 `.vscode/mcp.json`；chatModes → `.github/agents/`
+- Kiro：steering `inclusion:` 四种模式；hooks 新格式
+- OpenClaw：配置键、`models set` 语法、Node 版本
+- shellward：MCP / SDK 用法同步最新版
+
+### 🔄 其他
+- 速查表能力矩阵整体更新（多数工具已支持 Hook / Subagent / MCP）
+- 各工具新增「2026 下半年新增」简表
+- 资源页星数、改名 / 归档仓库更新
+- CI：修复 Link Check 连续失败（book/src 软链接误报等）
+
 ## 2026-04（下半月） · 新增 OpenAI Codex CLI 教程
 
 ### 🆕 新增工具：Codex CLI（10 款工具齐了）

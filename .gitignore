@@ -12,3 +12,6 @@ npm-debug.log*
 
 # lychee 本地缓存
 .lycheecache
+
+# Claude Code 本地 worktree
+.claude/

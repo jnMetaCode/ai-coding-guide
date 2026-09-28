@@ -141,7 +141,7 @@ This project covers "how to use the 10 tools well." Want to go deeper? See **[Fu
 
 ## 🆕 Changelog
 
-See **[CHANGELOG](CHANGELOG.en.md)** for important updates. Latest major update: **2026-04** added cheatsheet, 31 deep pitfalls, end-to-end scenario scripts, persona-based learning paths, and 20+ external learning resources.
+See **[CHANGELOG](CHANGELOG.en.md)** for important updates. Latest major update: **2026-09** all 10 tools re-verified against current official docs (Windsurf → Devin Desktop, Gemini CLI individual tier retired, retired model IDs replaced, and more).
 
 ---
 
