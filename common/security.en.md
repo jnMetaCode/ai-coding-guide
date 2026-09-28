@@ -103,17 +103,17 @@ Add these rules to your project config file:
 Periodically have AI self-audit for security issues:
 
 ```
-Scan the entire src/ directory against the OWASP Top 10:
-1. Injection (SQL, NoSQL, command injection)
-2. Broken Authentication
-3. Sensitive Data Exposure
-4. XML External Entities (XXE)
-5. Broken Access Control
-6. Security Misconfiguration
-7. Cross-Site Scripting (XSS)
-8. Insecure Deserialization
-9. Using Components with Known Vulnerabilities
-10. Insufficient Logging & Monitoring
+Scan the entire src/ directory against the OWASP Top 10:2025:
+1. Broken Access Control (incl. SSRF)
+2. Security Misconfiguration
+3. Software Supply Chain Failures (vulnerable / unpinned dependencies)
+4. Cryptographic Failures (plaintext secrets, weak algorithms)
+5. Injection (SQL, NoSQL, command injection, XSS)
+6. Insecure Design
+7. Authentication Failures
+8. Software or Data Integrity Failures (incl. insecure deserialization)
+9. Security Logging and Alerting Failures
+10. Mishandling of Exceptional Conditions (swallowed errors, fail-open)
 
 For each finding, provide: file location, risk level, and remediation.
 ```
