@@ -44,7 +44,7 @@
 | Backend / refactoring / big projects | [Claude Code](claude-code/) → [Task Decomposition](common/task-decomposition.en.md) → [Scenarios](workflows/scenarios.en.md) |
 | Migrating from Copilot | [Copilot](copilot/) → [Claude Code](claude-code/) (compare) → [Tool Selection](workflows/tool-selection.en.md) |
 | Already on ChatGPT Plus/Pro | [Codex CLI](codex/) → [Claude Code](claude-code/) (compare) → [Tool Selection](workflows/tool-selection.en.md) |
-| Cost-conscious / solo dev | [Cheatsheet](cheatsheet.en.md) → [Gemini CLI](gemini-cli/) or [Aider](aider/) + local models |
+| Cost-conscious / solo dev | [Cheatsheet](cheatsheet.en.md) → [Aider](aider/) + local models or [Codex CLI](codex/) `--oss` |
 | Team / high-quality delivery | [Kiro](kiro/) → [Code Review](common/code-review.en.md) → [Testing](common/testing.en.md) |
 
 **Already using AI tools?** Jump to: [Cheatsheet](cheatsheet.en.md) · [Advanced Tips](#10-tool-guides) · [Real-World Workflows](#real-world-workflows) · [Ecosystem](#ecosystem)
@@ -57,14 +57,14 @@
 |------|------|-----------|
 | [**Claude Code**](claude-code/README.en.md) | CLI Agent | 66 tips, Agent + Skill + Hook workflows |
 | [**Codex CLI**](codex/README.en.md) | CLI Agent | OpenAI's open-source (Rust), Sandbox + AGENTS.md, ChatGPT-plan friendly |
-| [**Cursor**](cursor/README.en.md) | IDE | .cursorrules config, Composer Agent mode |
-| [**GitHub Copilot**](copilot/README.en.md) | IDE Plugin | Inline completion + Agent mode + custom instructions |
-| [**OpenClaw**](openclaw/README.en.md) | AI Agent Framework | 338k Stars, multi-platform + Skills + Cron automation |
-| [Windsurf](windsurf/README.en.md) | IDE | Cascade Agent, automatic context |
-| [Gemini CLI](gemini-cli/README.en.md) | CLI | By Google, large codebase analysis |
-| [Kiro](kiro/README.en.md) | IDE | By AWS, spec-driven development |
+| [**Cursor**](cursor/README.en.md) | IDE | `.cursor/rules/*.mdc` rules, Agent / Plan modes, parallel Agents Window |
+| [**GitHub Copilot**](copilot/README.en.md) | IDE Plugin | Inline completion + Agent mode + custom agents / instructions |
+| [**OpenClaw**](openclaw/README.en.md) | AI Agent Framework | 390k+ Stars, multi-platform + Skills + scheduled automation |
+| [Devin Desktop (formerly Windsurf)](windsurf/README.en.md) | IDE | Devin Local Agent, local + cloud agent board |
+| [Gemini CLI](gemini-cli/README.en.md) | CLI | By Google, 1M context; individual users have moved to Antigravity CLI |
+| [Kiro](kiro/README.en.md) | IDE + CLI | By AWS, spec-driven development |
 | [Aider](aider/README.en.md) | CLI | Git-native, supports almost any LLM |
-| [Trae](trae/README.en.md) | IDE | By ByteDance, free Claude/GPT access |
+| [Trae](trae/README.en.md) | IDE | By ByteDance, has a free tier; China edition connects directly |
 
 > Every guide follows the same structure: **Core Concepts → Quick Start → Prompt Tips → Advanced Usage → Config Templates**
 
