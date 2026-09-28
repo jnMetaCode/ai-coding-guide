@@ -2,15 +2,17 @@
 # 复制到项目根目录，命名为 .aider.conf.yml
 
 # 模型配置
-model: claude-sonnet-4-5
+model: anthropic/claude-sonnet-5-5     # 新 Claude 模型需在 .aider.model.settings.yml 设 use_temperature: false
 # 其他选择：
-# model: deepseek/deepseek-chat      # 便宜，适合日常编码
-# model: ollama/qwen2.5-coder        # 免费，需要本地跑 Ollama
+# model: deepseek/deepseek-v4-pro      # 便宜，适合日常编码（别用 deepseek 别名，它仍指向已下线的 deepseek-chat）
+# model: ollama/qwen3-coder            # 免费，需要本地跑 Ollama
 # model: gpt-4o                       # OpenAI
 
 # Git 配置
-auto-commits: true                     # 每次修改自动 commit
-commit-prefix: "[ai] "                 # commit 前缀，方便区分人工和 AI 修改
+auto-commits: true                     # 每次修改自动 commit（只提交 Aider 改过的文件）
+dirty-commits: true                    # 要改的文件里有你未提交的改动时，先单独 commit 一次
+attribute-commit-message-author: true  # AI 改动的 commit message 加 "aider: " 前缀，方便区分人工和 AI 修改
+# commit-prompt: "用中文写 Conventional Commits 格式的提交信息"  # 自定义 commit message 生成提示
 
 # 代码质量
 auto-lint: true                        # 修改后自动跑 linter

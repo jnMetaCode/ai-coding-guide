@@ -6,27 +6,27 @@
 
 ---
 
-## 陷阱 1：自动 commit 吃进了你的工作树变更
+## 陷阱 1：自动 commit 把你没写完的改动也提交了
 
 **症状**
-- 你在项目里改了几个文件还没 commit
-- 让 Aider 改一个别的文件
-- 它生成代码后自动 commit，把你**未 stage 的变更也一起打包提交**
+- 你在 `user.py` 里改了一半还没 commit
+- 让 Aider 也改 `user.py`
+- `git log` 一看多了**两个** commit：一个是你那半截改动（commit message 还是 AI 生成的），一个才是 Aider 的修改
 
 **根因**
-Aider 默认开启 `auto-commits: true`。它 commit 的范围是整个工作树 diff，不区分"我改的"和"用户改的"。Aider 觉得"改完就提交"是好事，不知道你有别的工作正在进行。
+Aider 默认开启 `auto-commits: true`，只提交**它自己编辑过的文件**，不会碰其他文件。但 `--dirty-commits` 也默认开启：如果它要改的文件里已经有你未提交的改动，它会**先把这些改动单独 commit 一次**，再提交自己的修改——目的是把你的工作和 AI 的修改分开，方便回滚。代价是你没写完的半成品被当成一个正式 commit 进了历史。
 
 **出坑**
 ```bash
-git reset HEAD~1        # 取消最后一次 commit，文件回到工作树
-git status              # 核对哪些是你的、哪些是 Aider 的
-# 手动 commit 该 commit 的，丢弃该丢的
+git log --oneline -3    # 找到"你的改动"那个 commit 和 Aider 的 commit
+git reset --soft HEAD~2 # 两个 commit 都撤回到暂存区，改动还在
+git status              # 核对哪些是你的、哪些是 Aider 的，重新组织提交
 ```
 
 **预防**
 三选一：
-1. **开会话前先 `git stash`**：把你未完成的工作藏起来，Aider 的 commit 才干净
-2. **关闭自动 commit**：`aider --no-auto-commits`，或在 `.aider.conf.yml` 里 `auto-commits: false`
+1. **开会话前自己先 commit 或 `git stash`**：工作树干净，Aider 的 commit 才干净
+2. **关掉这两个行为**：`aider --no-dirty-commits`（不再替你提交已有改动），或 `--no-auto-commits` / `.aider.conf.yml` 里 `auto-commits: false`
 3. **开独立 feature 分支**：`git checkout -b feature/xxx` 再开 Aider，弄脏也只是脏分支
 
 ---
@@ -39,7 +39,7 @@ git status              # 核对哪些是你的、哪些是 Aider 的
 - 跑起来 `TypeError`
 
 **根因**
-Aider 只把 `/add` 过的文件真正**读进上下文**。Map 模式会索引项目结构（名字+位置），但**不读内容**。依赖文件没 `/add`，AI 只能基于文件名猜。
+Aider 只把 `/add` 过的文件**完整读进上下文**。Repo Map 会提取各文件的关键符号和定义行（函数/类签名），并按引用关系图排序，但受 `map-tokens` 预算限制，只放得下最相关的一部分，**不包含函数体实现**。依赖文件没 `/add`，又恰好没进 Map，AI 只能靠名字猜。
 
 **出坑**
 ```
@@ -83,9 +83,9 @@ Aider 只把 `/add` 过的文件真正**读进上下文**。Map 模式会索引�
 配置分层（`.aider.conf.yml`）：
 
 ```yaml
-model: claude-sonnet-4-5           # 主模型
-weak-model: deepseek/deepseek-chat # 弱任务（commit message、简单补全）
-editor-model: claude-haiku-4-5     # 编辑器补全
+model: anthropic/claude-sonnet-5-5    # 主模型
+weak-model: deepseek/deepseek-v4-pro  # 弱任务（commit message、聊天记录摘要）
+editor-model: anthropic/claude-haiku-4-5  # architect 模式下负责把方案落成具体文件编辑
 ```
 
 或**按任务类型**切：
@@ -107,17 +107,17 @@ editor-model: claude-haiku-4-5     # 编辑器补全
 - 一次对话下来 token 消耗是预期的 5 倍
 
 **根因**
-Aider 的 auto-lint/test 是 "失败就让 LLM 再改一次"。如果问题根本不是代码能修好的（比如环境配置、依赖版本），它会永远修不好，一直重试直到达到默认上限。每次重试都烧 token。
+Aider 的 auto-lint/test 是 "失败就让 LLM 再改一次"。如果问题根本不是代码能修好的（比如环境配置、依赖版本），它会永远修不好，一直重试直到达到内置的反思上限（源码写死 `max_reflections = 3`，没有命令行参数可调）。每次重试都烧 token。
 
 **出坑**
 ```
 /undo                     # 回滚本轮修改
-/lint-cmd none            # 临时关掉 auto-lint
+# 退出后用 aider --no-auto-lint 重开（或 .aider.conf.yml 里 auto-lint: false）
 # 手动修根本问题（环境、配置），再打开 auto-lint
 ```
 
 **预防**
-- 限制重试次数（`aider --max-reflections 3`）
+- 重试次数没法调，所以要让失败尽量少进 LLM
 - lint 命令用 `--fix` 模式让 linter 先尝试自动修复，而不是报错扔给 AI：
 
 ```yaml
@@ -147,7 +147,7 @@ Map 模式的索引在**会话开始时生成**，会话中如果 git 层面大�
 或者在会话里：
 ```
 /reset             # 清空会话上下文
-/map-refresh       # 重新扫描项目结构（取决于版本是否支持）
+/map-refresh       # 强制刷新 repo map
 ```
 
 **预防**

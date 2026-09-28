@@ -8,27 +8,27 @@
 
 ---
 
-## Pitfall 1: Auto-Commit Swallows Your Working Tree Changes
+## Pitfall 1: Auto-Commit Also Commits Your Half-Finished Edits
 
 **Symptom**
-- You have uncommitted changes across several files
-- You ask Aider to modify an unrelated file
-- After generating code, it auto-commits — and **your unstaged changes get bundled into that commit**
+- You're halfway through editing `user.py`, not committed yet
+- You ask Aider to modify `user.py` too
+- `git log` now shows **two** new commits: one with your half-done edits (with an AI-generated message), and one with Aider's change
 
 **Cause**
-Aider defaults to `auto-commits: true`. Its commit scope is the entire working tree diff — it doesn't distinguish "yours" from "mine." It assumes "change = commit."
+Aider defaults to `auto-commits: true` and only commits **the files it edited** — it won't touch other files. But `--dirty-commits` is also on by default: if a file it's about to edit already has your uncommitted changes, it **commits those changes separately first**, then commits its own edit. The goal is to keep your work apart from the AI's so either can be rolled back — the cost is that your half-finished work lands in history as a real commit.
 
 **Recovery**
 ```bash
-git reset HEAD~1        # Undo last commit, files back to working tree
-git status              # Separate yours from Aider's
-# Manually commit what should be committed, discard the rest
+git log --oneline -3    # Find the "your changes" commit and Aider's commit
+git reset --soft HEAD~2 # Undo both commits, changes stay staged
+git status              # Separate yours from Aider's, re-commit as you like
 ```
 
 **Prevention**
 Pick one:
-1. **`git stash` before the session**: hide your WIP so Aider's commit stays clean
-2. **Disable auto-commit**: `aider --no-auto-commits`, or `auto-commits: false` in `.aider.conf.yml`
+1. **Commit or `git stash` yourself before the session**: a clean tree keeps Aider's commits clean
+2. **Turn the behavior off**: `aider --no-dirty-commits` (stop committing pre-existing changes), or `--no-auto-commits` / `auto-commits: false` in `.aider.conf.yml`
 3. **Dedicated branch**: `git checkout -b feature/xxx` before launching Aider
 
 ---
@@ -41,7 +41,7 @@ Pick one:
 - Runtime: `TypeError`
 
 **Cause**
-Aider only reads files that are explicitly `/add`-ed. Map mode indexes structure (names + positions) but **not contents**. Dependencies not added → AI guesses from names.
+Aider only reads files **in full** when they are explicitly `/add`-ed. The repo map extracts each file's key symbols and definition lines (function/class signatures), graph-ranked by references, but it's capped by the `map-tokens` budget, so only the most relevant slice fits — and it **never includes function bodies**. A dependency that isn't added and doesn't make it into the map → AI guesses from names.
 
 **Recovery**
 ```
@@ -85,9 +85,9 @@ LLMs vary wildly in instruction-following. Same `/architect design a WebSocket n
 Tier in `.aider.conf.yml`:
 
 ```yaml
-model: claude-sonnet-4-5           # Primary
-weak-model: deepseek/deepseek-chat # Weak tasks (commit messages, simple completion)
-editor-model: claude-haiku-4-5     # Editor-mode completion
+model: anthropic/claude-sonnet-5-5    # Primary
+weak-model: deepseek/deepseek-v4-pro  # Weak tasks (commit messages, chat history summaries)
+editor-model: anthropic/claude-haiku-4-5  # In architect mode, turns the plan into concrete file edits
 ```
 
 Or switch **by task type**:
@@ -109,17 +109,17 @@ Or switch **by task type**:
 - A single session burns 5× expected tokens
 
 **Cause**
-Aider's auto-lint/test retries "if it fails, let the LLM try again." If the problem isn't code-fixable (environment, dependencies), it'll retry until it hits the retry cap. Each retry costs tokens.
+Aider's auto-lint/test retries "if it fails, let the LLM try again." If the problem isn't code-fixable (environment, dependencies), it'll retry until it hits the built-in reflection cap (hard-coded `max_reflections = 3` in the source, no command-line flag). Each retry costs tokens.
 
 **Recovery**
 ```
 /undo                     # Roll back this round
-/lint-cmd none            # Temporarily disable auto-lint
+# Exit and relaunch with aider --no-auto-lint (or auto-lint: false in .aider.conf.yml)
 # Fix the real problem (environment/config), then re-enable
 ```
 
 **Prevention**
-- Cap retries: `aider --max-reflections 3`
+- The retry count isn't configurable, so keep failures from reaching the LLM in the first place
 - Use auto-fixing linters so the linter resolves what it can before handing to AI:
 
 ```yaml
@@ -149,7 +149,7 @@ Exit and relaunch Aider — the map rebuilds.
 Or in-session:
 ```
 /reset             # Clear session context
-/map-refresh       # Re-scan project structure (if your version supports it)
+/map-refresh       # Force a repo map refresh
 ```
 
 **Prevention**
