@@ -107,7 +107,7 @@ editor-model: anthropic/claude-haiku-4-5  # architect 模式下负责把方案�
 - 一次对话下来 token 消耗是预期的 5 倍
 
 **根因**
-Aider 的 auto-lint/test 是 "失败就让 LLM 再改一次"。如果问题根本不是代码能修好的（比如环境配置、依赖版本），它会永远修不好，一直重试直到达到内置的反思上限（固定值，没有命令行参数可调）。每次重试都烧 token。
+Aider 的 auto-lint/test 是 "失败就让 LLM 再改一次"。如果问题根本不是代码能修好的（比如环境配置、依赖版本），它会永远修不好，一直重试直到达到内置的反思上限（源码写死 `max_reflections = 3`，没有命令行参数可调）。每次重试都烧 token。
 
 **出坑**
 ```

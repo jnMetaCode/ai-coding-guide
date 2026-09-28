@@ -109,7 +109,7 @@ Or switch **by task type**:
 - A single session burns 5× expected tokens
 
 **Cause**
-Aider's auto-lint/test retries "if it fails, let the LLM try again." If the problem isn't code-fixable (environment, dependencies), it'll retry until it hits the built-in reflection cap (a fixed value with no command-line flag). Each retry costs tokens.
+Aider's auto-lint/test retries "if it fails, let the LLM try again." If the problem isn't code-fixable (environment, dependencies), it'll retry until it hits the built-in reflection cap (hard-coded `max_reflections = 3` in the source, no command-line flag). Each retry costs tokens.
 
 **Recovery**
 ```
