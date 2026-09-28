@@ -13,12 +13,12 @@
 | **新项目搭建** | Claude Code | 从零开始需要全局规划能力 |
 | **Bug 调试** | Claude Code | 能看日志、跑命令、系统化分析 |
 | **代码审查** | Claude Code / Cursor | Claude Code 更系统，Cursor 更快捷 |
-| **学习新代码库** | Cursor + Chat | 选中代码问问题，交互最自然 |
+| **学习新代码库** | Cursor（Ask 模式） | 选中代码问问题，交互最自然 |
 | **写测试** | Claude Code | 能跑测试、看覆盖率、自动修复 |
 | **文档/注释** | Copilot | 行内补全写注释最顺手 |
 | **前端 UI 调整** | Cursor | 实时预览 + 可视化编辑 |
-| **命令行/脚本** | Claude Code / Gemini CLI | CLI 原生，适合终端工作流 |
-| **大代码库探索** | Gemini CLI | 上下文窗口最大（2M tokens） |
+| **命令行/脚本** | Claude Code / Codex CLI | CLI 原生，适合终端工作流 |
+| **大代码库探索** | Claude Code | Opus/Sonnet 5.5 均 1M 上下文（Gemini CLI 也是 1M，但个人用户已停服，仅企业版 / 付费 API Key） |
 | **CI / 自动化代码审查** | Codex CLI | 官方 GitHub Action 内置受限沙箱代理 |
 | **已订阅 ChatGPT Plus/Pro** | Codex CLI | 订阅自带额度，开箱即用，OS 内核级沙箱 |
 | **完全离线 / 零 API 成本** | Codex CLI 或 Aider | `codex --oss --local-provider ollama` 走本地模型 |
@@ -37,11 +37,11 @@
 | 多文件协调 | ★★★ | ★★☆ | ★★☆ | ★★☆ | ★★☆ |
 | 项目规则配置 | ★★★ | ★★★ | ★★★ | ★★☆ | ★★☆ |
 | 扩展能力（MCP） | ★★★ | ★★★ | ★★☆ | ★★☆ | ★★☆ |
-| 沙箱级别 | App 层+Hook | **OS 内核** | — | — | — |
+| 沙箱级别 | OS 级 Bash 沙箱 + Hook | **OS 内核** | — | — | — |
 | 本地模型支持 | — | ★★★（--oss） | — | — | — |
-| 上下文窗口 | ★★☆ | ★★☆ | ★★☆ | ★★☆ | ★★★ |
+| 上下文窗口 | ★★★（1M） | ★★☆ | ★★☆ | ★★☆ | ★★★（1M） |
 | IDE 集成 | — | — | ★★★ | ★★★ | — |
-| 免费额度 | ★☆☆ | ★★☆（含 ChatGPT 订阅） | ★☆☆ | ★★☆ | ★★★ |
+| 免费额度 | ★☆☆ | ★★☆（含 ChatGPT 订阅） | ★☆☆ | ★★☆ | —（个人免费已停） |
 
 ---
 
@@ -65,14 +65,14 @@ Copilot     → 行内补全、写注释、简单问答
 
 适合：后端开发者，VS Code 用户
 
-### 组合三：Gemini CLI + Cursor（预算友好）
+### 组合三：Copilot 免费版 + Aider 本地模型（预算友好）
 
 ```
-Gemini CLI → 大规模分析、代码探索（免费）
-Cursor     → 日常编码、交互式修改
+Copilot 免费版        → 行内补全、简单问答
+Aider + 本地模型      → 终端 Agent 任务（如 `aider --model ollama/qwen3-coder`）
 ```
 
-适合：个人开发者，想控制成本
+适合：个人开发者，想控制成本（IDE 补全 + 终端 Agent 都零订阅；也可用 Trae 免费版，仅 Auto 模式）
 
 ### 组合四：Codex CLI + Cursor（ChatGPT 订阅者）
 
@@ -82,7 +82,7 @@ Cursor    → 日常编码、Tab 补全
 ```
 
 适合：ChatGPT Plus/Pro 订阅者，想让订阅额度产生 Agent 价值；
-特别适合需要内核级沙箱（Seatbelt / Landlock）的安全敏感场景。
+特别适合需要内核级沙箱（Seatbelt / bubblewrap）的安全敏感场景。
 
 ### 组合五：Codex CLI + Claude Code（双 CLI）
 
@@ -105,8 +105,8 @@ Claude Code  → 跨 12 个文件的大重构、依赖图复杂的精修
 | Cursor 补全改了 3 次还不对 | 切 Claude Code，让它系统分析 |
 | Claude Code 对话太长开始变笨 | 开新对话，或切 Cursor 做剩余小任务 |
 | 需要看实时效果 | 切 Cursor / Copilot（IDE 内预览） |
-| 需要跑命令验证 | 切 Claude Code / Gemini CLI（终端内） |
-| 需要理解大代码库 | 切 Gemini CLI（上下文最大） |
+| 需要跑命令验证 | 切 Claude Code / Codex CLI（终端内） |
+| 需要理解大代码库 | 切 Claude Code（1M 上下文） |
 | 要在 CI 跑非交互 Agent | 切 Codex CLI（`codex exec --json` + 官方 Action） |
 | 处理敏感数据 / 离线环境 | 切 Codex CLI（`--oss --local-provider ollama`） |
-| 需要内核级沙箱保证 | 切 Codex CLI（Seatbelt / Landlock） |
+| 需要内核级沙箱保证 | 切 Codex CLI（Seatbelt / bubblewrap） |

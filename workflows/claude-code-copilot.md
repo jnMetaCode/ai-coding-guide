@@ -26,7 +26,7 @@
    > 按设计方案创建 src/services/notification/ 下的所有文件
 
 2. VS Code + Copilot 填充实现
-   打开 Copilot 创建的文件，写代码时 Copilot 自动补全
+   打开 Claude Code 创建的文件，写代码时 Copilot 自动补全
 
 3. Claude Code 跑测试和审查
    > 跑测试看有没有问题，然后做一次代码审查
@@ -40,5 +40,5 @@
 ## 优势
 
 - **无需切换** — Claude Code 在终端，Copilot 在 VS Code，各干各的
-- **成本控制** — Copilot 包月制不限量，大量补全不额外花钱
+- **成本控制** — Copilot 付费套餐代码补全不限量，大量补全不额外花钱（Chat / Agent 按 AI Credits 计费）
 - **互补性强** — Claude Code 不擅长行内补全，Copilot 不擅长 Agent 任务

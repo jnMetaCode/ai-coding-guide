@@ -35,7 +35,7 @@
 
 阶段 3：实现细节（Cursor）
 打开 Cursor，在 Claude Code 创建的骨架上填充实现。
-用 Composer 模式逐个文件实现业务逻辑。
+用 Agent 面板（Cmd+I）逐个文件实现业务逻辑。
 
 阶段 4：测试（Claude Code）
 > 给通知模块写完整的测试。
@@ -68,7 +68,7 @@
 两个工具的项目配置保持一致：
 
 ```
-# CLAUDE.md 和 .cursorrules 写相同的核心规则
+# CLAUDE.md 和 .cursor/rules/*.mdc 写相同的核心规则
 # 或者用 superpowers-zh，它同时支持两个工具
 
 cd /your/project

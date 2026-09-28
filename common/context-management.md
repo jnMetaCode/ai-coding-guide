@@ -10,10 +10,10 @@
 
 | 工具 | 上下文窗口 | 说明 |
 |------|-----------|------|
-| Claude Code | 200K tokens | 约 15 万字，最大 |
-| Cursor | 128K-200K tokens | 取决于选择的模型 |
-| Copilot | 128K tokens | 包含打开的文件 |
-| Gemini CLI | 1M-2M tokens | 窗口最大，但太大也有问题 |
+| Claude Code | 1M tokens | Opus/Sonnet 5.5 均为 1M（Haiku 200K） |
+| Cursor | 跟模型 | 取决于选择的模型 |
+| Copilot | 跟模型 | 取决于选择的模型，包含打开的文件 |
+| Gemini CLI | 1M tokens | 窗口大，但太大也有问题（个人用户已停服，仅企业版 / 付费 API Key） |
 
 **关键认知**：上下文不是越大越好。塞太多无关信息，AI 会"注意力分散"，重要信息反而被淹没。
 
@@ -37,9 +37,9 @@
 | 工具 | 配置文件 | 作用 |
 |------|---------|------|
 | Claude Code | `CLAUDE.md` | 项目背景、规范、常用命令 |
-| Cursor | `.cursorrules` / `.cursor/rules/` | 项目规则 |
+| Cursor | `.cursor/rules/*.mdc` | 项目规则（`.cursorrules` 为旧格式） |
 | Copilot | `.github/copilot-instructions.md` | 项目指引 |
-| Windsurf | `.windsurfrules` | 项目规则 |
+| Devin Desktop（原 Windsurf） | `.devin/rules/*.md` | 项目规则（`.windsurfrules` 仅向后兼容） |
 | Gemini CLI | `GEMINI.md` | 项目配置 |
 
 **写好配置文件 = 每次对话自动带上最关键的上下文。**
@@ -88,7 +88,7 @@
 @src/models/user.ts @src/schemas/user.ts
 基于这两个文件写一个用户注册接口
 
-# 用 Notepads 保存常用上下文
+# 用 Rules / Skills 保存常用上下文（Notepads 已在 2.0 移除）
 # 用 Rules globs 按文件类型自动加载规则
 
 # 打开相关文件作为隐式上下文

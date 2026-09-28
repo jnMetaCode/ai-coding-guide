@@ -25,7 +25,7 @@ const DB_URL = process.env.DATABASE_URL
 **Mitigation**: Explicitly prohibit this in your project rules:
 
 ```markdown
-# CLAUDE.md / .cursorrules
+# CLAUDE.md / .cursor/rules/*.mdc
 Never hardcode secrets, passwords, or tokens in source code.
 All sensitive configuration must be read from environment variables.
 ```
@@ -79,7 +79,7 @@ console.log('Payment response:', { id: response.id, status: response.status })
 Add these rules to your project config file:
 
 ```markdown
-# Security Rules (for CLAUDE.md / .cursorrules / .windsurfrules)
+# Security Rules (for CLAUDE.md / .cursor/rules/*.mdc / .devin/rules/*.md)
 
 ## Never
 - Hardcode secrets, passwords, or tokens

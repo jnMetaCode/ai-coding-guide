@@ -11,15 +11,15 @@
 | 工具 | 陷阱数 | 覆盖主题 |
 |------|-------|---------|
 | [Claude Code](./claude-code.md) | 8 | 上下文溢出 / 幻觉 API / 过度重构 / 测试谎报 / CLAUDE.md 被忽略 / git amend / Plan 漂移 / Subagent 传话 |
-| [Cursor](./cursor.md) | 8 | Composer 脱缰 / Tab 暴吐 / .cursorrules 超长 / @file 失效 / Chat 模式混用 / 模型切换 / Notepads 过期 / 索引陈旧 |
-| [GitHub Copilot](./copilot.md) | 8 | 过期 API / Agent 读 .env / instructions 太长 / #file vs @workspace / MCP 失效 / IDE 差异 / 免费限流 / 自定义角色不生效 |
+| [Cursor](./cursor.md) | 8 | Agent 脱缰 / Tab 暴吐 / 规则不生效 / @file 失效 / Agent·Ask 模式混用 / 模型切换 / Notepads 已移除 / 索引陈旧 |
+| [GitHub Copilot](./copilot.md) | 8 | 过期 API / Agent 读 .env / instructions 太长 / #file vs Agent 搜索 / MCP 失效 / IDE 差异 / AI Credits 耗尽 / 自定义 Agent 不生效 |
 | [Aider](./aider.md) | 7 | auto-commit 吃变更 / /add 漏依赖 / 模型切换质量塌 / lint 循环烧 token / Map 过期 / Architect→Code 漂移 / amend 失控 |
 
 ---
 
 ## 其他工具陷阱
 
-Windsurf / Gemini CLI / Kiro / Trae / OpenClaw 的陷阱页还没写。欢迎：
+Devin Desktop（原 Windsurf）/ Codex CLI / Gemini CLI / Kiro / Trae / OpenClaw 的陷阱页还没写。欢迎：
 
 1. 看你用的工具有没有踩过坑
 2. 按下面模板写一篇 PR 过来
@@ -74,7 +74,7 @@ Windsurf / Gemini CLI / Kiro / Trae / OpenClaw 的陷阱页还没写。欢迎：
 - ❌ **症状和根因混在一起**：读者看不清"这是不是我遇到的"
 - ✅ **可复现的症状**：读者能对号入座
 - ✅ **出坑操作具体**：给命令或提示词，不是"注意一下"
-- ✅ **预防措施落地**：能直接抄到 `CLAUDE.md` / `.cursorrules` / settings.json
+- ✅ **预防措施落地**：能直接抄到 `CLAUDE.md` / `.cursor/rules/*.mdc` / settings.json
 
 ---
 

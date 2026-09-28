@@ -18,7 +18,7 @@
    ↓
 踩坑合集（4 款主流工具的 31 个深度陷阱）
    ↓
-进阶工具（Aider / Gemini CLI / Windsurf / Trae / Kiro）
+进阶工具（Aider / Gemini CLI / Devin Desktop（原 Windsurf）/ Trae / Kiro）
 ```
 
 学完这一卷你应该能：
@@ -27,7 +27,7 @@
 - 用 AI 做端到端调试：从复现 → 定位 → 修复 → 写防回归测试，一条龙
 - 设计 Claude Code + Cursor 这种双工具流水线，明确各自职责边界
 - 看到典型陷阱描述就能心里咯噔一下（"这个我也遇到过"）并知道怎么躲
-- 在小众但有特定优势的工具（如 Gemini CLI 的 2M 上下文）上做出选择
+- 在小众但有特定优势的工具（如 Kiro 的 Spec 驱动、Aider 的多模型切换）上做出选择
 
 ## 这一卷的"必读"
 

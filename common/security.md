@@ -23,7 +23,7 @@ const DB_URL = process.env.DATABASE_URL
 **防护**：在项目规则里明确禁止：
 
 ```markdown
-# CLAUDE.md / .cursorrules
+# CLAUDE.md / .cursor/rules/*.mdc
 禁止在代码中硬编码任何密钥、密码、token。
 所有敏感配置必须通过环境变量读取。
 ```
@@ -77,7 +77,7 @@ console.log('Payment response:', { id: response.id, status: response.status })
 在项目配置文件中加入这些规则：
 
 ```markdown
-# 安全规则（加到 CLAUDE.md / .cursorrules / .windsurfrules）
+# 安全规则（加到 CLAUDE.md / .cursor/rules/*.mdc / .devin/rules/*.md）
 
 ## 禁止
 - 不要硬编码密钥、密码、token

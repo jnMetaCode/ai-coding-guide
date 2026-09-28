@@ -87,7 +87,7 @@
 
 ### 第三步：切 Cursor 填实现
 
-在 Cursor 里打开骨架文件，用 Composer 逐个填充。以 `order-export.service.ts` 为例，Composer 里输入：
+在 Cursor 里打开骨架文件，用 Agent 面板逐个填充。以 `order-export.service.ts` 为例，在 Agent 里输入：
 
 ```
 @order-export.service.ts 按 TODO 实现每个方法。
