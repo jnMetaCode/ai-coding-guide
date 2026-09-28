@@ -14,7 +14,7 @@ Before diving into tips, get familiar with these core concepts:
 |---------|-------------|----------|
 | **Subagent** | Child process Agent, executes tasks independently | Parallel processing, context isolation |
 | **Command** | Shortcuts starting with `/` | Quick access to common operations |
-| **Skill** | Methodology files under `.claude/skills/` | Teach the AI how to do things |
+| **Skill** | Methodology folders at `.claude/skills/<name>/SKILL.md` | Teach the AI how to do things |
 | **Hook** | Scripts that run before/after tool calls | Automated validation, notifications |
 | **MCP Server** | Model Context Protocol service | Extend AI capabilities (databases, APIs, etc.) |
 | **Memory** | Persistent memory | Retain context across conversations |
@@ -27,12 +27,18 @@ Before diving into tips, get familiar with these core concepts:
 ### Installation
 
 ```bash
-# Install globally via npm
-npm install -g @anthropic-ai/claude-code
+# Recommended: official native installer (macOS / Linux / WSL, auto-updates)
+curl -fsSL https://claude.ai/install.sh | bash
 
-# Or run directly with npx
-npx @anthropic-ai/claude-code
+# Or use a package manager
+brew install --cask claude-code          # macOS
+winget install Anthropic.ClaudeCode      # Windows
+
+# npm still works (requires Node.js 22+)
+npm install -g @anthropic-ai/claude-code
 ```
+
+> Requires a Claude Pro / Max / Team / Enterprise subscription or a Console API account (the Free plan doesn't include Claude Code). Amazon Bedrock, Google Vertex AI, and Microsoft Foundry are also supported.
 
 ### First Run
 
@@ -154,14 +160,14 @@ Use subagents to execute each one independently.
 
 ### Skill Files
 
-Skills are one of the most powerful features. Place methodology files under `.claude/skills/` and the AI loads them automatically:
+Skills are one of the most powerful features. Each skill is a **folder** under `.claude/skills/` whose entry file must be named `SKILL.md` (a lone `.md` file dropped directly into `.claude/skills/` is ignored). The AI loads them automatically based on their descriptions:
 
 ```
 .claude/skills/
-├── brainstorming.md      # Requirements analysis workflow
-├── debugging.md          # Debugging methodology
-├── code-review.md        # Code review standards
-└── verification.md       # Pre-completion verification
+├── brainstorming/SKILL.md      # Requirements analysis workflow
+├── debugging/SKILL.md          # Debugging methodology
+├── code-review/SKILL.md        # Code review standards
+└── verification/SKILL.md       # Pre-completion verification
 ```
 
 **Quick-install superpowers-zh** (20 battle-tested skills):
@@ -178,7 +184,7 @@ After installation, Claude Code loads these skills automatically. Invoke them wi
 **Need specialized roles?** Use the 277 AI expert personas from [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh):
 
 ```bash
-# Copy role files to .claude/skills/ to use them
+# Role files are subagents — copy them to .claude/agents/ to use them
 # Examples: database optimizer, security engineer, code reviewer, etc.
 ```
 
@@ -186,7 +192,7 @@ Reference roles in CLAUDE.md:
 
 ```markdown
 # Roles
-When I say "review as a security expert", act according to .claude/skills/security-engineer.md.
+When I say "review as a security expert", use the security-engineer subagent (.claude/agents/security-engineer.md).
 ```
 
 ### Hook Automation
@@ -217,7 +223,7 @@ Hooks run scripts automatically before or after tool calls:
 }
 ```
 
-> Hook trigger points include `PreToolUse`, `PostToolUse`, `Notification`, etc. Each trigger uses `matcher` to match tool names. See the [official docs](https://docs.anthropic.com/en/docs/claude-code/hooks).
+> Hook trigger points include `PreToolUse`, `PostToolUse`, `Notification`, `Stop`, `SessionStart`, `UserPromptSubmit`, and 30+ events in total. Each trigger uses `matcher` to match tool names. Besides `command`, hook types include `http`, `mcp_tool`, `prompt`, and `agent`. See the [official docs](https://code.claude.com/docs/en/hooks).
 
 Use cases:
 - Auto-run related tests after every file edit
@@ -235,7 +241,7 @@ If the result is good, merge it. If not, discard it.
 
 ### Memory Across Conversations
 
-Claude Code stores memory under `~/.claude/` for cross-conversation use:
+Auto memory is on by default, stored per project at `~/.claude/projects/<project>/memory/MEMORY.md`; view, edit, or toggle it with `/memory`. You can also ask it to remember things directly:
 
 ```
 Remember: this project deploys on Vercel,
@@ -264,6 +270,20 @@ steps:
 ```
 
 Best for: team-scale complex tasks, deliverables requiring multiple review rounds, standardized development workflows.
+
+### New in H2 2026
+
+- **Models**: Opus 5.5 is the default on all plans; aliases `default` / `best` / `fable` / `opus` / `sonnet` / `haiku` / `opusplan`. Price per million input/output tokens: Haiku 4.5 $1/$5, Sonnet 5.5 $2/$10, Opus 5.5 $4/$20, Fable 5.1 $10/$50. Opus 5.5, Sonnet 5.5, and Fable 5.1 have 1M context; Haiku 4.5 has 200K
+- **Permission modes**: `default` / `acceptEdits` / `plan` / `auto` / `dontAsk` / `bypassPermissions`; interactive sessions start in **auto mode** (a classifier decides what needs confirmation) by default
+- **`/effort`**: set thinking depth (low / medium / high / xhigh / max), or press Option/Alt+T
+- **Background agents**: `claude agents`, `claude --bg`, `/background` keep tasks running in the background
+- **`/fork`**, **`/btw`** (side question without derailing the main thread), **`/rewind`** (roll back code and conversation)
+- **`/loop`**, **`/schedule`**: recurring runs and scheduled cloud tasks
+- **`/code-review`**, **`/ultrareview`**, **`/security-review`**: built-in code / security review
+- **`/plugin`**: install plugins (bundles of skills, agents, hooks, MCP); **`/context`**: inspect context usage
+- **Bash sandbox**: `/sandbox` enables OS-level isolation (Seatbelt on macOS, bubblewrap on Linux/WSL2)
+- **AGENTS.md**: read automatically when the project has no CLAUDE.md
+- **Subagents**: the `/agents` wizard is gone — edit Markdown files under `.claude/agents/` directly
 
 ---
 
@@ -311,7 +331,7 @@ Organized by category, one tip per row. Bookmark this section — it's all you n
 | 7 | Ask for 2-3 options | "Give me 2 options with pros and cons. I'll pick one, then you implement it" |
 | 8 | Confirm step by step | "Pause after each step and wait for my confirmation. Don't do everything at once" |
 | 9 | Define done criteria | "Definition of done: all tests pass + zero TypeScript errors + lint passes" |
-| 10 | Use ultrathink for deep reasoning | Start your prompt with "ultrathink" or "think really hard" to trigger extended thinking |
+| 10 | Use ultrathink for deep reasoning | Include "ultrathink" in your prompt for deeper reasoning ("think hard" etc. are just plain text). Set overall thinking depth with `/effort` or Option/Alt+T |
 | 11 | Let it write commit messages | "Write a commit message that explains *why* this change was made, not *what* changed" |
 | 12 | English prompts are more precise | For complex technical tasks, English prompts yield more precise results. Use your native language for simple tasks |
 
@@ -328,7 +348,7 @@ Organized by category, one tip per row. Bookmark this section — it's all you n
 | 7 | Document directory structure | Describe key directories so the AI knows where things live |
 | 8 | Layer your CLAUDE.md files | Global rules in the root, module-specific rules in subdirectories (e.g., `src/api/CLAUDE.md`) |
 | 9 | Update regularly | As the project evolves, keep CLAUDE.md current. Stale rules are worse than no rules |
-| 10 | Use `.claude/rules/` for conditional loading | In large projects, use globs to load rules by file type instead of cramming everything in one file |
+| 10 | Use `.claude/rules/` for conditional loading | In large projects, use `paths:` in rule frontmatter to load rules by file path instead of cramming everything in one file |
 
 ### Agent & Subagent (10)
 
@@ -354,8 +374,8 @@ Organized by category, one tip per row. Bookmark this section — it's all you n
 | 3 | PreToolUse block dangerous ops | Check commands before `Bash` tool execution; block `rm -rf` and similar |
 | 4 | Notification hook for alerts | Auto-send Slack/webhook notifications when long tasks complete |
 | 5 | Stop hook for forced verification | Remind Claude to verify its own output at the end of each turn |
-| 6 | Exit 1 in hooks to block execution | A non-zero exit from a hook script blocks the tool call — use this to enforce rules |
-| 7 | Hook stdout as context | Claude sees the hook's stdout, so you can pass extra information through it |
+| 6 | Exit 2 in hooks to block execution | Only exit code 2 blocks the tool call (stderr is fed back to Claude). Exit 1 is a non-blocking error and the call proceeds |
+| 7 | Hook output as context | stdout from events like `UserPromptSubmit` and `SessionStart` is added to context; `PreToolUse`/`PostToolUse` stdout only goes to the debug log — use JSON `hookSpecificOutput.additionalContext` to pass info |
 | 8 | Match tool names precisely | Matcher supports `Write\|Edit`, `Bash`, etc. Don't use `*` to match everything |
 
 ### Workflow (12)
@@ -407,7 +427,7 @@ Organized by category, one tip per row. Bookmark this section — it's all you n
 
 | # | Tip | Details |
 |---|-----|---------|
-| 1 | Use Haiku for simple tasks | `claude --model haiku` for straightforward work — 10x cheaper |
+| 1 | Use Haiku for simple tasks | `claude --model haiku` for straightforward work — about 1/4 the price of the default Opus, 1/2 of Sonnet |
 | 2 | Use headless mode for batch jobs | Scripted batch calls consume fewer tokens than interactive mode |
 | 3 | A precise CLAUDE.md saves tokens | The more precise your context, the fewer files the AI needs to read, and the lower the cost |
 | 4 | Avoid repeatedly reading large files | Tell Claude the exact line range instead of having it read the entire file every time |
@@ -445,6 +465,6 @@ Copy these directly into your project:
 
 ## Further Reading
 
-- [Claude Code Official Docs](https://docs.anthropic.com/en/docs/claude-code)
+- [Claude Code Official Docs](https://code.claude.com/docs/en/overview)
 - [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) — 20 AI coding skills
 - [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) — 277 AI expert personas

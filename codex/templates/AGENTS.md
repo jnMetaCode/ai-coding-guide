@@ -2,7 +2,7 @@
 
 > AGENTS.md — Codex CLI 项目指令文件
 > 放在 git 仓库根目录，Codex 启动时自动加载（叠加 `~/.codex/AGENTS.md`）。
-> 默认大小限制 32 KiB，建议精简、把详尽内容拆到子目录的 AGENTS.md。
+> 默认大小限制 32 KiB（与其他层级的 AGENTS.md 合计），建议精简、把详尽内容拆到子目录的 AGENTS.md。
 
 ## 项目概览
 

@@ -12,7 +12,7 @@
 |------|------|------|
 | **Subagent** | 子进程 Agent，独立执行任务 | 并行处理、隔离上下文 |
 | **Command** | `/` 开头的快捷命令 | 快速执行常用操作 |
-| **Skill** | `.claude/skills/` 下的方法论文件 | 教 AI 怎么做事 |
+| **Skill** | `.claude/skills/<name>/SKILL.md` 方法论文件夹 | 教 AI 怎么做事 |
 | **Hook** | 工具调用前后的钩子脚本 | 自动化校验、通知 |
 | **MCP Server** | Model Context Protocol 服务 | 扩展 AI 能力（数据库、API 等） |
 | **Memory** | 持久化记忆 | 跨对话保留上下文 |
@@ -25,12 +25,18 @@
 ### 安装
 
 ```bash
-# npm 全局安装
-npm install -g @anthropic-ai/claude-code
+# 推荐：官方原生安装器（macOS / Linux / WSL，自动更新）
+curl -fsSL https://claude.ai/install.sh | bash
 
-# 或者直接用 npx
-npx @anthropic-ai/claude-code
+# 或者用包管理器
+brew install --cask claude-code          # macOS
+winget install Anthropic.ClaudeCode      # Windows
+
+# npm 仍可用（需要 Node.js 22+）
+npm install -g @anthropic-ai/claude-code
 ```
+
+> 需要 Claude Pro / Max / Team / Enterprise 订阅或 Console API 账号（免费版不含 Claude Code），也支持 Amazon Bedrock、Google Vertex AI、Microsoft Foundry。
 
 ### 第一次使用
 
@@ -152,14 +158,14 @@ Claude Code 会自己：读代码 → 制定计划 → 写测试 → 跑测试 �
 
 ### Skill 文件
 
-Skill 是最强大的功能之一。在 `.claude/skills/` 下放方法论文件，AI 会自动加载：
+Skill 是最强大的功能之一。每个 skill 是 `.claude/skills/` 下的一个**文件夹**，入口文件固定叫 `SKILL.md`（直接丢一个单独的 `.md` 进 `.claude/skills/` 不会被识别），AI 会按描述自动加载：
 
 ```
 .claude/skills/
-├── brainstorming.md      # 需求分析流程
-├── debugging.md          # 调试方法论
-├── code-review.md        # 代码审查规范
-└── verification.md       # 完成前验证
+├── brainstorming/SKILL.md      # 需求分析流程
+├── debugging/SKILL.md          # 调试方法论
+├── code-review/SKILL.md        # 代码审查规范
+└── verification/SKILL.md       # 完成前验证
 ```
 
 **快速安装 superpowers-zh**（20 个经过实战验证的 skill）：
@@ -176,7 +182,7 @@ npx superpowers-zh
 **需要专业角色？** 用 [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) 的 277 个 AI 专家角色：
 
 ```bash
-# 把角色文件复制到 .claude/skills/ 即可使用
+# 角色文件属于 subagent，复制到 .claude/agents/ 即可使用
 # 比如数据库优化师、安全工程师、代码审查员等
 ```
 
@@ -184,7 +190,7 @@ npx superpowers-zh
 
 ```markdown
 # 角色
-当我说"用安全专家审查"时，按 .claude/skills/security-engineer.md 的角色行事。
+当我说"用安全专家审查"时，调用 security-engineer subagent（.claude/agents/security-engineer.md）。
 ```
 
 ### Hook 自动化
@@ -215,7 +221,7 @@ Hook 在工具调用前后自动执行脚本：
 }
 ```
 
-> Hook 的触发点有 `PreToolUse`、`PostToolUse`、`Notification` 等，每个触发点下用 `matcher` 匹配工具名。详见 [官方文档](https://docs.anthropic.com/en/docs/claude-code/hooks)。
+> Hook 的触发点有 `PreToolUse`、`PostToolUse`、`Notification`、`Stop`、`SessionStart`、`UserPromptSubmit` 等 30 多个事件，每个触发点下用 `matcher` 匹配工具名；hook 类型除了 `command`，还有 `http`、`mcp_tool`、`prompt`、`agent`。详见 [官方文档](https://code.claude.com/docs/en/hooks)。
 
 用途：
 - 每次修改文件后自动跑相关测试
@@ -233,7 +239,7 @@ Hook 在工具调用前后自动执行脚本：
 
 ### Memory 跨对话记忆
 
-Claude Code 可以在 `~/.claude/` 下存储记忆，跨对话使用：
+Claude Code 默认开启自动记忆（auto memory），按项目存在 `~/.claude/projects/<project>/memory/MEMORY.md`，用 `/memory` 查看、编辑或开关。你也可以直接让它记住：
 
 ```
 记住：这个项目的部署用的是 Vercel，
@@ -262,6 +268,20 @@ steps:
 ```
 
 适合场景：团队级复杂任务、需要多轮审查的交付、标准化开发流程。
+
+### 2026 下半年新增
+
+- **模型**：所有套餐默认 Opus 5.5；别名 `default` / `best` / `fable` / `opus` / `sonnet` / `haiku` / `opusplan`。每百万 token 输入/输出价：Haiku 4.5 $1/$5、Sonnet 5.5 $2/$10、Opus 5.5 $4/$20、Fable 5.1 $10/$50；Opus 5.5、Sonnet 5.5、Fable 5.1 为 1M 上下文，Haiku 4.5 为 200K
+- **权限模式**：`default` / `acceptEdits` / `plan` / `auto` / `dontAsk` / `bypassPermissions`；交互会话默认以 **auto 模式**（分类器判断是否需要确认）启动
+- **`/effort`**：调思考深度（low / medium / high / xhigh / max），也可 Option/Alt+T
+- **后台 agent**：`claude agents`、`claude --bg`、`/background`，任务丢后台继续跑
+- **`/fork`**、**`/btw`**（不打断主线的旁支提问）、**`/rewind`**（回退代码和对话）
+- **`/loop`**、**`/schedule`**：循环执行、定时云端任务
+- **`/code-review`**、**`/ultrareview`**、**`/security-review`**：内置代码审查 / 安全审查
+- **`/plugin`**：安装插件（打包 skills、agents、hooks、MCP）；**`/context`**：查看上下文占用
+- **Bash 沙箱**：`/sandbox` 开启系统级隔离（macOS Seatbelt，Linux/WSL2 bubblewrap）
+- **AGENTS.md**：项目没有 CLAUDE.md 时自动读取 AGENTS.md
+- **Subagent**：`/agents` 向导已移除，直接在 `.claude/agents/` 下编辑 Markdown 文件
 
 ---
 
@@ -309,7 +329,7 @@ git log 看看 src/api/payment.ts 最近的改动，
 | 7 | 给出 2-3 个方案让我选 | "给出 2 个方案，分析优缺点，我选了再做" |
 | 8 | 分步确认 | "每步做完暂停等我确认，不要一口气做完" |
 | 9 | 明确完成标准 | "完成标准：所有测试通过 + TypeScript 无报错 + lint 通过" |
-| 10 | 用 ultrathink 深度思考 | 在提示词开头加"ultrathink"或"think really hard"触发扩展思考 |
+| 10 | 用 ultrathink 深度思考 | 提示词里加 "ultrathink" 触发更深思考（"think hard" 等只是普通文字）；整体思考深度用 `/effort` 或 Option/Alt+T 调 |
 | 11 | 让它写 commit message | "帮我写 commit message，描述这次改动的 why 而不是 what" |
 | 12 | 英文提示词更精确 | 复杂技术任务用英文描述更精确，简单任务中文即可 |
 
@@ -326,7 +346,7 @@ git log 看看 src/api/payment.ts 最近的改动，
 | 7 | 写目录结构 | 关键目录说明，让 AI 知道代码在哪里 |
 | 8 | 分层 CLAUDE.md | 根目录放全局规则，子目录放模块规则（如 `src/api/CLAUDE.md`） |
 | 9 | 定期更新 | 项目演进了 CLAUDE.md 也要跟着更新，过时的规则比没有规则更糟 |
-| 10 | 用 `.claude/rules/` 按条件加载 | 大项目用 globs 按文件类型加载规则，避免一次全塞进去 |
+| 10 | 用 `.claude/rules/` 按条件加载 | 大项目在规则 frontmatter 里用 `paths:` 按文件路径加载，避免一次全塞进去 |
 
 ### Agent 与 Subagent（10）
 
@@ -352,8 +372,8 @@ git log 看看 src/api/payment.ts 最近的改动，
 | 3 | PreToolUse 拦截危险操作 | 在 `Bash` 工具执行前检查命令，拦截 `rm -rf` 等危险操作 |
 | 4 | Notification hook 发通知 | 长任务完成后自动发 Slack/钉钉通知 |
 | 5 | Stop hook 强制验证 | 在每轮结束时提醒 Claude 检查自己的输出 |
-| 6 | hook 里用 exit 1 阻止执行 | hook 脚本返回非 0 就会阻止工具调用，用于强制规则 |
-| 7 | hook 输出作为上下文 | hook 的 stdout 会被 Claude 看到，可以传递额外信息 |
+| 6 | hook 里用 exit 2 阻止执行 | 只有 exit 2 会阻止工具调用（stderr 反馈给 Claude）；exit 1 只是非阻塞错误，照样执行 |
+| 7 | hook 输出作为上下文 | `UserPromptSubmit`、`SessionStart` 等事件的 stdout 会进上下文；`PreToolUse`/`PostToolUse` 的 stdout 只进 debug 日志，要传信息用 JSON `hookSpecificOutput.additionalContext` |
 | 8 | 按工具名精确匹配 | matcher 支持 `Write\|Edit`、`Bash` 等，不要用 `*` 匹配所有 |
 
 ### 工作流（12）
@@ -405,7 +425,7 @@ git log 看看 src/api/payment.ts 最近的改动，
 
 | # | 技巧 | 说明 |
 |---|------|------|
-| 1 | 简单任务用 haiku | `claude --model haiku` 做简单任务，便宜 10 倍 |
+| 1 | 简单任务用 haiku | `claude --model haiku` 做简单任务，单价约为默认 Opus 的 1/4、Sonnet 的 1/2 |
 | 2 | 批量任务用 headless | 脚本批量调用比交互模式省 token |
 | 3 | 精准的 CLAUDE.md 省 token | 上下文越精准，AI 需要读的文件越少，成本越低 |
 | 4 | 避免反复读大文件 | 告诉 Claude 具体行号范围，不要每次都读整个文件 |
@@ -443,6 +463,6 @@ git log 看看 src/api/payment.ts 最近的改动，
 
 ## 延伸阅读
 
-- [Claude Code 官方文档](https://docs.anthropic.com/en/docs/claude-code)
+- [Claude Code 官方文档](https://code.claude.com/docs/en/overview)
 - [superpowers-zh](https://github.com/jnMetaCode/superpowers-zh) — 20 个 AI 编程 skills
 - [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) — 277 个 AI 专家角色

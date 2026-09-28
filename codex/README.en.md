@@ -2,7 +2,7 @@
 
 # OpenAI Codex CLI Best Practices
 
-> Codex CLI is OpenAI's open-source terminal coding agent, written in Rust — sitting alongside Claude Code and Gemini CLI as the "big three" terminal agents. This guide is verified against the official docs (developers.openai.com/codex) and the [openai/codex](https://github.com/openai/codex) repo at v0.125.0 (April 2026).
+> Codex CLI is OpenAI's open-source terminal coding agent, written in Rust — sitting alongside Claude Code and Gemini CLI as the "big three" terminal agents. This guide is verified against the official docs (learn.chatgpt.com, formerly developers.openai.com/codex) and the [openai/codex](https://github.com/openai/codex) repo — originally at v0.125.0 (April 2026), updated in September 2026 for v0.158.0.
 
 > ⚠️ Note: this is the **new Codex CLI** released in 2025 (open-source, terminal agent), *not* the original Codex model that was deprecated in 2023. The product family also includes **Codex App** (desktop) and **Codex Web** (cloud agent at `chatgpt.com/codex`); this doc covers the CLI only.
 
@@ -13,9 +13,9 @@
 | Concept | Description | Use Case |
 |---------|-------------|----------|
 | **AGENTS.md** | Project/global instruction file | Like Claude Code's CLAUDE.md; auto-loaded on launch |
-| **Approval Mode** | When does Codex pause to ask | `untrusted` / `on-request` / `never` |
+| **Approval Mode** | When does Codex pause to ask | `on-request` / `never` (config also accepts `granular`) |
 | **Sandbox Mode** | What files/network it can touch | `read-only` / `workspace-write` / `danger-full-access` |
-| **Profile** | Named bundle of config | `--profile work` to swap model/permissions |
+| **Profile** | Separate `<name>.config.toml` overlay | `--profile work` to swap model/permissions |
 | **Subagent** | Child agent for bounded tasks | TOML-defined, can have its own model/sandbox |
 | **Skill** | Reusable workflow (SKILL.md) | Package a recurring task as a named capability |
 | **MCP Server** | External tool integration | STDIO or HTTP/OAuth |
@@ -28,7 +28,13 @@
 ### Installation
 
 ```bash
-# npm (recommended)
+# Official install script (recommended, macOS / Linux / WSL)
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
+
+# Windows PowerShell
+irm https://chatgpt.com/codex/install.ps1 | iex
+
+# or npm
 npm install -g @openai/codex
 
 # or Homebrew (macOS)
@@ -49,7 +55,7 @@ codex            # On first launch, choose "Sign in with ChatGPT"
 Two options:
 
 - **ChatGPT account login** (officially recommended) — uses your ChatGPT Plus / Pro / Business / Edu / Enterprise quota; opens a browser for OAuth.
-- **API key** — for CI, corporate proxies, or precise per-token billing; needs extra setup (see `developers.openai.com/codex/auth`).
+- **API key** — for CI, corporate proxies, or precise per-token billing; needs extra setup (see [learn.chatgpt.com/docs/auth](https://learn.chatgpt.com/docs/auth)).
 
 ### Your First Run
 
@@ -106,13 +112,13 @@ Discovery order (important):
 <subdir>/AGENTS.md            ← module-local (overrides parents)
 ```
 
-Files are concatenated from shallow to deep; closer-to-cwd files win. Default 32 KiB cap per file, tunable via `project_doc_max_bytes`.
+Files are concatenated from shallow to deep; closer-to-cwd files win. The default 32 KiB cap applies to **all instruction files combined** (not per file), tunable via `project_doc_max_bytes`.
 
 ---
 
 ## Prompting Tips
 
-OpenAI's recommended four-element prompt template (from `developers.openai.com/codex/learn/best-practices`):
+OpenAI's recommended four-element prompt template (from [learn.chatgpt.com/guides/best-practices](https://learn.chatgpt.com/guides/best-practices)):
 
 ```
 Goal:        what to change or build
@@ -147,6 +153,8 @@ Push harder for hard problems, dial back for easy ones:
 - **low** — small edits, formatting
 - **medium / high** — most refactors and bugfixes
 - **xhigh** — architectural, multi-file, deeply coupled
+- **max** — hardest problems, maximum reasoning depth
+- **ultra** — parallel task delegation via subagents (not supported by `gpt-6-luna`)
 
 Switch in the TUI via shortcut, or set the default in `config.toml`.
 
@@ -187,18 +195,20 @@ Codex's distinguishing design — two independent dimensions.
 Enforcement (verified against `codex-rs/cli/src/debug_sandbox.rs`):
 
 - **macOS** — Seatbelt (built-in)
-- **Linux / WSL2** — **Landlock** kernel LSM + seccomp filtering (requires Linux 5.13+ with Landlock enabled)
+- **Linux / WSL2** — **bubblewrap** by default (the older Landlock + seccomp path is kept as legacy)
 - **Windows** — Restricted-token sandbox (active in PowerShell)
 
-> Tip: `codex sandbox seatbelt|landlock|windows -- <cmd>` is the debug subcommand to verify whether a single command would survive the sandbox.
+> Tip: `codex sandbox [--] <cmd>` verifies whether a single command would survive the sandbox; it auto-selects the current platform's sandbox.
 
 ### Approval (when it asks)
 
 | Mode | Behavior |
 |------|----------|
-| `untrusted` | Only known-safe read ops auto-run; everything else asks |
 | `on-request` ⭐ default | Auto-runs inside sandbox; only asks when going outside |
 | `never` | Never asks (CI / scripts — pair with a tight sandbox) |
+| `granular` | config.toml only; fine-grained control over which request categories ask |
+
+> `untrusted` was retired in v0.149; the CLI's `--ask-for-approval` only accepts `on-request | never`.
 
 ### Common Combos
 
@@ -216,7 +226,7 @@ codex --sandbox read-only
 codex --add-dir ../sibling-repo --add-dir /tmp/scratch
 
 # Non-interactive in CI / scripts
-codex exec --sandbox workspace-write --ask-for-approval never "run tests and fix failures"
+codex exec --sandbox workspace-write "run tests and fix failures"
 
 # Open the sandbox fully (you understand the consequences)
 codex --sandbox danger-full-access --ask-for-approval never
@@ -226,9 +236,9 @@ codex --yolo
 # equivalent to: codex --dangerously-bypass-approvals-and-sandbox
 ```
 
-> ⚠️ **`--full-auto` is deprecated and removed** (v0.125.0 still keeps it inside `codex exec` only to print a migration warning). Use `--sandbox workspace-write` — that's the official replacement; approval defaults to `on-request` already.
+> ⚠️ **`--full-auto` is removed** (as of v0.147 even the migration warning in `codex exec` is gone). Use `--sandbox workspace-write` — that's the official replacement; approval defaults to `on-request` already.
 >
-> 🚨 **CI gotcha**: the default approval mode is interactive — CI will hang on the prompt and time out. `codex exec` + `--ask-for-approval never` is the canonical CI shape.
+> 🚨 **CI gotcha**: interactive `codex` waits for approvals — CI will hang on the prompt and time out. Use `codex exec` in CI: it already runs with `never` and **does not accept** `--ask-for-approval` / `-a` (passing it is an error).
 
 ---
 
@@ -239,34 +249,35 @@ codex --yolo
 `~/.codex/config.toml` (user) / `.codex/config.toml` (project):
 
 ```toml
-model = "gpt-5.5"
+model = "gpt-6-sol"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
+web_search = "cached"     # top-level key: disabled / cached / indexed / live ([features] web_search is deprecated)
 
 [features]
-web_search = "cached"     # cached by default; --search switches to live
 multi_agent = true
 
-[profiles.review]
-model = "gpt-5.5"
-approval_policy = "untrusted"
-sandbox_mode = "read-only"
-
-[profiles.ci]
-approval_policy = "never"
-sandbox_mode = "workspace-write"
-
 [mcp_servers.github]
-command = "npx @modelcontextprotocol/server-github"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-github"]
 enabled = true
 ```
 
-Switch profiles:
+Profiles are now **separate files** at `$CODEX_HOME/<name>.config.toml` (default `~/.codex/`) containing top-level keys; `--profile <name>` layers one on top of the main config:
+
+```toml
+# ~/.codex/review.config.toml
+model = "gpt-6-sol"
+approval_policy = "on-request"
+sandbox_mode = "read-only"
+```
 
 ```bash
 codex --profile review              # read-only review pass
-codex exec --profile ci "..."       # CI / scripted run
+codex exec --profile ci "..."       # CI / scripted run (~/.codex/ci.config.toml)
 ```
+
+> ⚠️ If `config.toml` still contains the legacy `[profiles.<name>]` tables or `profile = "..."`, Codex **errors out** — migrate them to separate files.
 
 ### 2. Slash Commands Cheat Sheet
 
@@ -277,9 +288,10 @@ codex exec --profile ci "..."       # CI / scripted run
 | `/plan` | Enter Plan Mode |
 | `/review` | Have Codex review the current diff / branch / commit |
 | `/compact` | Compress conversation history; free up tokens |
-| `/agent` | Switch between active subagent threads (`/multi-agents` alias) |
-| `/side` | Open a side conversation in an ephemeral fork — won't pollute main thread |
-| `/permissions` `/approvals` | Adjust approval mode on the fly |
+| `/multi-agents` | Switch between active subagent threads (alias `/subagents`; formerly `/agent`) |
+| `/agents` | Open the agent command center |
+| `/side` `/btw` | Open a side conversation in an ephemeral fork — won't pollute main thread |
+| `/permissions` | Adjust approval mode on the fly (formerly `/approvals`) |
 | `/resume` `/fork` | Resume / branch from a prior thread |
 | `/new` `/clear` | Start a new conversation in the same session / clear and restart |
 | `/rename` | Rename the current thread |
@@ -291,11 +303,14 @@ codex exec --profile ci "..."       # CI / scripted run
 | `/plugins` `/apps` | Browse plugins / apps |
 | `/status` | Session details and token usage |
 | `/goal` | Set / view goal for a long-running task |
-| `/fast` | Toggle Fast mode (`on`/`off`/`status`) |
 | `/debug-config` | Print config layers and requirements diagnostics (**use this when config.toml edits don't take effect**) |
 | `/feedback` | Send logs to OpenAI maintainers |
+| `/import` | Import config from Claude Code / Cursor |
+| `/worktree` | Start an isolated task in a git worktree |
+| `/hooks` | View / manage hooks |
+| `/voice` `/tui` `/export` `/usage` | Voice input / TUI settings / export conversation / view usage |
 
-> Complete list (46 commands) lives in source `codex-rs/tui/src/slash_command.rs::SlashCommand`. Just press `/` in the TUI for autocomplete.
+> Complete list (~70 commands) lives in source `codex-rs/tui/src/slash_command.rs::SlashCommand`. Just press `/` in the TUI for autocomplete.
 
 ### 3. Non-interactive Execution (`exec`)
 
@@ -308,8 +323,8 @@ codex exec "replace all console.log with logger.debug"
 # Pipe in
 git diff main..HEAD | codex exec "review this diff for bugs"
 
-# Pin model + skip approvals
-codex exec -m gpt-5.5 --ask-for-approval never "add unit tests for new files"
+# Pin model (exec never asks for approval anyway)
+codex exec -m gpt-6-sol "add unit tests for new files"
 
 # Stream events as JSONL (one JSON object per line)
 codex exec --json "..." | jq -c .
@@ -325,7 +340,7 @@ codex exec -o /tmp/answer.txt "..."
 ```toml
 name = "explorer"
 description = "Read-only codebase explorer; gathers evidence before any change."
-model = "gpt-5.3-codex"
+model = "gpt-6-luna"
 sandbox_mode = "read-only"
 developer_instructions = """
 Stay in exploration mode.
@@ -345,7 +360,7 @@ Each subagent runs in its own sandbox + model and returns its summary to the mai
 ### 5. MCP — External Tools
 
 ```bash
-codex mcp add github --command "npx @modelcontextprotocol/server-github"
+codex mcp add github -- npx -y @modelcontextprotocol/server-github
 codex mcp list
 ```
 
@@ -385,9 +400,9 @@ $skill-creator                # explicit trigger with $ prefix
 
 > Ready-made skill libraries: [ComposioHQ/awesome-codex-skills](https://github.com/composio-community/awesome-codex-skills), [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) (cross-tool).
 
-### 7. Hooks — Inject Custom Scripts into the Agent Loop (beta)
+### 7. Hooks — Inject Custom Scripts into the Agent Loop
 
-Enable `[features] codex_hooks = true` and Codex will invoke your shell scripts at 6 event points:
+The `hooks` feature is stable and **on by default** (the old `codex_hooks` flag name remains as an alias; set `[features] hooks = false` to turn it off). Codex invokes your scripts at 12 event points; the most common:
 
 | Event | When | Typical Use |
 |-------|------|-------------|
@@ -396,19 +411,21 @@ Enable `[features] codex_hooks = true` and Codex will invoke your shell scripts 
 | `PostToolUse` | After a tool call | Auto lint / format / test |
 | `SessionStart` | Session boot | Inject project-specific context |
 | `UserPromptSubmit` | User submits prompt | Insert disclaimer, run safety scan |
-| `Stop` | Session ends | Upload logs, clean tmp files |
+| `Stop` | Turn ends | Enforce verification, wrap up |
+
+> Other events: `PreCompact`, `PostCompact`, `SessionEnd`, `SubagentStart`, `SubagentStop`, `Interrupt`.
 
 > 💡 The hooks JSON schema reuses Claude Code's `hooks.json` format directly (the source engine is literally named `ClaudeHooksEngine`), so migrating from Claude Code is zero-change.
 
-Config goes in `.codex/hooks.json`. Reference impl: [shanraisshan/codex-cli-hooks](https://github.com/shanraisshan/codex-cli-hooks).
+Config goes in `.codex/hooks.json`, or inline in `config.toml` as `[[hooks.PreToolUse]]` etc. tables. Reference impl: [shanraisshan/codex-cli-hooks](https://github.com/shanraisshan/codex-cli-hooks).
 
 The two highest-leverage uses:
 - **PostToolUse → run prettier / ruff / clang-format** — Codex edits, hook formats, CI stays green
 - **PreToolUse → intercept `rm -rf` / `git push --force` / DB DROP** — belt-and-suspenders safety
 
-### 8. Memories — Cross-Session Long-Term Memory (beta)
+### 8. Memories — Cross-Session Long-Term Memory
 
-Enable `[features] memories = true` and Codex carries facts you've confirmed across sessions ("this project uses pnpm — don't suggest npm").
+Stable, but still **off by default**. Enable `[features] memories = true` and Codex carries facts you've confirmed across sessions ("this project uses pnpm — don't suggest npm").
 
 ```bash
 /memories             # TUI: view / generate / reset
@@ -442,19 +459,19 @@ codex plugin marketplace remove <name>
 
 Community marketplace index: [hashgraph-online/awesome-codex-plugins](https://github.com/hashgraph-online/awesome-codex-plugins).
 
-### 10. Fast Mode — 1.5× speed, 2× credits (gpt-5.4 only)
+### 10. Speed Tier — `service_tier`
 
-```
-/fast on            # enable
-/fast status        # current
-/fast off           # disable
+The old `/fast` command is gone; set the speed tier in config instead:
+
+```toml
+service_tier = "priority"   # default / priority (faster) / flex (slower, cheaper)
 ```
 
-Best when "I know roughly what to change, I just need a fast typist." Pro subscribers can also use `gpt-5.3-codex-spark` for near-realtime micro-iteration.
+Best when "I know roughly what to change, I just need a fast typist."
 
 ### 11. Web Search
 
-On by default in `cached` mode (OpenAI's pre-indexed snapshot). For real-time, add `--search`:
+On by default in `cached` mode (OpenAI's pre-indexed snapshot). Configure it with the top-level `web_search = "disabled|cached|indexed|live"`; for real-time, add `--search`:
 
 ```bash
 codex --search "Latest React 19 useActionState best practices"
@@ -469,8 +486,8 @@ codex -i screenshot.png "match this design in src/components/Pricing.tsx"
 PNG / JPEG; you can also paste screenshots directly into the TUI composer. Combined with Chrome DevTools / Playwright MCP, Codex can read browser console output itself:
 
 ```bash
-codex mcp add chrome-devtools --command "npx chrome-devtools-mcp"
-codex mcp add playwright --command "npx @playwright/mcp"
+codex mcp add chrome-devtools -- npx chrome-devtools-mcp
+codex mcp add playwright -- npx @playwright/mcp
 ```
 
 ### 13. Local Open-Source Models (`--oss`)
@@ -486,7 +503,7 @@ codex --oss --local-provider ollama -m deepseek-coder-v2
 codex --oss --local-provider lmstudio
 ```
 
-Fully offline, zero API cost. Trade-off: local models are noticeably weaker than GPT-5.5. Best for: sensitive on-premise data, no-network environments, bulk low-complexity tasks.
+Fully offline, zero API cost. Trade-off: local models are noticeably weaker than the GPT-6 family. Best for: sensitive on-premise data, no-network environments, bulk low-complexity tasks.
 
 > Model IDs follow Ollama / LM Studio naming (run `ollama list` to see what's local). Codex doesn't maintain a separate catalog.
 
@@ -533,13 +550,15 @@ jobs:
 
 ⚠️ **The sandbox blocks network by default** — if your review prompt needs to run tests or install deps, do `npm ci` in a step *before* invoking `codex-action`.
 
-### 15. Codex as an MCP Server (Reverse Integration)
+### 15. Codex as a Backend Service (Reverse Integration)
 
 ```bash
-codex mcp-server                    # expose Codex as an MCP server
+codex app-server                    # expose Codex to other programs
 ```
 
-Source confirms this exposes `codex()` and `codex-reply()` MCP tools. Use case: let Claude Code, Cursor, or any other agent call Codex as "a colleague" for parallel work or cross-verification.
+> ⚠️ The old `codex mcp-server` was removed in v0.154 — use `codex app-server` instead.
+
+Use case: let IDEs, Claude Code, Cursor, or other tools call Codex as "a colleague" for parallel work or cross-verification.
 
 ### 16. Rules / Execpolicy (Advanced Safety)
 
@@ -564,6 +583,15 @@ codex execpolicy check --rules .codex/rules/safety.rules git push --force
 ```
 
 Best for enterprise / team setups — finer-grained than approval modes. See [`codex-rs/execpolicy/README.md`](https://github.com/openai/codex/blob/main/codex-rs/execpolicy/README.md).
+
+### 17. New in H2 2026
+
+- **Models**: `gpt-6-sol` is recommended (everyday + complex coding), plus `gpt-6-astra` (most capable) and `gpt-6-luna` (lightweight). `gpt-5.4` / `gpt-5.4-mini` were retired on 2026-08-31, `gpt-5.5` retires on 2026-10-14, and `gpt-5.3-codex` is deprecated
+- **Reasoning effort**: now goes up to `max` / `ultra`
+- **`/import`**: one-shot import of config from Claude Code / Cursor
+- **Worktrees by default**: tasks run in isolated worktrees by default; see `/worktree`
+- **`codex agents`**: agent command center; **`codex review`**: code review straight from the CLI; **`codex doctor`**: environment diagnostics
+- New **`--approve-for-me`** approval-related flag (see `codex --help`)
 
 ---
 
@@ -594,7 +622,7 @@ Distilled from high-star community guides ([shanraisshan/codex-cli-best-practice
 ```
 ✅ Heuristic: a fresh dev should be able to launch codex → "run the tests" → it works first try
    If not, your AGENTS.md is missing build/setup/test commands
-✅ Aim for ~150 lines (hard limit is 32 KiB byte-wise) — longer ≠ better
+✅ Aim for ~150 lines (default cap is 32 KiB across all instruction files combined) — longer ≠ better
 ✅ Behavior rules (approval / sandbox / model) belong in config.toml, NOT AGENTS.md
 ✅ AGENTS.override.md for personal preferences — keeps team's AGENTS.md clean
 ```
@@ -623,14 +651,14 @@ Distilled from high-star community guides ([shanraisshan/codex-cli-best-practice
 |---------|-----------|-----|
 | Browser pops up demanding login | Token expired | Re-run `codex` (or `codex login`) and complete OAuth |
 | `429 Too Many Requests` | Rate-limited | Wait for quota; for scripts, switch to API key + throttle |
-| CI job hangs and times out | Default approval is interactive | `codex exec --ask-for-approval never` |
+| CI job hangs and times out | Interactive `codex` waits for approvals | Use `codex exec` (never asks; don't pass `-a`) |
 | `config.toml` edits don't take effect | Wrong path / config layering overrides yours | Run `/debug-config` in the TUI to see the resolved config stack and requirements |
 | `npm i -g` fails with `EACCES` | Global dir owned by root | Install Node via nvm/fnm; never `sudo npm` |
 | `which -a codex` shows multiple paths | npm + brew + binary all installed | Remove dupes; `hash -r` your shell |
 | Codex "can't see" your edits | Outside workspace / wrong root | `codex --cd <project>` to set the root |
 | Long thread getting slow / pricey | Context bloat | `/compact` or `/fork` to trim |
 | Two agents clobber the same file | Main + subagent both writing | Give the subagent a git worktree |
-| Linux sandbox refuses to start | Kernel < 5.13 or Landlock not enabled | Update the kernel (check `uname -r`); on older distros fall back to `--sandbox read-only` |
+| Linux sandbox refuses to start | Unprivileged user namespaces (needed by the default bubblewrap sandbox) are disabled | Check your distro's user-namespace settings; reproduce with `codex sandbox -- <cmd>`; fall back to `--sandbox read-only` temporarily |
 
 ---
 
@@ -642,8 +670,8 @@ These two are the closest analogs, but they optimize differently:
 |-----------|-----------|-------------|
 | Vendor | OpenAI | Anthropic |
 | Open-source | ✅ Apache-2.0 (Rust) | ❌ Closed-source CLI |
-| Sandbox | OS-kernel level (Seatbelt / Landlock) | App-layer + 26 hook events |
-| Default account | ChatGPT subscription | Claude API / Pro |
+| Sandbox | OS level (Seatbelt / bubblewrap) | OS-level Bash sandbox via `/sandbox` (Seatbelt / bubblewrap) + 30+ hook events |
+| Default account | ChatGPT subscription | Claude Pro / Max / Team / Enterprise or Console API (Bedrock / Vertex / Foundry also supported) |
 | Config files | `AGENTS.md` + `config.toml` | `CLAUDE.md` + `settings.json` |
 | Plan mode | `/plan` or Shift+Tab | `/plan` |
 | Subagents | TOML files | Markdown files |
@@ -664,7 +692,7 @@ Already paying for ChatGPT and budget-sensitive → Codex comes practically free
 The `templates/` directory provides:
 
 - [`AGENTS.md`](./templates/AGENTS.md) — generic project instruction template
-- [`config.toml`](./templates/config.toml) — user-level config with profiles
+- [`config.toml`](./templates/config.toml) — user-level config (with profile-file examples)
 - [`agent-explorer.toml`](./templates/agent-explorer.toml) — read-only exploration subagent
 - [`SKILL.md`](./templates/SKILL.md) — Skill template (with Gotchas + trigger-style description)
 
@@ -675,11 +703,11 @@ The `templates/` directory provides:
 ### Official
 
 - Repo: [openai/codex](https://github.com/openai/codex) (Apache-2.0, Rust)
-- Docs: [developers.openai.com/codex](https://developers.openai.com/codex)
+- Docs: [learn.chatgpt.com/docs](https://learn.chatgpt.com/docs) (formerly developers.openai.com/codex)
 - Install guide: [docs/install.md](https://github.com/openai/codex/blob/main/docs/install.md)
-- Best practices: [Best practices](https://developers.openai.com/codex/learn/best-practices)
-- Sandboxing internals: [Sandboxing](https://developers.openai.com/codex/concepts/sandboxing)
-- Slash commands: [Slash commands](https://developers.openai.com/codex/cli/slash-commands)
+- Best practices: [Best practices](https://learn.chatgpt.com/guides/best-practices)
+- Sandboxing internals: [Sandboxing](https://learn.chatgpt.com/docs/sandboxing)
+- Slash commands: [Slash commands](https://learn.chatgpt.com/docs/developer-commands?surface=cli)
 - Official GitHub Action (CI integration): [openai/codex-action](https://github.com/openai/codex-action)
 - Official skills catalog: [openai/skills](https://github.com/openai/skills)
 
@@ -705,4 +733,4 @@ The `templates/` directory provides:
 
 In this repo: [workflows/tool-selection.en.md](../workflows/tool-selection.en.md)
 
-> Verified through: **2026-04-30** (codex CLI v0.125.0). Every CLI flag, subcommand, slash command, and config field in this guide was cross-checked against the `codex-rs` source code; models and pricing change quickly — the OpenAI docs are always the source of truth.
+> Verified through: **2026-09** (codex CLI v0.158.0). Every CLI flag, subcommand, slash command, and config field in this guide was cross-checked against the `codex-rs` source code; models and pricing change quickly — the OpenAI docs are always the source of truth.
