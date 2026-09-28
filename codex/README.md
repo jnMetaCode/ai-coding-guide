@@ -2,7 +2,7 @@
 
 **简体中文** | [English](./README.en.md)
 
-> Codex CLI 是 OpenAI 官方的开源终端编程 Agent，用 Rust 写成，与 Claude Code、Gemini CLI 同属"终端 Agent 三巨头"。本文基于官方文档（developers.openai.com/codex）和仓库 [openai/codex](https://github.com/openai/codex) 的 v0.125.0（2026-04）核实整理。
+> Codex CLI 是 OpenAI 官方的开源终端编程 Agent，用 Rust 写成，与 Claude Code、Gemini CLI 同属"终端 Agent 三巨头"。本文基于官方文档（learn.chatgpt.com，原 developers.openai.com/codex）和仓库 [openai/codex](https://github.com/openai/codex) 核实整理，最初对齐 v0.125.0（2026-04），2026-09 按 v0.158.0 更新。
 
 > ⚠️ 注意：这里讲的是 2025 年发布的**新 Codex CLI**（开源、终端 Agent），不是 2023 年退役的旧 Codex 模型。同名产品系列还包括 **Codex App**（桌面端）和 **Codex Web**（云端 Agent，`chatgpt.com/codex`），本文只覆盖 CLI。
 
@@ -13,9 +13,9 @@
 | 概念 | 说明 | 用途 |
 |------|------|------|
 | **AGENTS.md** | 项目/全局指令文件 | 类似 Claude Code 的 CLAUDE.md，启动时自动加载 |
-| **Approval Mode** | 何时需要人来批 | `untrusted` / `on-request` / `never` |
+| **Approval Mode** | 何时需要人来批 | `on-request` / `never`（config 里另有 `granular`） |
 | **Sandbox Mode** | 能动什么文件、能不能联网 | `read-only` / `workspace-write` / `danger-full-access` |
-| **Profile** | 一组 config 的命名预设 | `--profile work` 一键切换模型/权限 |
+| **Profile** | 独立的 `<name>.config.toml` 叠加层 | `--profile work` 一键切换模型/权限 |
 | **Subagent** | 子 Agent，独立任务 | TOML 定义，可设置不同模型/权限 |
 | **Skill** | 可复用工作流（SKILL.md） | 把重复任务封装成命名能力 |
 | **MCP Server** | 外部工具接入 | STDIO 或 HTTP/OAuth |
@@ -28,7 +28,13 @@
 ### 安装
 
 ```bash
-# npm（推荐）
+# 官方安装脚本（推荐，macOS / Linux / WSL）
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
+
+# Windows PowerShell
+irm https://chatgpt.com/codex/install.ps1 | iex
+
+# 或 npm
 npm install -g @openai/codex
 
 # 或 Homebrew (macOS)
@@ -49,7 +55,7 @@ codex            # 第一次启动，按提示选 "Sign in with ChatGPT"
 两种方式：
 
 - **ChatGPT 账号登录**（官方推荐）—— 走 ChatGPT Plus / Pro / Business / Edu / Enterprise 订阅额度，开浏览器走 OAuth。
-- **API Key** —— 适合 CI、企业代理或想精确按量计费的场景，需要额外设置（详见 `developers.openai.com/codex/auth`）。
+- **API Key** —— 适合 CI、企业代理或想精确按量计费的场景，需要额外设置（详见 [learn.chatgpt.com/docs/auth](https://learn.chatgpt.com/docs/auth)）。
 
 ### 第一次跑
 
@@ -106,13 +112,13 @@ Next.js 14 + TypeScript 电商后台。
 子目录/AGENTS.md              ← 模块级局部规则（覆盖父级）
 ```
 
-文件按目录从浅到深拼接，越靠近当前目录的越优先生效。默认每个文件最多 32 KiB，可通过 `project_doc_max_bytes` 调。
+文件按目录从浅到深拼接，越靠近当前目录的越优先生效。所有指令文件**合计**默认最多 32 KiB（不是每个文件各 32 KiB），可通过 `project_doc_max_bytes` 调。
 
 ---
 
 ## 提示词技巧
 
-Codex 官方推荐"四元素"提示模板（来源：developers.openai.com/codex/learn/best-practices）：
+Codex 官方推荐"四元素"提示模板（来源：[learn.chatgpt.com/guides/best-practices](https://learn.chatgpt.com/guides/best-practices)）：
 
 ```
 Goal:        要做什么？要改什么？
@@ -147,6 +153,8 @@ Done when:   完成判定条件是什么？
 - **low** — 简单改动、风格调整
 - **medium / high** — 大多数日常重构、Bug 修复
 - **xhigh** — 架构级、多文件复杂逻辑
+- **max** — 最难的问题，最大推理深度
+- **ultra** — 用 subagent 并行分派任务（`gpt-6-luna` 不支持）
 
 可在 TUI 里通过快捷键切换，或在 config.toml 里设默认。
 
@@ -187,18 +195,20 @@ Done when:   完成判定条件是什么？
 技术实现（核实自 `codex-rs/cli/src/debug_sandbox.rs` 源码）：
 
 - **macOS** — Seatbelt（系统自带）
-- **Linux / WSL2** — **Landlock** 内核 LSM + seccomp 过滤（需要 Linux 5.13+ 且 Landlock 已启用）
+- **Linux / WSL2** — 默认 **bubblewrap**（旧的 Landlock + seccomp 方案保留为 legacy）
 - **Windows** — Restricted token sandbox（PowerShell 下生效）
 
-> 提示：可以用 `codex sandbox seatbelt|landlock|windows -- <cmd>` 这组调试子命令，单独验证某条命令在沙箱里能不能跑。
+> 提示：可以用 `codex sandbox [--] <cmd>` 单独验证某条命令在沙箱里能不能跑，会自动选当前平台的沙箱实现。
 
 ### Approval（什么时候问你）
 
 | 模式 | 行为 |
 |------|------|
-| `untrusted` | 只有官方判定为安全的只读操作自动跑，其他都要批 |
 | `on-request` ⭐ 默认 | 在 sandbox 内自动跑，越界（写外、联网）才问 |
 | `never` | 永不询问（用于 CI / 脚本，配 sandbox 用） |
+| `granular` | 仅 config.toml 可用，按类别细分哪些请求要问 |
+
+> `untrusted` 已在 v0.149 退役，CLI 的 `--ask-for-approval` 只接受 `on-request | never`。
 
 ### 常用组合
 
@@ -216,7 +226,7 @@ codex --sandbox read-only
 codex --add-dir ../sibling-repo --add-dir /tmp/scratch
 
 # 在 CI / 脚本里非交互执行
-codex exec --sandbox workspace-write --ask-for-approval never "跑测试并修复失败用例"
+codex exec --sandbox workspace-write "跑测试并修复失败用例"
 
 # 临时完全放开沙箱（明白后果再用）
 codex --sandbox danger-full-access --ask-for-approval never
@@ -226,9 +236,9 @@ codex --yolo
 # 等价于：codex --dangerously-bypass-approvals-and-sandbox
 ```
 
-> ⚠️ **`--full-auto` 已废弃移除**（v0.125.0 仍在 `codex exec` 里保留作迁移提示）。直接 `--sandbox workspace-write` 就是同义；approval 默认本就是 `on-request`。
+> ⚠️ **`--full-auto` 已移除**（v0.147 起 `codex exec` 里的迁移提示也删了）。直接 `--sandbox workspace-write` 就是同义；approval 默认本就是 `on-request`。
 >
-> 🚨 **CI 踩坑**：默认 approval 是交互式的，CI 里会卡死等输入超时。`codex exec` + `--ask-for-approval never` 是 CI 的标准姿势。
+> 🚨 **CI 踩坑**：交互式 `codex` 默认会等人批，CI 里会卡死等输入超时。CI 用 `codex exec`——它本身就按 `never` 运行，**不接受** `--ask-for-approval` / `-a`，加了反而报错。
 
 ---
 
@@ -239,34 +249,35 @@ codex --yolo
 `~/.codex/config.toml`（用户级）/ `.codex/config.toml`（项目级）：
 
 ```toml
-model = "gpt-5.5"
+model = "gpt-6-sol"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
+web_search = "cached"     # 顶层 key：disabled / cached / indexed / live（[features] web_search 已废弃）
 
 [features]
-web_search = "cached"     # 默认走缓存；--search 切 live
 multi_agent = true
 
-[profiles.review]
-model = "gpt-5.5"
-approval_policy = "untrusted"
-sandbox_mode = "read-only"
-
-[profiles.ci]
-approval_policy = "never"
-sandbox_mode = "workspace-write"
-
 [mcp_servers.github]
-command = "npx @modelcontextprotocol/server-github"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-github"]
 enabled = true
 ```
 
-切换 profile：
+Profile 现在是**独立文件** `$CODEX_HOME/<name>.config.toml`（默认 `~/.codex/`），里面直接写顶层 key，用 `--profile <name>` 叠加到主配置上：
+
+```toml
+# ~/.codex/review.config.toml
+model = "gpt-6-sol"
+approval_policy = "on-request"
+sandbox_mode = "read-only"
+```
 
 ```bash
 codex --profile review              # 只读模式跑代码审查
-codex exec --profile ci "..."       # CI 用脚本模式
+codex exec --profile ci "..."       # CI 用脚本模式（~/.codex/ci.config.toml）
 ```
+
+> ⚠️ `config.toml` 里如果还有旧写法 `[profiles.<name>]` 或 `profile = "..."`，Codex 会**直接报错**，需要迁移到独立文件。
 
 ### 2. Slash 命令速查
 
@@ -279,9 +290,10 @@ TUI 内常用：
 | `/plan` | 进入 Plan Mode |
 | `/review` | 让 Codex 审查当前 diff / 分支 / 指定 commit |
 | `/compact` | 压缩对话历史，释放 token |
-| `/agent` | 在多个 subagent thread 间切换（`/multi-agents` 别名） |
-| `/side` | 在临时 fork 里开支线对话，问完不污染主线 |
-| `/permissions` `/approvals` | 临时调权限 |
+| `/multi-agents` | 在多个 subagent thread 间切换（别名 `/subagents`，原 `/agent`） |
+| `/agents` | 打开 agent 指挥中心 |
+| `/side` `/btw` | 在临时 fork 里开支线对话，问完不污染主线 |
+| `/permissions` | 临时调权限（原 `/approvals`） |
 | `/resume` `/fork` | 恢复 / 从某个时刻分叉对话 |
 | `/new` `/clear` | 同 session 内开新对话 / 清屏重开 |
 | `/rename` | 给当前 thread 改名 |
@@ -293,11 +305,14 @@ TUI 内常用：
 | `/plugins` `/apps` | 浏览插件 / 应用 |
 | `/status` | 当前 session 详情、token 使用 |
 | `/goal` | 设定 / 查看长任务的目标 |
-| `/fast` | 切 Fast mode（`on`/`off`/`status`） |
 | `/debug-config` | 打印配置层级与 requirements 诊断（**改 config.toml 不生效时用这个**） |
 | `/feedback` | 给 OpenAI 发日志反馈 |
+| `/import` | 从 Claude Code / Cursor 导入配置 |
+| `/worktree` | 在 git worktree 里开隔离任务 |
+| `/hooks` | 查看 / 管理 hooks |
+| `/voice` `/tui` `/export` `/usage` | 语音输入 / TUI 设置 / 导出对话 / 查看用量 |
 
-> 完整表（46 个）见源码 `codex-rs/tui/src/slash_command.rs::SlashCommand` 枚举。在 TUI 里按 `/` 也会弹自动补全。
+> 完整列表（约 70 个）见源码 `codex-rs/tui/src/slash_command.rs::SlashCommand` 枚举。在 TUI 里按 `/` 也会弹自动补全。
 
 ### 3. 非交互执行（exec）
 
@@ -310,8 +325,8 @@ codex exec "把所有 console.log 改成 logger.debug"
 # 管道
 git diff main..HEAD | codex exec "审查这份 diff，找出潜在 bug"
 
-# 指定模型 + 不询问
-codex exec -m gpt-5.5 --ask-for-approval never "为新文件补单测"
+# 指定模型（exec 本身就不询问）
+codex exec -m gpt-6-sol "为新文件补单测"
 
 # 输出 JSONL（每行一个事件）给后续程序处理
 codex exec --json "..." | jq -c .
@@ -327,7 +342,7 @@ codex exec -o /tmp/answer.txt "..."
 ```toml
 name = "explorer"
 description = "Read-only codebase explorer; gathers evidence before any change."
-model = "gpt-5.3-codex"
+model = "gpt-6-luna"
 sandbox_mode = "read-only"
 developer_instructions = """
 Stay in exploration mode.
@@ -348,7 +363,7 @@ Never propose changes — just report findings.
 
 ```bash
 # CLI 直接添加
-codex mcp add github --command "npx @modelcontextprotocol/server-github"
+codex mcp add github -- npx -y @modelcontextprotocol/server-github
 codex mcp list
 ```
 
@@ -388,9 +403,9 @@ $skill-creator                 # 用 $ 前缀显式触发某个技能
 
 > 现成 Skill 库可以直接抄：[ComposioHQ/awesome-codex-skills](https://github.com/composio-community/awesome-codex-skills)、[VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills)（跨工具）
 
-### 7. Hooks — 在 Agent 循环里挂自定义脚本（beta）
+### 7. Hooks — 在 Agent 循环里挂自定义脚本
 
-启用 `[features] codex_hooks = true` 后，Codex 在 6 个事件点会调用你定义的 shell 脚本：
+`hooks` 功能已稳定并**默认开启**（旧 flag 名 `codex_hooks` 仍作别名；要关就 `[features] hooks = false`）。Codex 在 12 个事件点会调用你定义的脚本，常用的有：
 
 | 事件 | 触发时机 | 典型用途 |
 |------|---------|---------|
@@ -399,19 +414,21 @@ $skill-creator                 # 用 $ 前缀显式触发某个技能
 | `PostToolUse` | 工具调用后 | 自动 lint / format / 测试 |
 | `SessionStart` | session 启动 | 加载项目特定上下文 |
 | `UserPromptSubmit` | 用户提交 prompt 时 | 注入企业 disclaimer / 安全扫描 |
-| `Stop` | session 结束 | 上传日志 / 清理临时文件 |
+| `Stop` | 一轮结束 | 强制验证 / 收尾 |
+
+> 其余事件：`PreCompact`、`PostCompact`、`SessionEnd`、`SubagentStart`、`SubagentStop`、`Interrupt`。
 
 > 💡 hook schema 直接复用 Claude Code 的 `hooks.json` 格式（源码引擎名 `ClaudeHooksEngine`），所以从 Claude Code 迁移过来零改动。
 
-配置文件 `.codex/hooks.json`，参考实现：[shanraisshan/codex-cli-hooks](https://github.com/shanraisshan/codex-cli-hooks)。
+配置文件 `.codex/hooks.json`，也可以直接在 `config.toml` 里内联写 `[[hooks.PreToolUse]]` 等表。参考实现：[shanraisshan/codex-cli-hooks](https://github.com/shanraisshan/codex-cli-hooks)。
 
 最常见的两个 use case：
 - **PostToolUse 跑 prettier/ruff** — Codex 改完代码自动格式化，避免 CI 红
 - **PreToolUse 拦截 `rm -rf` / `git push --force` / 数据库 DROP** — 双保险
 
-### 8. Memories — 跨 session 的长期记忆（beta）
+### 8. Memories — 跨 session 的长期记忆
 
-启用 `[features] memories = true`，Codex 会在 session 之间保留你确认过的事实（"这个项目用 pnpm，不要建议 npm"）。
+功能已稳定，但仍**默认关闭**。启用 `[features] memories = true`，Codex 会在 session 之间保留你确认过的事实（"这个项目用 pnpm，不要建议 npm"）。
 
 ```bash
 /memories             # TUI 里查看 / 生成 / 重置
@@ -445,19 +462,19 @@ codex plugin marketplace remove <name>
 
 社区 marketplace 索引：[hashgraph-online/awesome-codex-plugins](https://github.com/hashgraph-online/awesome-codex-plugins)。
 
-### 10. Fast Mode — 1.5× 速度，2× 额度（gpt-5.4 限定）
+### 10. 速度档位 — `service_tier`
 
-```
-/fast on            # 开启
-/fast status        # 看当前
-/fast off           # 关
+原来的 `/fast` 命令已经没有了，速度档位改在 config 里设：
+
+```toml
+service_tier = "priority"   # default / priority（更快）/ flex（更慢更省）
 ```
 
-适合"知道大致怎么改、就缺打字员"的场景。Pro 订阅还能用 `gpt-5.3-codex-spark` 做近实时的小改动迭代。
+适合"知道大致怎么改、就缺打字员"的场景。
 
 ### 11. Web 搜索
 
-默认开启，cached 模式（OpenAI 预索引）。需要实时结果加 `--search`：
+默认开启，cached 模式（OpenAI 预索引）。config 里用顶层 `web_search = "disabled|cached|indexed|live"` 设置；需要实时结果加 `--search`：
 
 ```bash
 codex --search "React 19 useActionState 的最新最佳实践"
@@ -472,8 +489,8 @@ codex -i screenshot.png "按这张设计稿改 src/components/Pricing.tsx"
 PNG / JPEG，可在 TUI 里直接粘贴截图。配 Chrome DevTools / Playwright MCP，让 Codex 自己看浏览器控制台日志：
 
 ```bash
-codex mcp add chrome-devtools --command "npx chrome-devtools-mcp"
-codex mcp add playwright --command "npx @playwright/mcp"
+codex mcp add chrome-devtools -- npx chrome-devtools-mcp
+codex mcp add playwright -- npx @playwright/mcp
 ```
 
 ### 13. 本地开源模型（`--oss`）
@@ -489,7 +506,7 @@ codex --oss --local-provider ollama -m deepseek-coder-v2
 codex --oss --local-provider lmstudio
 ```
 
-完全离线、零 API 成本。代价是模型能力比 GPT-5.5 弱不少，适合：本地敏感数据 / 没网环境 / 跑批量低复杂度任务。
+完全离线、零 API 成本。代价是模型能力比 GPT-6 系列弱不少，适合：本地敏感数据 / 没网环境 / 跑批量低复杂度任务。
 
 > 模型 ID 跟着 Ollama / LM Studio 自己的命名（`ollama list` 看本地有什么），Codex 不维护独立清单。
 
@@ -536,13 +553,15 @@ jobs:
 
 ⚠️ **沙箱默认禁网**——如果你的 review prompt 需要跑测试 / 装依赖，先在 Action 步骤里 `npm ci` 再调 `codex-action`。
 
-### 15. Codex 作为 MCP server（反向接入）
+### 15. Codex 作为后端服务（反向接入）
 
 ```bash
-codex mcp-server                    # 把 Codex 暴露成 MCP server
+codex app-server                    # 把 Codex 暴露给其他程序调用
 ```
 
-源码确认这会 expose `codex()` 和 `codex-reply()` 两个 MCP 工具。用法：让 Claude Code、Cursor 等其他 Agent 把 Codex 当成"我的同事"调用，做并行任务或交叉验证。
+> ⚠️ 旧的 `codex mcp-server` 已在 v0.154 移除，改用 `codex app-server`。
+
+用法：让 IDE、Claude Code、Cursor 等其他工具把 Codex 当成"我的同事"调用，做并行任务或交叉验证。
 
 ### 16. Rules / Execpolicy（高级安全）
 
@@ -567,6 +586,15 @@ codex execpolicy check --rules .codex/rules/safety.rules git push --force
 ```
 
 适合企业 / 团队场景，比单纯 approval 更细粒度。详见 [`codex-rs/execpolicy/README.md`](https://github.com/openai/codex/blob/main/codex-rs/execpolicy/README.md)。
+
+### 17. 2026 下半年新增
+
+- **模型**：推荐 `gpt-6-sol`（日常 + 复杂编码），另有 `gpt-6-astra`（最强）、`gpt-6-luna`（轻量）；`gpt-5.4` / `gpt-5.4-mini` 已于 2026-08-31 下线，`gpt-5.5` 将于 2026-10-14 下线，`gpt-5.3-codex` 已废弃
+- **推理强度**：最高到 `max` / `ultra`
+- **`/import`**：一键从 Claude Code / Cursor 导入配置
+- **worktree 默认化**：任务默认在隔离 worktree 里跑，配 `/worktree`
+- **`codex agents`**：agent 指挥中心；**`codex review`**：命令行直接做代码审查；**`codex doctor`**：环境诊断
+- 新增 **`--approve-for-me`** 审批相关 flag（用法见 `codex --help`）
 
 ---
 
@@ -597,7 +625,7 @@ codex execpolicy check --rules .codex/rules/safety.rules git push --force
 ```
 ✅ 经验法则：随便一个新人能跑 codex → "run the tests" → 一次过
    不行就说明 AGENTS.md 漏了 build/test/setup 命令
-✅ 控制在 150 行附近（硬上限是 32 KiB）—— 长 ≠ 好
+✅ 控制在 150 行附近（所有指令文件合计默认上限 32 KiB）—— 长 ≠ 好
 ✅ 行为约束（approval / sandbox / model）写 config.toml，不要写 AGENTS.md
 ✅ AGENTS.override.md 放个人偏好，别污染团队共享的 AGENTS.md
 ```
@@ -626,14 +654,14 @@ codex execpolicy check --rules .codex/rules/safety.rules git push --force
 |------|------|------|
 | 启动直接弹浏览器要求登录 | token 过期 | 重跑 `codex` 走 OAuth；或 `codex login` |
 | `429 Too Many Requests` | 触发速率限制 | 等额度恢复；脚本场景考虑切 API key + 限速 |
-| CI 任务挂起超时 | 默认 approval 是交互式 | `codex exec --ask-for-approval never` |
+| CI 任务挂起超时 | 交互式 `codex` 默认会等人批 | 改用 `codex exec`（本身不询问，别加 `-a`） |
 | 改了 config.toml 不生效 | 文件路径错 / 配置层叠被覆盖 | TUI 里跑 `/debug-config` 看实际生效的配置层级和 requirements |
 | `npm i -g` 报 `EACCES` | 全局目录归 root | 用 nvm/fnm 装 Node，不要 `sudo npm` |
 | `which -a codex` 返回多行 | 装重了（npm + brew + binary） | 删多余的，shell rehash |
 | 改完文件 Codex 不"看见" | 没在 git workspace 里 / 路径越界 | `codex --cd <project>` 指定根目录 |
 | 长 thread 越来越慢 / 涨钱 | 上下文累积 | `/compact` 压缩；或 `/fork` 重开 |
 | 多 agent 并行改同一文件冲突 | 主线 + subagent 同时改 | 给 subagent 用 git worktree |
-| Linux 沙箱起不来 | 内核 < 5.13 或 Landlock 未启用 | 升级内核（`uname -r` 确认）；旧发行版临时用 `--sandbox read-only` 绕过 |
+| Linux 沙箱起不来 | 默认 bubblewrap 依赖的非特权 user namespace 被禁用 | 检查发行版 user namespace 设置；用 `codex sandbox -- <cmd>` 复现；临时用 `--sandbox read-only` 绕过 |
 
 ---
 
@@ -645,8 +673,8 @@ codex execpolicy check --rules .codex/rules/safety.rules git push --force
 |------|-----------|-------------|
 | 厂商 | OpenAI | Anthropic |
 | 开源 | ✅ Apache-2.0（Rust） | ❌ 闭源 CLI |
-| 沙箱 | OS 内核级（Seatbelt / Landlock） | 应用层 + 26 个 Hook |
-| 默认账号 | ChatGPT 订阅 | Claude API / Pro |
+| 沙箱 | OS 级（Seatbelt / bubblewrap） | OS 级 Bash 沙箱 `/sandbox`（Seatbelt / bubblewrap）+ 30+ 个 Hook 事件 |
+| 默认账号 | ChatGPT 订阅 | Claude Pro / Max / Team / Enterprise 或 Console API（也支持 Bedrock / Vertex / Foundry） |
 | 配置文件 | `AGENTS.md` + `config.toml` | `CLAUDE.md` + `settings.json` |
 | Plan 模式 | `/plan` 或 Shift+Tab | `/plan` |
 | Subagent | TOML 文件 | Markdown 文件 |
@@ -668,7 +696,7 @@ codex execpolicy check --rules .codex/rules/safety.rules git push --force
 `templates/` 目录提供：
 
 - [`AGENTS.md`](./templates/AGENTS.md) — 通用项目指令模板
-- [`config.toml`](./templates/config.toml) — 用户级配置模板（含 profiles）
+- [`config.toml`](./templates/config.toml) — 用户级配置模板（含 profile 文件写法）
 - [`agent-explorer.toml`](./templates/agent-explorer.toml) — 只读探索 subagent 模板
 - [`SKILL.md`](./templates/SKILL.md) — Skill 模板（含 Gotchas / 触发器写法范本）
 
@@ -679,11 +707,11 @@ codex execpolicy check --rules .codex/rules/safety.rules git push --force
 ### 官方
 
 - 仓库：[openai/codex](https://github.com/openai/codex)（Apache-2.0，Rust）
-- 文档：[developers.openai.com/codex](https://developers.openai.com/codex)
+- 文档：[learn.chatgpt.com/docs](https://learn.chatgpt.com/docs)（原 developers.openai.com/codex）
 - 安装详解：[docs/install.md](https://github.com/openai/codex/blob/main/docs/install.md)
-- 最佳实践：[Best practices](https://developers.openai.com/codex/learn/best-practices)
-- 沙箱原理：[Sandboxing](https://developers.openai.com/codex/concepts/sandboxing)
-- Slash 命令：[Slash commands](https://developers.openai.com/codex/cli/slash-commands)
+- 最佳实践：[Best practices](https://learn.chatgpt.com/guides/best-practices)
+- 沙箱原理：[Sandboxing](https://learn.chatgpt.com/docs/sandboxing)
+- Slash 命令：[Slash commands](https://learn.chatgpt.com/docs/developer-commands?surface=cli)
 - 官方 GitHub Action（CI 集成）：[openai/codex-action](https://github.com/openai/codex-action)
 - 官方 Skills 目录：[openai/skills](https://github.com/openai/skills)
 
@@ -709,4 +737,4 @@ codex execpolicy check --rules .codex/rules/safety.rules git push --force
 
 本项目内：[workflows/tool-selection.md](../workflows/tool-selection.md)
 
-> 信息核实截止：**2026-04-30**（codex CLI v0.125.0）。本教程的每条 CLI flag、子命令、slash 命令、config 字段都对照 `codex-rs` 源码核实过；模型能力和定价变化快，最终以 OpenAI 官方文档为准。
+> 信息核实截止：**2026-09**（codex CLI v0.158.0）。本教程的每条 CLI flag、子命令、slash 命令、config 字段都对照 `codex-rs` 源码核实过；模型能力和定价变化快，最终以 OpenAI 官方文档为准。

@@ -1,6 +1,8 @@
 # Gemini CLI 最佳实践
 
-> Gemini CLI 是 Google 的命令行 AI 编程工具。最大优势：**免费额度充足 + 超大上下文窗口（2M tokens）**。适合大代码库分析、长任务执行、以及预算敏感的个人开发者。
+> ⚠️ **重要变化（2026-06-18 起）**：据 [Google Developers Blog](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/)，Gemini CLI **已停止服务个人用户**（免费的 Gemini Code Assist 个人版、Google AI Pro / Ultra 账号登录都不能用了）。企业用户（Gemini Code Assist Standard / Enterprise）和**付费 Gemini API key** 仍可继续使用，Google 也继续为企业用户提供更新和支持。个人开发者请改用 **Antigravity CLI**——它保留了 Skills、Hooks、Subagents，Extensions 变成了 Antigravity plugins。
+
+> Gemini CLI 是 Google 的命令行 AI 编程工具。最大优势：**超大上下文窗口（Gemini 3 模型 1M tokens）**。适合大代码库分析、长任务执行。
 
 ---
 
@@ -11,8 +13,10 @@
 | **GEMINI.md** | 项目配置文件 | 类似 Claude Code 的 CLAUDE.md |
 | **Tools** | 内置工具（读写文件、执行命令等） | Agent 能力基础 |
 | **Extensions** | 扩展插件 | 连接 Google 服务和第三方 API |
-| **Context Window** | 2M tokens | 能一次性理解超大代码库 |
+| **Context Window** | 1M tokens（Gemini 3 模型） | 能一次性理解超大代码库 |
 | **Sandbox** | 安全沙箱 | 隔离执行不信任的代码 |
+| **Skills** | `.gemini/skills/` 或 `.agents/skills/` | `gemini skills install / list / uninstall` 管理 |
+| **其他内置能力** | 原生 MCP、Hooks、Subagents、Plan Mode、Policy Engine、Checkpointing、Headless 模式 | 和 Claude Code / Codex 基本对齐 |
 
 ---
 
@@ -22,9 +26,12 @@
 
 ```bash
 npm install -g @google/gemini-cli
+
+# 或 Homebrew
+brew install gemini-cli
 ```
 
-安装后运行 `gemini` 进入交互模式，按提示登录 Google 账号即可。
+安装后运行 `gemini` 进入交互模式，按提示用企业 Google 账号（Code Assist Standard / Enterprise）登录，或设置付费的 `GEMINI_API_KEY`。个人 Google 账号登录自 2026-06-18 起已不可用。
 
 > 最新安装方式请参考 [官方仓库](https://github.com/google-gemini/gemini-cli)。
 
@@ -56,7 +63,7 @@ npm install -g @google/gemini-cli
 
 ## 超大上下文的正确用法
 
-Gemini CLI 的 2M tokens 上下文窗口是它的核心优势。但大不等于好——关键是用对。
+Gemini CLI 的 1M tokens 上下文窗口是它的核心优势。但大不等于好——关键是用对。
 
 ### 适合大上下文的场景
 
@@ -87,7 +94,7 @@ Gemini CLI 的 2M tokens 上下文窗口是它的核心优势。但大不等于�
 
 ## 提示词技巧
 
-### 1. 利用免费额度做批量分析
+### 1. 批量分析
 
 ```
 依次检查 src/ 下每个 Go 文件的错误处理：
@@ -126,12 +133,12 @@ Gemini CLI 的 2M tokens 上下文窗口是它的核心优势。但大不等于�
 
 | 维度 | Gemini CLI | Claude Code |
 |------|-----------|-------------|
-| 上下文窗口 | **2M tokens**（最大） | 200K tokens |
-| 免费额度 | **充足** | 有限 |
+| 上下文窗口 | 1M tokens（Gemini 3） | 1M tokens（Opus 5.5 / Sonnet 5.5） |
+| 个人用户 | 2026-06-18 起停止服务（仅企业账号 / 付费 API key 可用） | Pro / Max 等订阅或 API |
 | Agent 能力 | ★★☆ | ★★★ |
 | 工具生态 | Google 服务集成好 | MCP 生态最丰富 |
-| Skill 支持 | 有（`.gemini/skills/`） | 有（`.claude/skills/`） |
-| 适合 | 大代码库分析、预算敏感 | 复杂 Agent 任务、需要强执行力 |
+| Skill 支持 | 有（`.gemini/skills/` 或 `.agents/skills/`） | 有（`.claude/skills/`） |
+| 适合 | 大代码库分析、已有 Google 企业订阅 | 复杂 Agent 任务、需要强执行力 |
 
 **建议组合**：用 Gemini CLI 做大规模分析和理解，用 Claude Code 做精确的修改和执行。
 
@@ -141,8 +148,8 @@ Gemini CLI 的 2M tokens 上下文窗口是它的核心优势。但大不等于�
 
 | 陷阱 | 说明 | 解决 |
 |------|------|------|
-| 上下文太大反而慢 | 2M 全塞满处理很慢 | 只在需要全局视角时用大上下文 |
-| 免费额度用完 | 高频使用会触发限制 | 合理安排，大任务集中做 |
+| 上下文太大反而慢 | 1M 全塞满处理很慢 | 只在需要全局视角时用大上下文 |
+| 个人账号登录失败 | 2026-06-18 起不再服务个人用户 | 改用 Antigravity CLI，或用企业账号 / 付费 API key |
 | 工具能力弱于 Claude Code | 文件操作、命令执行不如 CC | 分析用 Gemini，执行用 CC |
 
 ---

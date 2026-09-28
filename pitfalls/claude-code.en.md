@@ -16,10 +16,11 @@
 - Responses get shorter and vaguer, ending mid-thought
 
 **Cause**
-Claude has a context window limit. Once conversation + tool calls pass ~80%, the earliest messages get truncated — and the AI loses memory of early decisions. It won't tell you. It pretends to remember, by confabulating.
+Claude has a context window limit. As conversation + tool calls approach it, auto-compaction kicks in: earlier conversation is **summarized**, and details or constraints stated only in chat can get lost in the summary (the root `CLAUDE.md` is re-read after compaction, so it survives). It won't tell you. It pretends to remember, by confabulating.
 
 **Recovery**
 ```
+/context              # Inspect context usage
 /compact              # Compress context, keep key decisions
 ```
 Or just **start a new session** and pass important info through `CLAUDE.md`.
@@ -145,7 +146,7 @@ The key rules are: [restate them yourself].
 
 **Prevention**
 - Keep `CLAUDE.md` under 200 lines
-- For large projects, split into `.claude/rules/` with `globs` for file-type loading
+- For large projects, split into `.claude/rules/` with `paths:` frontmatter for path-based loading
 - Mark critical rules with `<important>`
 - Use "must / forbidden" instead of "should / try to":
 
