@@ -38,7 +38,7 @@
 | 控成本 / 独立开发者 | [速查表](cheatsheet.md) → [Gemini CLI](gemini-cli/) 或 [Aider](aider/) + 本地模型 |
 | 团队协作 / 高质量交付 | [Kiro](kiro/) → [代码审查](common/code-review.md) → [测试策略](common/testing.md) |
 
-**已经在用了？** 直接看：[速查表](cheatsheet.md) · [进阶技巧](#-9-款工具教程) · [实战工作流](#-实战工作流) · [生态项目](#-相关项目)
+**已经在用了？** 直接看：[速查表](cheatsheet.md) · [进阶技巧](#-10-款工具教程) · [实战工作流](#-实战工作流) · [生态项目](#-相关项目)
 
 ---
 
@@ -84,7 +84,7 @@
 | 工作流 | 说明 |
 |--------|------|
 | [实战场景脚本](workflows/scenarios.md) | 重构 / 协作开发 / 补测试——3 个端到端对话脚本，复制改就能用 |
-| [⚠️ 陷阱合集](pitfalls/) | Claude Code / Cursor / Copilot 各 8 个真实踩坑，症状 / 根因 / 出坑 / 预防 四段式 |
+| [⚠️ 陷阱合集](pitfalls/) | Claude Code / Cursor / Copilot / Aider 共 31 个真实踩坑，症状 / 根因 / 出坑 / 预防 四段式 |
 | [Claude Code + Cursor 协作](workflows/claude-code-cursor.md) | Claude Code 做架构设计和复杂重构，Cursor 做日常编码 |
 | [Claude Code + Copilot 协作](workflows/claude-code-copilot.md) | Claude Code 做 Agent 任务，Copilot 做行内补全 |
 | [多工具选型指南](workflows/tool-selection.md) | 什么场景用什么工具，一张表说清楚 |
@@ -194,8 +194,8 @@ AI 视频线：
 - [awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) — Cursor 规则集合
 - [awesome-copilot](https://github.com/github/awesome-copilot) — GitHub Copilot 官方资源
 - [gemini-cli-tips](https://github.com/addyosmani/gemini-cli-tips) — Gemini CLI 技巧
-- [Everything Claude Code](https://github.com/anthropics/everything-claude-code) — 本能评分、AgentShield、多语言规则
-- [BMAD-METHOD](https://github.com/bmadcode/BMAD-METHOD) — 完整 SDLC、Agent 角色、多平台
+- [Everything Claude Code](https://github.com/affaan-m/ECC) — 本能评分、AgentShield、多语言规则
+- [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) — 完整 SDLC、Agent 角色、多平台
 
 ---
 

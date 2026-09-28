@@ -383,7 +383,7 @@ $skill-creator                # explicit trigger with $ prefix
 - Give goals + constraints, **don't railroad** the model with prescriptive steps
 - Add a `## Gotchas` section per skill with Codex's failure modes in this domain — highest-signal content
 
-> Ready-made skill libraries: [ComposioHQ/awesome-codex-skills](https://github.com/ComposioHQ/awesome-codex-skills), [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) (cross-tool).
+> Ready-made skill libraries: [ComposioHQ/awesome-codex-skills](https://github.com/composio-community/awesome-codex-skills), [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) (cross-tool).
 
 ### 7. Hooks — Inject Custom Scripts into the Agent Loop (beta)
 
@@ -687,7 +687,7 @@ The `templates/` directory provides:
 
 - [**RoggeOhta/awesome-codex-cli**](https://github.com/RoggeOhta/awesome-codex-cli) — 280+ resources (subagents, skills, plugins, MCP, IDE integrations, CI), categorized
 - [**shanraisshan/codex-cli-best-practice**](https://github.com/shanraisshan/codex-cli-best-practice) — 50 battle-tested prompting tips + complete `.codex/` reference impl (aligned with v0.125.0)
-- [**ComposioHQ/awesome-codex-skills**](https://github.com/ComposioHQ/awesome-codex-skills) — 38 commonly-used skills (dev tools, data analysis, Composio 1000+ SaaS integrations)
+- [**ComposioHQ/awesome-codex-skills**](https://github.com/composio-community/awesome-codex-skills) — 38 commonly-used skills (dev tools, data analysis, Composio 1000+ SaaS integrations)
 - [**VoltAgent/awesome-codex-subagents**](https://github.com/VoltAgent/awesome-codex-subagents) — 136+ subagents across 10 domains
 - [**hashgraph-online/awesome-codex-plugins**](https://github.com/hashgraph-online/awesome-codex-plugins) — first Plugin marketplace index
 - [**agents.md**](https://agents.md) — cross-tool AGENTS.md standard (60k+ adopting projects; works in Codex / Claude Code / Gemini CLI)

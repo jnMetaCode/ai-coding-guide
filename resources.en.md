@@ -2,7 +2,7 @@
 
 # Further Learning Resources
 
-> This project covers "how to use the 9 tools well." To go deeper, here's a curated external resource list. **Quality over completeness** — every entry states **when it's worth your time**.
+> This project covers "how to use the 10 tools well." To go deeper, here's a curated external resource list. **Quality over completeness** — every entry states **when it's worth your time**.
 >
 > Snapshot date: **2026-04**. Report dead links via Issue.
 
@@ -75,7 +75,7 @@
   - Anthropic's official course collection: Prompt, Tool use, RAG, MCP
   - The full Anthropic syllabus in one place
 
-- [anthropics/anthropic-cookbook](https://github.com/anthropics/anthropic-cookbook) · ⭐ high · EN
+- [anthropics/claude-cookbooks](https://github.com/anthropics/claude-cookbooks) · ⭐ high · EN
   - Claude API practical examples: multimodal, tool use, RAG, Agent patterns
   - Reference when building custom AI coding tools on top of Claude
 
@@ -127,7 +127,7 @@
   - Phodal Huang's book "Building LLM Applications"
   - AI coding architect's perspective, engineering and team adoption
 
-- [unit-mesh/auto-dev](https://github.com/unit-mesh/auto-dev) · ⭐ 3k+ · ZH/EN
+- [unit-mesh/auto-dev](https://github.com/phodal/auto-dev) · ⭐ 3k+ · ZH/EN
   - **Domestic Chinese JetBrains AI coding plugin** with custom Agent + Chinese DevIns scripts
   - AI coding option for IDEA/PyCharm ecosystem
 
@@ -155,7 +155,7 @@
 
 ## 📌 This Project vs External Resources
 
-This project's scope is **"practical Chinese AI coding guide"** — covering the 9 tools in depth. External resources complement, not duplicate:
+This project's scope is **"practical Chinese AI coding guide"** — covering the 10 tools in depth. External resources complement, not duplicate:
 
 ```
 External: teaches principles and generic methods

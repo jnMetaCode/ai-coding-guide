@@ -12,7 +12,7 @@
 
 格式：症状 / 根因 / 出坑 / 预防 四段式。详细模板见 [pitfalls/README.md](./pitfalls/README.md)。
 
-尚未覆盖的工具：Windsurf / Gemini CLI / Kiro / Trae / OpenClaw。
+尚未覆盖的工具：Codex CLI / Windsurf / Gemini CLI / Kiro / Trae / OpenClaw。
 
 ### 🔥 实用工具技巧
 
@@ -66,10 +66,10 @@ CI 红的话，看 Actions 输出修复即可。
 ## 文件结构
 
 ```
-cheatsheet.md             — 9 工具速查表（横向对比 + 命令速查）
+cheatsheet.md             — 10 工具速查表（横向对比 + 命令速查）
 ecosystem.md              — 相关项目生态（superpowers / agents 等）
 
-工具名/README.md          — 某个工具的完整指南（9 个工具）
+工具名/README.md          — 某个工具的完整指南（10 个工具）
 工具名/templates/         — 可复制的配置模板
 
 common/xxx.md             — 跨工具的通用方法论（prompting / debugging 等）

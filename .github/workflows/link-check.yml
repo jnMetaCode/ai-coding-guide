@@ -50,6 +50,7 @@ jobs:
               ./node_modules/*) continue;;
               ./LICENSE*) continue;;
               */templates/*) continue;;       # 配置模板是项目专属，不翻译
+              ./book/*) continue;;            # mdBook 三卷书只出中文版
             esac
             en="${file%.md}.en.md"
             if [ ! -f "$en" ]; then
@@ -63,6 +64,7 @@ jobs:
             case "$file" in
               ./node_modules/*) continue;;
               */templates/*) continue;;
+              ./book/*) continue;;
             esac
             zh="${file%.en.md}.md"
             if [ ! -f "$zh" ]; then
