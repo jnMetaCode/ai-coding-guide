@@ -1,6 +1,6 @@
 # Gemini CLI 最佳实践
 
-> ⚠️ **重要变化（2026-06-18 起）**：据 [Google Developers Blog](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/)，Gemini CLI **已停止服务个人用户**（免费的 Gemini Code Assist 个人版、Google AI Pro / Ultra 账号登录都不能用了）。企业用户（Gemini Code Assist Standard / Enterprise）和**付费 Gemini API key** 仍可继续使用，Google 也继续为企业用户提供更新和支持。个人开发者请改用 **Antigravity CLI**——它保留了 Skills、Hooks、Subagents，Extensions 变成了 Antigravity plugins。
+> ⚠️ **重要变化（2026-06-18 起）**：据 [Google Developers Blog](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/)，Gemini CLI **已停止服务个人用户**（免费的 Gemini Code Assist 个人版、Google AI Pro / Ultra 账号登录都不能用了）。企业用户（Gemini Code Assist Standard / Enterprise）和**付费 Gemini API key** 仍可继续使用，Google 也继续为企业用户提供更新和支持。个人开发者请改用 **Antigravity CLI**（迁移步骤见[下文](#迁移到-antigravity-cli个人用户)）——它保留了 Skills、Hooks、Subagents，Extensions 变成了 Antigravity plugins。
 
 > Gemini CLI 是 Google 的命令行 AI 编程工具。最大优势：**超大上下文窗口（Gemini 3 模型 1M tokens）**。适合大代码库分析、长任务执行。
 
@@ -151,6 +151,63 @@ Gemini CLI 的 1M tokens 上下文窗口是它的核心优势。但大不等于�
 | 上下文太大反而慢 | 1M 全塞满处理很慢 | 只在需要全局视角时用大上下文 |
 | 个人账号登录失败 | 2026-06-18 起不再服务个人用户 | 改用 Antigravity CLI，或用企业账号 / 付费 API key |
 | 工具能力弱于 Claude Code | 文件操作、命令执行不如 CC | 分析用 Gemini，执行用 CC |
+
+---
+
+## 迁移到 Antigravity CLI（个人用户）
+
+> 以下内容均来自 Google 官方文档，最后核对：2026-09-29。官方迁移指南：[Migration from Gemini CLI](https://antigravity.google/docs/cli/gcli-migration)。
+
+### 安装与登录
+
+命令名是 **`agy`**（[安装文档](https://antigravity.google/docs/cli/install/)）：
+
+```bash
+# macOS / Linux（安装到 ~/.local/bin/agy）
+curl -fsSL https://antigravity.google/cli/install.sh | bash
+
+# Windows PowerShell
+irm https://antigravity.google/cli/install.ps1 | iex
+```
+
+- **Google 账号登录**：首次运行 `agy` 会打开浏览器登录，凭据存进系统 keyring；SSH 环境下改为手动打开 URL 授权。退出用 `/logout`
+- **Gemini API key**：在 `~/.gemini/antigravity-cli/settings.json` 里写 `{"modelProvider": "gemini"}`，再 `export GEMINI_API_KEY=...`，适合无浏览器的 headless / CI 场景
+
+### 配置迁移对照
+
+| 项目 | Gemini CLI | Antigravity CLI |
+|------|-----------|-----------------|
+| 上下文文件 | `GEMINI.md` / `AGENTS.md`、`~/.gemini/GEMINI.md` | **不用改**，规则相同 |
+| 全局 Skills | `~/.gemini/skills/` | `~/.gemini/antigravity-cli/skills/` |
+| 项目 Skills | `.gemini/skills/` | `.agents/skills/`（**需手动移动**） |
+| Extensions | Gemini 扩展 | 插件：`agy plugin import gemini` 自动转换 |
+| MCP | `~/.gemini/settings.json` 里的 `mcpServers` | 全局 `~/.gemini/config/mcp_config.json`，项目 `.agents/mcp_config.json`；远程服务器的 `url` / `httpUrl` 改为 `serverUrl` |
+| Hooks | （迁移指南未列出） | 项目 `.agents/hooks.json`，全局 `~/.gemini/config/hooks.json` 或 `~/.gemini/antigravity-cli/settings.json`（[Hooks](https://antigravity.google/docs/hooks/)） |
+| Subagents | （迁移指南未列出） | 项目 `.agents/agents/<name>.md`，全局 `~/.gemini/config/agents/<name>.md`（[Subagents](https://antigravity.google/docs/subagents/)） |
+
+- 首次运行 `agy` 时如果检测到旧配置，会弹出迁移清单：转换扩展和全局设置、把会话 token 迁到系统 keyring。部分自定义终端主题不支持
+- `agy plugin import gemini` 会解析旧扩展，把其中的 skills、MCP 服务器迁过来，旧的自定义 commands 会转成 skills
+- 官方迁移指南**没有**提到 Hooks 和 Subagents 的自动转换，建议按上表的新路径手动检查
+
+### 价格与额度
+
+据 [Plans 文档](https://antigravity.google/docs/plans/) 和 [定价页](https://antigravity.google/pricing)：个人可以免费用（$0，每周限额），CLI 属于所有计划都有的功能；Google AI Pro / Ultra 额度更高，每 5 小时刷新，另有每周上限；Pro / Ultra 用户还可以加购 AI Credits。CLI 里用 `/usage` 看额度，`/credits` 看 AI Credits。
+
+### 和 Gemini CLI 的主要区别
+
+- 用 Go 重写，响应更快；支持异步多 Agent 工作流（[Google Developers Blog](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/)）
+- 和 Antigravity 2.0 桌面端共用同一套 agent harness，设置自动同步，会话可以在 CLI 和桌面端之间互导（[CLI Overview](https://antigravity.google/docs/cli/overview/)）
+- 新增 `/plan`、`/agents`、`/codesearch`、`/diff`、`/permissions`、`/resume`、`/usage` 等斜杠命令
+
+### 迁移清单
+
+1. 安装 `agy`，运行后登录 Google 账号（或配置 `GEMINI_API_KEY`）
+2. 在首次启动弹出的迁移清单里确认转换
+3. 运行 `agy plugin import gemini`，看输出确认每个扩展是否迁移成功
+4. 把项目里的 `.gemini/skills/` 移到 `.agents/skills/`
+5. 检查 MCP 配置是否已迁到 `mcp_config.json`，远程服务器的 `url` / `httpUrl` 是否已改成 `serverUrl`
+6. 把 Hooks、Subagents 放到上表列出的新路径
+7. `GEMINI.md` / `AGENTS.md` 不用动，在项目里跑一次 `agy` 确认规则已生效
 
 ---
 
