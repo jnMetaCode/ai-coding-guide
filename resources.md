@@ -89,6 +89,10 @@
   - 社区维护的 MCP 服务器列表，更新频繁
   - 找第三方 MCP（浏览器、PostgreSQL、特定 API）
 
+- [Agent QA](https://github.com/vostride/agent-qa) · 英
+  - 本地 MCP 用于创建、校验带自然语言步骤的 YAML 测试，提交 Web、Android、iOS 测试运行，查看产物并分类失败原因
+  - 编码代理需要应用测试定义与运行证据时参考：[MCP 文档](https://vostride.com/docs/agent-qa/mcp)，需配置本地仪表盘；许可为 [FSL-1.1-ALv2](https://github.com/vostride/agent-qa/blob/main/LICENSE.md)，配置的模型、浏览器或设备服务可能另行收费
+
 ---
 
 ## 🏗️ Agent 工程化
