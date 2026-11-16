@@ -91,6 +91,10 @@
   - Community-maintained MCP server list, updated frequently
   - Find third-party MCPs (browser, PostgreSQL, domain-specific APIs)
 
+- [Agent QA](https://github.com/vostride/agent-qa) · EN
+  - Local MCP tools create and validate YAML tests with natural-language steps, enqueue web, Android and iOS test runs, inspect artifacts and classify failures
+  - For coding agents working with application-test definitions and run evidence: [MCP docs](https://vostride.com/docs/agent-qa/mcp); a configured local dashboard is required. License: [FSL-1.1-ALv2](https://github.com/vostride/agent-qa/blob/main/LICENSE.md); configured model, browser or device services may incur separate costs
+
 ---
 
 ## 🏗️ Agent Engineering
